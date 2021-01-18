@@ -337,7 +337,7 @@ void HitBear(void)
 	PLAYER *pPlayer = GetPlayer();
 
 	// •Ï”éŒ¾
-	int nPlayer = GetnCntController();
+	int nPlayer = GetPlayerCnt();
 
 	// ƒNƒ}‚Æ‚Ì“–‚½‚è”»’è
 	for (int nCntPlayer = 0; nCntPlayer < nPlayer; nCntPlayer++, pPlayer++)

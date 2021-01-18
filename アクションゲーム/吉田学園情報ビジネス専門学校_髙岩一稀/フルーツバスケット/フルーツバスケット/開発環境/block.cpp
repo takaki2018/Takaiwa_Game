@@ -344,12 +344,6 @@ void GameForestBlock(void)
 	SetBlock(D3DXVECTOR3(1050.0f, 330.0f, 0.0f),
 		D3DXVECTOR3(0.0f, 0.0f, 0.0f), BLOCK_SIZE * 5.0f, BLOCK_SIZE,
 		5.0f, 1.0f, BLOCKSTATE_FLOAT, BLOCKTYPE_COLLISION);
-
-	// è„â∫Ç…ìÆÇ≠è∞
-	/*SetBlock(D3DXVECTOR3(0.0f, 250.0f, 0.0f),
-	D3DXVECTOR3(0.0f, 2.0f, 0.0f), BLOCK_SIZE * RIFT_BLOCK, BLOCK_SIZE,
-	RIFT_BLOCK,BLOCKSTATE_RIFT);*/
-
 }
 
 //-----------------------------------------------------------------

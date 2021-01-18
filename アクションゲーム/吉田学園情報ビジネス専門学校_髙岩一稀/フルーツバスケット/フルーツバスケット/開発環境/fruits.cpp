@@ -448,7 +448,7 @@ void HitFruits(int nCntFruits)
 	PLAYER *pPlayer = GetPlayer();
 
 	// •Ï”éŒ¾
-	int nPlayer = GetnCntController();
+	int nPlayer = GetPlayerCnt();
 
 	// ‰½”Ô–Ú‚©
 	pFruits += nCntFruits;

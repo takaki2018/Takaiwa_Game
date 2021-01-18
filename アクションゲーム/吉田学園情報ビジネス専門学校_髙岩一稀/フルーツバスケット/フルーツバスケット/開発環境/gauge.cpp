@@ -47,7 +47,7 @@ HRESULT InitGauge(void)
 
 	// •Ï”‚Ìó‚¯“n‚µ
 	pDevice = GetDevice();
-	g_nDisplayGauge = GetnCntController();
+	g_nDisplayGauge = GetPlayerCnt();
 	g_bSoundResult = false;
 	g_nCntGaugeTimer = 0;
 	g_bSkipResult = false;

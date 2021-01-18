@@ -75,5 +75,6 @@ void PlayerStateShrink(int nCntPlayer);			// プレイヤー状態が縮んでいるとき
 void ResultPlayer(int nCntPlayer);				// リザルト画面の処理
 
 PLAYER *GetPlayer(void);						// プレイヤー情報の取得
+int GetPlayerCnt(void);							// プレイヤー数の獲得
 
 #endif

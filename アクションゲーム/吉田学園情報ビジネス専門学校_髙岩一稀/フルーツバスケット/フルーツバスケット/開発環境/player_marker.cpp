@@ -6,6 +6,7 @@
 //-------------------------------------------------------------------
 #include "player_marker.h"
 #include "player.h"
+#include "selectmode.h"
 #include "bear.h"
 #include "gamepad.h"
 
@@ -39,7 +40,18 @@ HRESULT InitPlayerMarker(void)
 	// 変数の受け渡し
 	pDevice = GetDevice();
 	pPlayer = GetPlayer();
-	g_nCntPlayerMarker = GetnCntController();
+	PLAYMODE playmode = GetPlayMode();
+
+	switch (playmode)
+	{// シングルモードの時処理
+	case PLAYMODE_SINGLE:
+		g_nCntPlayerMarker = 1;
+		break;
+		// マルチモードの時処理
+	case PLAYMODE_MULTI:
+		g_nCntPlayerMarker = GetnCntController();
+		break;
+	}
 
 	// 変数の初期化
 	for (int nCnt = 0; nCnt < g_nCntPlayerMarker; nCnt++,pPlayer++)

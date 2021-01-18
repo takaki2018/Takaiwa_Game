@@ -275,7 +275,7 @@ void HitEnemy(int nCntEnemy)
 	PLAYER *pPlayer = GetPlayer();
 
 	// •Ï”éŒ¾
-	int nPlayer = GetnCntController();
+	int nPlayer = GetPlayerCnt();
 
 	// ‰½”Ô–Ú‚©
 	pEnemy += nCntEnemy;

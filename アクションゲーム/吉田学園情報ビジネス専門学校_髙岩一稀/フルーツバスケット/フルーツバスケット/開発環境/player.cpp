@@ -59,7 +59,18 @@ HRESULT InitPlayer(void)
 
 	// 変数の受け渡し
 	pDevice = GetDevice();
-	g_nCntPlayer = GetnCntController();
+	PLAYMODE playmode = GetPlayMode();
+
+	switch (playmode)
+	{// シングルモードの時処理
+	case PLAYMODE_SINGLE:
+		g_nCntPlayer = 1;
+		break;
+		// マルチモードの時処理
+	case PLAYMODE_MULTI:
+		g_nCntPlayer = GetnCntController();
+		break;
+	}
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/player_1P.png", &g_pTexturePlayer[0]);
@@ -769,4 +780,12 @@ void ResultPlayer(int nCntPlayer)
 PLAYER *GetPlayer(void)
 {
 	return &g_aPlayer[0];
+}
+
+//-----------------------------------------------------------------
+// プレイヤー数の獲得
+//-----------------------------------------------------------------
+int GetPlayerCnt(void)
+{
+	return g_nCntPlayer;
 }
