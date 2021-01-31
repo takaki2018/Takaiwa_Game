@@ -207,8 +207,8 @@ void HitRat(void)
 		{
 			if ((pPlayer->pos.y + pPlayer->fHeight) >(g_Rat.pos.y - g_Rat.fHeight) &&
 				(pPlayer->pos.y - pPlayer->fHeight) < (g_Rat.pos.y + g_Rat.fHeight) &&
-				(pPlayer->pos.x + pPlayer->fWidth * 0.7f) > (g_Rat.pos.x - g_Rat.fWidth) &&
-				(pPlayer->pos.x - pPlayer->fWidth * 0.7f) < (g_Rat.pos.x + g_Rat.fWidth))
+				(pPlayer->pos.x + pPlayer->fWidth * 0.7f) > (g_Rat.pos.x - g_Rat.fWidth * 0.5f) &&
+				(pPlayer->pos.x - pPlayer->fWidth * 0.7f) < (g_Rat.pos.x + g_Rat.fWidth * 0.5f))
 			{// •Ï”éŒ¾
 				float fAngle = atan2f(pPlayer->pos.x - g_Rat.pos.x, pPlayer->pos.y - g_Rat.pos.y);
 
