@@ -43,8 +43,8 @@ HRESULT InitGauge(void);			// ゲージの初期化処理
 void UninitGauge(void);				// ゲージの終了処理
 void UpdateGauge(void);				// ゲージの更新処理
 void DrawGauge(void);				// ゲージの描画処理
+void RankingGauge(void);			// ランキングの確定
 float GetMoveGauge(int nCnt);	    // ゲージの移動量の取得
 bool GetbGauge(void);				// ゲージが上がりきったかどうか
-void RankingGauge(void);					// ランキングの確定
 
 #endif

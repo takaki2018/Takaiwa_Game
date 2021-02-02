@@ -329,6 +329,9 @@ float GetMoveGauge(int nCnt)
 	return g_aGauge[nCnt].fMoveHeight;
 }
 
+//-----------------------------------------------------------------
+// ƒQ[ƒW‚ªã‚ª‚è‚«‚Á‚½‚©‚Ç‚¤‚©
+//-----------------------------------------------------------------
 bool GetbGauge(void)
 {
 	return g_bSoundResult;

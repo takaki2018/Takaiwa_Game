@@ -26,9 +26,6 @@ HRESULT InitTitleBg(void)
 	// 木の裏の初期化処理
 	InitWoodBack();
 
-	// 木の初期化処理
-	InitWood();
-
 	// ブロックの初期化処理
 	InitBlock();
 
@@ -45,9 +42,6 @@ void UninitTitleBg(void)
 {
 	// ブロックの終了処理
 	UninitBlock();
-
-	// 木の終了処理
-	UninitWood();
 
 	// 木の裏の終了処理
 	UninitWoodBack();
@@ -73,9 +67,6 @@ void UpdateTitleBg(void)
 	// 木の裏の更新処理
 	UpdateWoodBack();
 
-	// 木の更新処理
-	UpdateWood();
-
 	// ブロックの更新処理
 	UpdateBlock();
 }
@@ -96,7 +87,4 @@ void DrawTitleBg(void)
 
 	// ブロックの描画処理
 	DrawBlock();
-
-	// 木の描画処理
-	DrawWood();
 }

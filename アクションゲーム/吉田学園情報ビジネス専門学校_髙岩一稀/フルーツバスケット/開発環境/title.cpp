@@ -9,6 +9,7 @@
 #include "titlelogo.h"
 #include "selectmode.h"
 #include "bear.h"
+#include "wood.h"
 #include "fruits.h"
 #include "input.h"
 #include "gamepad.h"
@@ -42,6 +43,9 @@ HRESULT InitTitle(void)
 	// フルーツの初期化処理
 	InitFruits();
 
+	// 木の初期化処理
+	InitWood();
+
 	// サウンドの開始
 	PlaySound(SOUND_LABEL_TITLE);
 
@@ -55,6 +59,9 @@ void UninitTitle(void)
 {
 	// サウンドの一時停止
 	StopSound();
+
+	// 木の終了処理
+	UninitWood();
 
 	// フルーツの終了処理
 	UninitFruits();
@@ -106,6 +113,9 @@ void UpdateTitle(void)
 
 	// フルーツの更新処理
 	UpdateFruits();
+
+	// 木の更新処理
+	UpdateWood();
 }
 
 //-----------------------------------------------------------------
@@ -121,6 +131,14 @@ void DrawTitle(void)
 	// タイトル背景の描画処理
 	DrawTitleBg();
 
+	if (g_bSkipTitle != true)
+	{
+		// クマの描画処理
+		DrawBear();
+	}
+	// 木の描画処理
+	DrawWood();
+
 	if ((bTitleFruits == true && nTitleCnt < 0) || g_bSkipTitle == true)
 	{
 		// タイトルロゴの描画処理
@@ -135,15 +153,14 @@ void DrawTitle(void)
 
 	if (g_bSkipTitle != true)
 	{
-		// クマの描画処理
-		DrawBear();
-
 		// フルーツの描画処理
 		DrawFruits();
 	}
 }
 
+//-----------------------------------------------------------------
 // タイトルの演出を飛ばしたかどうか
+//-----------------------------------------------------------------
 bool GetSkipTitle(void)
 {
 	return g_bSkipTitle;
