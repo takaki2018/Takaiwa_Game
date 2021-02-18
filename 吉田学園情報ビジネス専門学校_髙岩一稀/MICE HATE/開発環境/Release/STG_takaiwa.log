@@ -1,0 +1,35 @@
+﻿  bg.cpp
+  bullet.cpp
+  bulletcol.cpp
+  effect.cpp
+  enemy.cpp
+  fade.cpp
+  game.cpp
+  gamepad.cpp
+  gauge.cpp
+  input.cpp
+  item.cpp
+  loadscreen.cpp
+  main.cpp
+  object.cpp
+  pause.cpp
+  pause_oe.cpp
+  player.cpp
+  ranking.cpp
+  result.cpp
+  score.cpp
+  コンパイル中...
+  selectmode.cpp
+  setparticle.cpp
+  shockwave.cpp
+  sound.cpp
+  timer.cpp
+  title.cpp
+  titlelogo.cpp
+  ui.cpp
+  uibg.cpp
+  コード生成しています。
+  All 238 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  STG_takaiwa.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\STG_takaiwa\Release\STG_takaiwa.exe
+  STG_takaiwa.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\STG_takaiwa\Release\STG_takaiwa.pdb (Full PDB)

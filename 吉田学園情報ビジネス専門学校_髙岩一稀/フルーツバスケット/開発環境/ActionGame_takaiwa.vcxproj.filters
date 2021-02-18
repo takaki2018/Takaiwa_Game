@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\00_main">
+      <UniqueIdentifier>{382fa251-7364-4d80-97a2-c60287418ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\01_title">
+      <UniqueIdentifier>{262d171f-4a0c-48b9-8d6a-119840b55aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game">
+      <UniqueIdentifier>{47196d70-997b-4bcb-9a63-e344395b1d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\02_tutorial">
+      <UniqueIdentifier>{bbb8ce62-a697-4cfd-ad6b-7cea6c47f599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\04_result">
+      <UniqueIdentifier>{c3b13b53-0f18-406b-a86a-905ca5737211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\05_ranking">
+      <UniqueIdentifier>{74ee2d62-2ca3-4607-8fcd-ce1434fd2da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00_main\00_1_input">
+      <UniqueIdentifier>{f8442e2c-4d48-4319-8955-89be4d645305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00_main\00_2_sound">
+      <UniqueIdentifier>{749dc7e7-b51a-4b90-b9dd-b93b52f1ae94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00_main\00_3_fade">
+      <UniqueIdentifier>{cc4a669f-4ab5-470e-832b-c5e67739a842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\00_main\00_4_effect">
+      <UniqueIdentifier>{4bdb1fae-32c1-4b42-9fc2-71b4fc808621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_1_player">
+      <UniqueIdentifier>{53ccee84-be2f-46ee-93c9-c760dcace271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_2_enemy">
+      <UniqueIdentifier>{75ff13eb-b615-40fa-88f6-caa99a1ceb7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_3_event">
+      <UniqueIdentifier>{6e5dacd5-ec97-406b-a1f6-b28558258cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_4_block">
+      <UniqueIdentifier>{c64ff879-6e6d-450d-a83f-42bdd567d902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_5_fruits">
+      <UniqueIdentifier>{23329046-4fa6-450a-8ee9-4f160dec313d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_6_ui">
+      <UniqueIdentifier>{6ea0f5d7-9003-49d1-a87f-03adfbb035a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\06_bg">
+      <UniqueIdentifier>{90615db1-4c35-4510-88bd-124cb3bc6c55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_7_pause">
+      <UniqueIdentifier>{70d82385-a605-48d5-a690-fd29bb61e8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_6_ui\02_6_1_score">
+      <UniqueIdentifier>{ca8a1a0a-2065-464d-aa77-cb896cb5cc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_6_ui\02_6_2_timer">
+      <UniqueIdentifier>{7cc52213-47c6-42af-94d4-9fafd87b3a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\03_game\02_6_ui\02_6_3_point">
+      <UniqueIdentifier>{9a1893d5-8cac-4d8c-a548-e03a14f48b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_main">
+      <UniqueIdentifier>{b59c64ae-ab63-411d-b48e-e87b5cddf629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\01_title">
+      <UniqueIdentifier>{8ad21f3a-2852-44d4-af2b-296c34d13a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\02_tutorial">
+      <UniqueIdentifier>{b7fc375f-0ed0-44cd-b164-8cb348fba95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game">
+      <UniqueIdentifier>{34c3f062-d9f1-42bb-b555-51a18ade6fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\04_result">
+      <UniqueIdentifier>{3988ce5e-e971-4802-84df-cd0e2b6ca702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\05_ranking">
+      <UniqueIdentifier>{d51a7b2f-5631-4af7-aa04-d5e9df38150d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\06_bg">
+      <UniqueIdentifier>{554d05b9-38a7-40e1-a253-48ef5ab6e3cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_main\00_1_input">
+      <UniqueIdentifier>{f0a91674-74af-4d60-a7e1-2df2ce776348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_main\00_2_sound">
+      <UniqueIdentifier>{f7b96fde-3301-4e2c-a0b5-d558bade77b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_main\00_3_fade">
+      <UniqueIdentifier>{8928f04a-a0ae-4e4f-937d-ae63dffab8f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\00_main\00_4_effect">
+      <UniqueIdentifier>{47ebc2f4-60c1-441d-9a2a-a1eec608317c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_1_player">
+      <UniqueIdentifier>{026d1cb2-ec08-4332-bd96-f9e133bfbe41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_2_enemy">
+      <UniqueIdentifier>{bb1f33af-db0c-4a48-9018-11013d8c237e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_3_event">
+      <UniqueIdentifier>{e5499a97-f8c0-43e0-939e-3141de4de687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_4_block">
+      <UniqueIdentifier>{d78b93f7-c08a-498e-a1b6-f83fad9f27e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_5_fruits">
+      <UniqueIdentifier>{9c48db21-7b37-4f2b-8037-33f523f41c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_6_ui">
+      <UniqueIdentifier>{7a53d1fc-3dff-40cb-8e09-ce6757be3248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_7_pause">
+      <UniqueIdentifier>{a3f261ce-8c6d-41c5-9adc-2667b8ddf437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_6_ui\02_6_1_score">
+      <UniqueIdentifier>{f2649180-d4e9-4f7b-a977-5554a124a764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_6_ui\02_6_2_timer">
+      <UniqueIdentifier>{14eb0a1b-4006-4453-8c80-c44962cac29e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\03_game\02_6_ui\02_6_3_point">
+      <UniqueIdentifier>{4204d7c3-e865-4e31-8201-eec9207a115f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\03_game</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="loadscreen.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\00_main</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="rasult_score.cpp">
+      <Filter>ソース ファイル\04_result</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\04_result</Filter>
+    </ClCompile>
+    <ClCompile Include="result_ann.cpp">
+      <Filter>ソース ファイル\04_result</Filter>
+    </ClCompile>
+    <ClCompile Include="result_bg.cpp">
+      <Filter>ソース ファイル\04_result</Filter>
+    </ClCompile>
+    <ClCompile Include="result_score_bg.cpp">
+      <Filter>ソース ファイル\04_result</Filter>
+    </ClCompile>
+    <ClCompile Include="selectmode.cpp">
+      <Filter>ソース ファイル\01_title</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\01_title</Filter>
+    </ClCompile>
+    <ClCompile Include="title_bg.cpp">
+      <Filter>ソース ファイル\01_title</Filter>
+    </ClCompile>
+    <ClCompile Include="titlelogo.cpp">
+      <Filter>ソース ファイル\01_title</Filter>
+    </ClCompile>
+    <ClCompile Include="gamepad.cpp">
+      <Filter>ソース ファイル\00_main\00_1_input</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\00_main\00_1_input</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\00_main\00_2_sound</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル\00_main\00_3_fade</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>ソース ファイル\00_main\00_4_effect</Filter>
+    </ClCompile>
+    <ClCompile Include="setparticle.cpp">
+      <Filter>ソース ファイル\00_main\00_4_effect</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\03_game\02_1_player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_marker.cpp">
+      <Filter>ソース ファイル\03_game\02_1_player</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\03_game\02_2_enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="rat.cpp">
+      <Filter>ソース ファイル\03_game\02_2_enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="crow.cpp">
+      <Filter>ソース ファイル\03_game\02_3_event</Filter>
+    </ClCompile>
+    <ClCompile Include="bear.cpp">
+      <Filter>ソース ファイル\03_game\02_3_event</Filter>
+    </ClCompile>
+    <ClCompile Include="block.cpp">
+      <Filter>ソース ファイル\03_game\02_4_block</Filter>
+    </ClCompile>
+    <ClCompile Include="fruits.cpp">
+      <Filter>ソース ファイル\03_game\02_5_fruits</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソース ファイル\06_bg</Filter>
+    </ClCompile>
+    <ClCompile Include="wood.cpp">
+      <Filter>ソース ファイル\06_bg</Filter>
+    </ClCompile>
+    <ClCompile Include="wood_back.cpp">
+      <Filter>ソース ファイル\06_bg</Filter>
+    </ClCompile>
+    <ClCompile Include="ui.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソース ファイル\03_game\02_7_pause</Filter>
+    </ClCompile>
+    <ClCompile Include="hidden_score.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClCompile>
+    <ClCompile Include="score_bg.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_2_timer</Filter>
+    </ClCompile>
+    <ClCompile Include="count_down.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_2_timer</Filter>
+    </ClCompile>
+    <ClCompile Include="point.cpp">
+      <Filter>ソース ファイル\03_game\02_6_ui\02_6_3_point</Filter>
+    </ClCompile>
+    <ClCompile Include="rank_logo.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bg.h">
+      <Filter>ヘッダー ファイル\06_bg</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー ファイル\03_game</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="loadscreen.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\00_main</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\04_result</Filter>
+    </ClInclude>
+    <ClInclude Include="result_ann.h">
+      <Filter>ヘッダー ファイル\04_result</Filter>
+    </ClInclude>
+    <ClInclude Include="result_bg.h">
+      <Filter>ヘッダー ファイル\04_result</Filter>
+    </ClInclude>
+    <ClInclude Include="result_score.h">
+      <Filter>ヘッダー ファイル\04_result</Filter>
+    </ClInclude>
+    <ClInclude Include="result_score_bg.h">
+      <Filter>ヘッダー ファイル\04_result</Filter>
+    </ClInclude>
+    <ClInclude Include="selectmode.h">
+      <Filter>ヘッダー ファイル\01_title</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\01_title</Filter>
+    </ClInclude>
+    <ClInclude Include="title_bg.h">
+      <Filter>ヘッダー ファイル\01_title</Filter>
+    </ClInclude>
+    <ClInclude Include="titlelogo.h">
+      <Filter>ヘッダー ファイル\01_title</Filter>
+    </ClInclude>
+    <ClInclude Include="wood.h">
+      <Filter>ヘッダー ファイル\06_bg</Filter>
+    </ClInclude>
+    <ClInclude Include="wood_back.h">
+      <Filter>ヘッダー ファイル\06_bg</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>ヘッダー ファイル\00_main\00_4_effect</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル\00_main\00_3_fade</Filter>
+    </ClInclude>
+    <ClInclude Include="gamepad.h">
+      <Filter>ヘッダー ファイル\00_main\00_1_input</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\00_main\00_1_input</Filter>
+    </ClInclude>
+    <ClInclude Include="setparticle.h">
+      <Filter>ヘッダー ファイル\00_main\00_4_effect</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル\00_main\00_2_sound</Filter>
+    </ClInclude>
+    <ClInclude Include="bear.h">
+      <Filter>ヘッダー ファイル\03_game\02_3_event</Filter>
+    </ClInclude>
+    <ClInclude Include="block.h">
+      <Filter>ヘッダー ファイル\03_game\02_4_block</Filter>
+    </ClInclude>
+    <ClInclude Include="crow.h">
+      <Filter>ヘッダー ファイル\03_game\02_3_event</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ヘッダー ファイル\03_game\02_2_enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="fruits.h">
+      <Filter>ヘッダー ファイル\03_game\02_5_fruits</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ヘッダー ファイル\03_game\02_7_pause</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\03_game\02_1_player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_marker.h">
+      <Filter>ヘッダー ファイル\03_game\02_1_player</Filter>
+    </ClInclude>
+    <ClInclude Include="rat.h">
+      <Filter>ヘッダー ファイル\03_game\02_2_enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="count_down.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_2_timer</Filter>
+    </ClInclude>
+    <ClInclude Include="hidden_score.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClInclude>
+    <ClInclude Include="point.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_3_point</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClInclude>
+    <ClInclude Include="score_bg.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_1_score</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>ヘッダー ファイル\03_game\02_6_ui\02_6_2_timer</Filter>
+    </ClInclude>
+    <ClInclude Include="rank_logo.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
