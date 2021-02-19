@@ -18,7 +18,8 @@ typedef struct
 	LPD3DXBUFFER pBuffMatModel;		// マテリアル(材質情報)へのポインタ
 	DWORD nNumMatModel = 0;			// マテリアルの数
 	D3DXMATRIX mtxWorld;			// ワールドマトリックス
-	D3DXVECTOR3 pos;				// 中心座標
+	D3DXVECTOR3 pos;				// 座標
+	D3DXVECTOR3 posOld;				// 前回の座標
 	D3DXVECTOR3 rot;				// 回転角
 	D3DXVECTOR3 rotDest;			// 目的の回転角
 	D3DXVECTOR3 move;				// 移動量

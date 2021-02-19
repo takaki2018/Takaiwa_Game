@@ -53,7 +53,8 @@ HRESULT InitModelSet(void)
 	// モデルの配置
 	for (int nCntModel = 0; nCntModel < g_Model.nCntModel; nCntModel++)
 	{
-		SetModelSet(g_Model.modelSet[nCntModel].nIdx, g_Model.modelSet[nCntModel].pos, g_Model.modelSet[nCntModel].rot);
+		// 使用状態をtrueにする
+		g_Model.modelSet[nCntModel].bUse = true;
 	}
 
 	return S_OK;
@@ -115,6 +116,13 @@ void DrawModelSet(void)
 			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_Model.modelSet[nModelSet].rot.y, g_Model.modelSet[nModelSet].rot.x, g_Model.modelSet[nModelSet].rot.z);
 			D3DXMatrixMultiply(&g_Model.modelSet[nModelSet].mtxWorld, &g_Model.modelSet[nModelSet].mtxWorld, &mtxRot);
 
+			// 頂点座標の補正
+			D3DXVec3TransformCoord(&g_Model.modelSet[nModelSet].vtxMaxModel, &g_Model.modelInfo[g_Model.modelSet[nModelSet].nIdx].vtxMaxModel, &g_Model.modelSet[nModelSet].mtxWorld);
+			D3DXVec3TransformCoord(&g_Model.modelSet[nModelSet].vtxMinModel, &g_Model.modelInfo[g_Model.modelSet[nModelSet].nIdx].vtxMinModel, &g_Model.modelSet[nModelSet].mtxWorld);
+
+			// 最大値最小値の補正
+			VecModelSet(nModelSet);
+
 			// 位置を反映
 			D3DXMatrixTranslation(&mtxTrans, g_Model.modelSet[nModelSet].pos.x, g_Model.modelSet[nModelSet].pos.y, g_Model.modelSet[nModelSet].pos.z);
 			D3DXMatrixMultiply(&g_Model.modelSet[nModelSet].mtxWorld, &g_Model.modelSet[nModelSet].mtxWorld, &mtxTrans);
@@ -141,38 +149,6 @@ void DrawModelSet(void)
 			}
 			// 保存していたマテリアルを戻す
 			pDevice->SetMaterial(&matDef);
-		}
-	}
-}
-
-//-----------------------------------------------------------------
-// モデルの設置
-//-----------------------------------------------------------------
-void SetModelSet(int nIdx,D3DXVECTOR3 pos, D3DXVECTOR3 rot)
-{
-	for (int nModelSet = 0; nModelSet < MAX_MODEL; nModelSet++)
-	{
-		if (g_Model.modelSet[nModelSet].bUse == false)
-		{
-			// モデルの識別番号
-			g_Model.modelSet[nModelSet].nIdx = nIdx;
-
-			// 座標の設定
-			g_Model.modelSet[nModelSet].pos = pos;
-
-			// モデルの頂点座標の補正
-			VecModelSet(nModelSet);
-
-			// 外積を用いた当たり判定
-			CrossProductModelSet(nModelSet);
-
-			// 使用状態をtrueにする
-			g_Model.modelSet[nModelSet].bUse = true;
-
-			// 影の配置
-			g_Model.modelSet[nModelSet].nIdxShadow = SetShadow(D3DXVECTOR3(g_Model.modelSet[nModelSet].pos.x, 0.0f, g_Model.modelSet[nModelSet].pos.z), SHADOW_SIZE, SHADOW_SIZE);
-
-			break;
 		}
 	}
 }
@@ -265,20 +241,6 @@ void VecModel(int nModelSet)
 //-----------------------------------------------------------------
 void VecModelSet(int nNumModelSet)
 {
-	// 配置するモデルの頂点座標の補正
-	// 最大値
-	g_Model.modelSet[nNumModelSet].vtxMaxModel.x = (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMaxModel.x * cosf(g_Model.modelSet[nNumModelSet].rot.y)) + (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMaxModel.z * -sinf(g_Model.modelSet[nNumModelSet].rot.y));
-	g_Model.modelSet[nNumModelSet].vtxMaxModel.z = (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMaxModel.x * sinf(g_Model.modelSet[nNumModelSet].rot.y)) + (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMaxModel.z * cosf(g_Model.modelSet[nNumModelSet].rot.y));
-	
-	//D3DXVec3TransformCoord
-
-	// 最小値
-	g_Model.modelSet[nNumModelSet].vtxMinModel.x = (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMinModel.x * cosf(g_Model.modelSet[nNumModelSet].rot.y)) + (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMinModel.z * -sinf(g_Model.modelSet[nNumModelSet].rot.y));
-	g_Model.modelSet[nNumModelSet].vtxMinModel.z = (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMinModel.x * sinf(g_Model.modelSet[nNumModelSet].rot.y)) + (g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMinModel.z * cosf(g_Model.modelSet[nNumModelSet].rot.y));
-
-	// Y座標はそそまま代入
-	g_Model.modelSet[nNumModelSet].vtxMaxModel.y = g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMaxModel.y;
-	g_Model.modelSet[nNumModelSet].vtxMinModel.y = g_Model.modelInfo[g_Model.modelSet[nNumModelSet].nIdx].vtxMinModel.y;
 	// 最大値と最小値の入れ替え
 	if (g_Model.modelSet[nNumModelSet].vtxMaxModel.x < g_Model.modelSet[nNumModelSet].vtxMinModel.x)
 	{
@@ -336,17 +298,20 @@ bool CollisionModelSet(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pvt
 		if (pModel->modelSet[nModelSet].bUse == true)
 		{
 			// 外積を用いた当たり判定
+			CrossProductModelSet(nModelSet);
+
+			// 外積を用いた当たり判定
 			pModel->modelSet[nModelSet].aVecB[0] = D3DXVECTOR3(pPos->x + pvtxMax->x - pModel->modelSet[nModelSet].aPos[0].x, 0.0f, pPos->z - pModel->modelSet[nModelSet].aPos[0].z);
 			pModel->modelSet[nModelSet].aVecB[1] = D3DXVECTOR3(pPos->x - pModel->modelSet[nModelSet].aPos[1].x, 0.0f, pPos->z + pvtxMin->z - pModel->modelSet[nModelSet].aPos[1].z);
 			pModel->modelSet[nModelSet].aVecB[2] = D3DXVECTOR3(pPos->x + pvtxMin->x - pModel->modelSet[nModelSet].aPos[2].x, 0.0f, pPos->z - pModel->modelSet[nModelSet].aPos[2].z);
 			pModel->modelSet[nModelSet].aVecB[3] = D3DXVECTOR3(pPos->x - pModel->modelSet[nModelSet].aPos[3].x, 0.0f, pPos->z + pvtxMax->z - pModel->modelSet[nModelSet].aPos[3].z);
 
+			// 外積の値
 			pModel->modelSet[nModelSet].fVec[0] = (pModel->modelSet[nModelSet].aVecA[0].z * pModel->modelSet[nModelSet].aVecB[0].x) - (pModel->modelSet[nModelSet].aVecA[0].x * pModel->modelSet[nModelSet].aVecB[0].z);
 			pModel->modelSet[nModelSet].fVec[1] = (pModel->modelSet[nModelSet].aVecA[1].z * pModel->modelSet[nModelSet].aVecB[1].x) - (pModel->modelSet[nModelSet].aVecA[1].x * pModel->modelSet[nModelSet].aVecB[1].z);
 			pModel->modelSet[nModelSet].fVec[2] = (pModel->modelSet[nModelSet].aVecA[2].z * pModel->modelSet[nModelSet].aVecB[2].x) - (pModel->modelSet[nModelSet].aVecA[2].x * pModel->modelSet[nModelSet].aVecB[2].z);
 			pModel->modelSet[nModelSet].fVec[3] = (pModel->modelSet[nModelSet].aVecA[3].z * pModel->modelSet[nModelSet].aVecB[3].x) - (pModel->modelSet[nModelSet].aVecA[3].x * pModel->modelSet[nModelSet].aVecB[3].z);
 
-			
 			if (pModel->modelSet[nModelSet].fVec[0] > 0.0f && pModel->modelSet[nModelSet].fVec[1] > 0.0f &&
 				pModel->modelSet[nModelSet].fVec[2] > 0.0f && pModel->modelSet[nModelSet].fVec[3] > 0.0f)
 			{
@@ -356,6 +321,11 @@ bool CollisionModelSet(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pvt
 					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y;
 
 					bCollisionModel = true;
+				}
+				else if ((pPosOld->y + pvtxMax->y <= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y) &&
+					(pPos->y + pvtxMax->y > pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y))
+				{
+					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y - pvtxMax->y;
 				}
 				else if (pPos->y <= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y - pvtxMin->y &&
 					pPos->y >= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y - pvtxMax->y)

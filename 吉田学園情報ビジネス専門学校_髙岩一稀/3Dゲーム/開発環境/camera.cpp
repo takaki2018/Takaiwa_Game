@@ -14,7 +14,7 @@
 // マクロ定義
 //-----------------------------------------------------------------
 #define MOVE_CAMERA			(3.0f)
-#define LENGTH				(300.0f)
+#define LENGTH				(350.0f)
 #define ROT					(0.03f)
 
 //-----------------------------------------------------------------
@@ -207,9 +207,9 @@ void KeyboradFollow(void)
 	{// 視点の上移動
 		g_camera[CAMERATYPE_PLAYER].moveV.y += 5.0f;						// 回転量
 
-		if (g_camera[CAMERATYPE_PLAYER].moveV.y >= 500.0f)
+		if (g_camera[CAMERATYPE_PLAYER].moveV.y >= 300.0f)
 		{// 視点の位置が500.0fより大きくなったとき処理
-			g_camera[CAMERATYPE_PLAYER].moveV.y = 500.0f;
+			g_camera[CAMERATYPE_PLAYER].moveV.y = 300.0f;
 		}
 	}
 
@@ -294,7 +294,7 @@ void LookDownPlayer(void)
 	// 目的の視点
 	g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posVDest.x = pPlayer->pos.x - sinf(g_camera[CAMERATYPE_PLAYER_LOOKDOWN].rot.y);	// 目的の視点のX軸座標の決定
 	g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posVDest.z = pPlayer->pos.z - cosf(g_camera[CAMERATYPE_PLAYER_LOOKDOWN].rot.y);	// 目的の視点のZ軸座標の決定
-	g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posVDest.y = g_camera[CAMERATYPE_PLAYER_LOOKDOWN].moveV.y;
+	g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posVDest.y = pPlayer->pos.y + g_camera[CAMERATYPE_PLAYER_LOOKDOWN].moveV.y;
 
 	// 注視点の更新
 	g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posR.x += (g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posRDest.x - g_camera[CAMERATYPE_PLAYER_LOOKDOWN].posR.x) * 1.0f;	// 注視点のX軸座標の決定

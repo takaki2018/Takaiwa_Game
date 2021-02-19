@@ -53,7 +53,7 @@ HRESULT InitMeshField(void)
 	g_aMeshField.bUse = false;
 	
 	// テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/field001.jpg", &g_pTextureMeshField);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/field004.jpg", &g_pTextureMeshField);
 
 	// 頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer(

@@ -22,8 +22,10 @@
 // マクロ定義
 //-----------------------------------------------------------------
 #define POLYGON_SIZE		(5.0f)		// ポリゴンのサイズ
-#define MOVE_MODEL			(2.0f)
+#define MOVE_MODEL			(1.5f)
+#define JUMP_PLAYER			(11.0f)
 #define PI_QUARTER			(D3DX_PI / 4.0f)
+#define GRAVITY				(0.5f)		// 重力
 
 //-----------------------------------------------------------------
 // グローバル変数
@@ -39,6 +41,9 @@ HRESULT InitPlayer(void)
 	// 変数宣言
 	LPDIRECT3DDEVICE9 pDevice = GetDevice(); 
 
+	// プレイヤー情報の読み込み
+	LoadPlayerdata();
+
 	// プレイヤー情報の初期化
 	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_player.bJump = false;
@@ -47,11 +52,10 @@ HRESULT InitPlayer(void)
 	g_player.MotionType = MOTIONTYPE_NEUTRAL;
 	g_player.MotionTypeOld = g_player.MotionType;
 	g_player.nStateCounter = 0;
-	g_player.nCounterMotion = 0;
+	g_player.nCounterMotion = 1;
 	g_player.nKey = 0;
-
-	// プレイヤー情報の読み込み
-	LoadPlayerdata();
+	g_player.bLoopMotion = g_player.aMotionInfo[g_player.MotionType].bLoop;
+	g_player.nNumKey = g_player.aMotionInfo[g_player.MotionType].nNumKey;
 
 	// プレイヤーのパーツ設定
 	for (int nCntModel = 0; nCntModel < g_player.nNumModel; nCntModel++)
@@ -169,7 +173,7 @@ void UpdatePlayer(void)
 	g_player.move.z += (0.0f - g_player.move.z) * 0.2f;
 
 	// 重力設定
-	g_player.move.y -= 0.6f;
+	g_player.move.y -= GRAVITY;
 
 	// 前の座標を保存
 	g_player.posOld = g_player.pos;
@@ -509,7 +513,7 @@ void MovePlayerKeyboard(void)
 	if(GetKeyboardTrigger(KEYINFO_SHOOT) == true &&
 		g_player.state != PLAYERSTATE_FLOATING)
 	{
-		g_player.move.y += 14.0f;
+		g_player.move.y += JUMP_PLAYER;
 		g_player.state = PLAYERSTATE_FLOATING;
 	}
 	if (GetKeyboardPress(KEYINFO_UP) == false && GetKeyboardPress(KEYINFO_DOWN) == false &&
@@ -568,7 +572,7 @@ void MovePlayerGamepad(void)
 	if (GetJoypadTrigger(PLAYER_1, JPINFO_JUMP) == true &&
 		g_player.state != PLAYERSTATE_FLOATING)
 	{
-		g_player.move.y += 14.0f;
+		g_player.move.y += JUMP_PLAYER;
 		g_player.state = PLAYERSTATE_FLOATING;
 	}
 }
@@ -586,70 +590,65 @@ Player *GetPlayer(void)
 //-----------------------------------------------------------------
 void PlayerMotion(void)
 {
-	// 前のモーションと現在のモーションを比較して異なるとき処理
+	// 変数宣言
+	int nNextKey;			// 次のキー
+
 	if (g_player.MotionTypeOld != g_player.MotionType)
 	{
-		// モーションカウンタの初期化
+		// モーションカウンタを初期化
 		g_player.nCounterMotion = 0;
 
 		// 現在のキーを初期化
 		g_player.nKey = 0;
 
-		// 位置の補正
-		g_player.aModel[0].pos.x = g_player.posParent.x;
-		g_player.aModel[0].pos.y = g_player.posParent.y;
-		g_player.aModel[0].pos.z = g_player.posParent.z;
+		// ループするかどうか
+		g_player.bLoopMotion = g_player.aMotionInfo[g_player.MotionType].bLoop;
+
+		// キー数の確定
+		g_player.nNumKey = g_player.aMotionInfo[g_player.MotionType].nNumKey;
 	}
-	// ループするかどうか
-	g_player.bLoopMotion = g_player.aMotionInfo[g_player.MotionType].bLoop;
-
-	// キー数の確定
-	g_player.nNumKey = g_player.aMotionInfo[g_player.MotionType].nNumKey;
-
-	// モーションの記憶
+	// モーションの保存
 	g_player.MotionTypeOld = g_player.MotionType;
+
+	// 次のキーの確定
+	if (g_player.nKey + 1 == g_player.nNumKey)
+	{
+		nNextKey = 0;
+	}
+	else
+	{
+		nNextKey = g_player.nKey + 1;
+	}
 
 	for (int nCntModel = 0; nCntModel < g_player.nNumModel; nCntModel++)
 	{
-		// プレイヤーのモーションの設定をする
-		if (g_player.nKey == (g_player.nNumKey - 1) && g_player.bLoopMotion == true)
+		//g_player.aModel[nCntModel].pos.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+		//g_player.aModel[nCntModel].pos.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+		//g_player.aModel[nCntModel].pos.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+		g_player.aModel[nCntModel].rot.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+		g_player.aModel[nCntModel].rot.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+		g_player.aModel[nCntModel].rot.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+	
+		if (g_player.nKey == g_player.nNumKey - 1 && g_player.bLoopMotion == false)
 		{
-			//g_player.aModel[nCntModel].pos.x += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fPosX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			//g_player.aModel[nCntModel].pos.y += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fPosY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			//g_player.aModel[nCntModel].pos.z += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fPosZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			g_player.aModel[nCntModel].rot.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fRotX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-			g_player.aModel[nCntModel].rot.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fRotY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-			g_player.aModel[nCntModel].rot.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[0].aKey[nCntModel].fRotZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
+			break;
+		}
+	}
+
+	if (g_player.nCounterMotion > g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame)
+	{
+		g_player.nCounterMotion = 1;
+
+		if (g_player.nKey >= g_player.nNumKey - 1 && g_player.bLoopMotion == true)
+		{
+			g_player.nKey = 0;
 		}
 		else
 		{
-			//g_player.aModel[nCntModel].pos.x += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fPosX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			//g_player.aModel[nCntModel].pos.y += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fPosY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			//g_player.aModel[nCntModel].pos.z += (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fPosZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ) / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame;
-			g_player.aModel[nCntModel].rot.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fRotX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-			g_player.aModel[nCntModel].rot.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fRotY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-			g_player.aModel[nCntModel].rot.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey + 1].aKey[nCntModel].fRotZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		
-			if (g_player.nKey == g_player.nNumKey - 1 && g_player.bLoopMotion == false)
-			{
-				break;
-			}
-		}
-		if (g_player.nCounterMotion == g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame)
-		{
-			g_player.nCounterMotion = 0;
-
-			if (g_player.nKey == g_player.nNumKey - 1 && g_player.bLoopMotion == true)
-			{
-				g_player.nKey = 0;
-			}
-			else
-			{
-				g_player.nKey++;
-			}
+			g_player.nKey++;
 		}
 	}
-	if (g_player.nCounterMotion != g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nNumKey - 1].nFrame)
+	else if (g_player.nCounterMotion != g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nNumKey - 1].nFrame || g_player.bLoopMotion == true)
 	{
 		// モーションカウンタの更新
 		g_player.nCounterMotion++;

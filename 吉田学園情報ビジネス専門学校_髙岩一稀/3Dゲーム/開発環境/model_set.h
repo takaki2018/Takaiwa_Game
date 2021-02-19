@@ -64,7 +64,6 @@ void DrawModelSet(void);									// モデルの描画処理
 void TexModel(int Model);									// モデルのテクスチャ
 void VecModel(int Model);									// モデルの頂点座標
 
-void SetModelSet(int nIdx,D3DXVECTOR3 pos, D3DXVECTOR3 rot);// モデルの設置
 void VecModelSet(int nNumModelSet);							// モデルの頂点座標
 void CrossProductModelSet(int Model);						// 外積を用いたコインの当たり判定
 

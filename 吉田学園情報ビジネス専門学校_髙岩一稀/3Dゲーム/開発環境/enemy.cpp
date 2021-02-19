@@ -13,6 +13,7 @@
 #include "gamepad.h"
 #include "fade.h"
 #include "score.h"
+#include "model_set.h"
 
 //-----------------------------------------------------------------
 // マクロ定義
@@ -113,8 +114,14 @@ void UpdateEnemy(void)
 	{
 		if (g_aEnemy[nCntEnemy].bUse == true)
 		{
+			// 座標の保存
+			g_aEnemy[nCntEnemy].posOld = g_aEnemy[nCntEnemy].pos;
+
 			// 敵の移動処理
 			MoveEnemy(nCntEnemy);
+
+			// モデルの当たり判定
+			CollisionModelSet(&g_aEnemy[nCntEnemy].pos, &g_aEnemy[nCntEnemy].posOld, &g_aEnemy[nCntEnemy].vtxMinModel, &g_aEnemy[nCntEnemy].vtxMaxModel);
 		}
 	}
 	if (nCntTrue == 0)
@@ -216,7 +223,7 @@ void MoveEnemy(int nCntEnemy)
 	EnemyVec = pPlayer->pos - g_aEnemy[nCntEnemy].pos;
 
 	// 角度を求める
-	float fAngle = (float)atan2(EnemyVec.x, EnemyVec.z);
+	float fAngle = atan2f(EnemyVec.x, EnemyVec.z);
 
 	// 自機と中心点の対角線の長さ
 	float fLength = sqrtf((EnemyVec.x * EnemyVec.x) + (EnemyVec.z * EnemyVec.z));

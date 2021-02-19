@@ -33,7 +33,7 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 LPD3DXFONT g_pFont = NULL;				// FPSフォントのポインタ
 int g_nCountFPS;						// FPSカウンタ
-MODE g_mode = MODE_GAME;
+MODE g_mode = MODE_TITLE;
 
 //-----------------------------------------------------------------
 // プロトタイプ宣言
