@@ -27,13 +27,13 @@
 //-------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------
-#define SCREEN_WIDTH  (1280)														// スクリーンの幅
-#define SCREEN_HEIGHT (720)															// スクリーンの高さ
+#define SCREEN_WIDTH		(1280)													// スクリーンの幅
+#define SCREEN_HEIGHT		(720)													// スクリーンの高さ
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE |D3DFVF_TEX1)					// 頂点フォーマット
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)	// 頂点フォーマット
 #define CLASS_NAME "WindowClass"													// ウィンドウクラスの名前
-#define WINDOW_NAME "RE:MICE HATE"											// ウィンドウの名前
-#define MAX_VERTEX (4)																// 頂点の数
+#define WINDOW_NAME "RE:MICE HATE"													// ウィンドウの名前
+#define MAX_VERTEX			(4)														// 頂点の数
 
 //-----------------------------------------------------------------
 // 構造体の定義

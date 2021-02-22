@@ -179,7 +179,7 @@ void UpdateEffect(void)
 			pEffect->move.y -= pEffect->fGravity;
 
 			// メッシュフィールドとの当たり判定
-			bool bCollision = CollisionMeshField(&pEffect->pos, &pEffect->posOld);
+			bool bCollision = CollisionMeshField(&pEffect->pos, &pEffect->posOld,pEffect->nIdx);
 
 			// バウンド
 			if (bCollision == true)

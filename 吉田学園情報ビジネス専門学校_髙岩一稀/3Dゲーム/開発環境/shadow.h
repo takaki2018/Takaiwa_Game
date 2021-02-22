@@ -21,6 +21,7 @@ typedef struct
 {
 	D3DXMATRIX mtxWorld;	// ワールドマトリックス
 	D3DXVECTOR3 pos;		// 位置
+	D3DXVECTOR3 posOld;		// 前回の位置
 	D3DXVECTOR3 rot;		// 向き
 	float fWidth;			// 幅
 	float fDepth;			// 奥行

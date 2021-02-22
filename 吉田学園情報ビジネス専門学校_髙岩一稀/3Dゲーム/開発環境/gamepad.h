@@ -22,7 +22,7 @@ typedef enum
 {
 	JPINFO_SHOOT = 0,		// 弾発射
 	JPINFO_COLOR_CHANGE,	// 弾の色変更		
-	JPINFO_JUMP,		// 決定かジャンプ
+	JPINFO_JUMP,			// 決定かジャンプ
 	JPINFO_ITEM,			// アイテム使用
 	JPINFO_LEFT_TURN,		// 左回転
 	JPINFO_RIGHT_TURN,		// 右回転

@@ -121,7 +121,7 @@ void UpdateEnemy(void)
 			MoveEnemy(nCntEnemy);
 
 			// モデルの当たり判定
-			CollisionModelSet(&g_aEnemy[nCntEnemy].pos, &g_aEnemy[nCntEnemy].posOld, &g_aEnemy[nCntEnemy].vtxMinModel, &g_aEnemy[nCntEnemy].vtxMaxModel);
+			CollisionModelSet(&g_aEnemy[nCntEnemy].pos, &g_aEnemy[nCntEnemy].posOld, &g_aEnemy[nCntEnemy].move,&g_aEnemy[nCntEnemy].vtxMinModel, &g_aEnemy[nCntEnemy].vtxMaxModel,g_aEnemy[nCntEnemy].nIdx);
 		}
 	}
 	if (nCntTrue == 0)
@@ -144,31 +144,31 @@ void DrawEnemy(void)
 	// 変数の受け渡し
 	pDevice = GetDevice();
 
-	for (int nCntCoin = 0; nCntCoin < MAX_ENEMY; nCntCoin++)
+	for (int nCntEnemy = 0; nCntEnemy < MAX_ENEMY; nCntEnemy++)
 	{
-		if (g_aEnemy[nCntCoin].bUse == true)
+		if (g_aEnemy[nCntEnemy].bUse == true)
 		{
 			// ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&g_aEnemy[nCntCoin].mtxWorld);
+			D3DXMatrixIdentity(&g_aEnemy[nCntEnemy].mtxWorld);
 
 			// 向きを反映
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aEnemy[nCntCoin].rot.y, g_aEnemy[nCntCoin].rot.x, g_aEnemy[nCntCoin].rot.z);
-			D3DXMatrixMultiply(&g_aEnemy[nCntCoin].mtxWorld, &g_aEnemy[nCntCoin].mtxWorld, &mtxRot);
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aEnemy[nCntEnemy].rot.y, g_aEnemy[nCntEnemy].rot.x, g_aEnemy[nCntEnemy].rot.z);
+			D3DXMatrixMultiply(&g_aEnemy[nCntEnemy].mtxWorld, &g_aEnemy[nCntEnemy].mtxWorld, &mtxRot);
 
 			// 位置を反映
-			D3DXMatrixTranslation(&mtxTrans, g_aEnemy[nCntCoin].pos.x, g_aEnemy[nCntCoin].pos.y, g_aEnemy[nCntCoin].pos.z);
-			D3DXMatrixMultiply(&g_aEnemy[nCntCoin].mtxWorld, &g_aEnemy[nCntCoin].mtxWorld, &mtxTrans);
+			D3DXMatrixTranslation(&mtxTrans, g_aEnemy[nCntEnemy].pos.x, g_aEnemy[nCntEnemy].pos.y, g_aEnemy[nCntEnemy].pos.z);
+			D3DXMatrixMultiply(&g_aEnemy[nCntEnemy].mtxWorld, &g_aEnemy[nCntEnemy].mtxWorld, &mtxTrans);
 
 			// ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &g_aEnemy[nCntCoin].mtxWorld);
+			pDevice->SetTransform(D3DTS_WORLD, &g_aEnemy[nCntEnemy].mtxWorld);
 
 			// 現在のマテリアルを取得
 			pDevice->GetMaterial(&matDef);
 
 			// マテリアルデータへのポインタを取得
-			pMat = (D3DXMATERIAL*)g_aEnemy[nCntCoin].pBuffMatModel->GetBufferPointer();
+			pMat = (D3DXMATERIAL*)g_aEnemy[nCntEnemy].pBuffMatModel->GetBufferPointer();
 
-			for (int nCntMat = 0; nCntMat < (int)g_aEnemy[nCntCoin].nNumMatModel; nCntMat++)
+			for (int nCntMat = 0; nCntMat < (int)g_aEnemy[nCntEnemy].nNumMatModel; nCntMat++)
 			{
 				// マテリアルの設定
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
@@ -177,7 +177,7 @@ void DrawEnemy(void)
 				pDevice->SetTexture(0, g_apTextureEnemy[nCntMat]);
 
 				// モデル(パーツ)の描画
-				g_aEnemy[nCntCoin].pMeshModel->DrawSubset(nCntMat);
+				g_aEnemy[nCntEnemy].pMeshModel->DrawSubset(nCntMat);
 			}
 			// 保存していたマテリアルを戻す
 			pDevice->SetMaterial(&matDef);
@@ -246,7 +246,7 @@ void MoveEnemy(int nCntEnemy)
 	CrossProductEnemy(nCntEnemy);
 
 	// 影の移動
-	SetPositionShadow(g_aEnemy[nCntEnemy].nIdx, g_aEnemy[nCntEnemy].pos);
+	//SetPositionShadow(g_aEnemy[nCntEnemy].nIdx, g_aEnemy[nCntEnemy].pos);
 }
 
 //-----------------------------------------------------------------
@@ -268,7 +268,7 @@ void SetEnemy(D3DXVECTOR3 pos)
 			g_aEnemy[nCntEnemy].bUse = true;
 
 			// 影の配置
-			g_aEnemy[nCntEnemy].nIdx = SetShadow(D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x, 0.0f, g_aEnemy[nCntEnemy].pos.z), SHADOW_SIZE, SHADOW_SIZE);
+			//g_aEnemy[nCntEnemy].nIdx = SetShadow(D3DXVECTOR3(g_aEnemy[nCntEnemy].pos.x, 0.0f, g_aEnemy[nCntEnemy].pos.z), SHADOW_SIZE, SHADOW_SIZE);
 
 			break;
 		}
@@ -451,7 +451,7 @@ bool CollisionEnemy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 void DeleteEnemy(int nCntEnemy)
 {
 	// 影を消す
-	DeleteShadow(g_aEnemy[nCntEnemy].nIdx);
+	//DeleteShadow(g_aEnemy[nCntEnemy].nIdx);
 
 	// 使用状態をfalseにする
 	g_aEnemy[nCntEnemy].bUse = false;

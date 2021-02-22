@@ -9,20 +9,100 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 5
+NUM_MODEL = 7
 
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
 MODEL_FILENAME = data/MODEL/wood.x					# [0] 木
-MODEL_FILENAME = data/MODEL/Block_square.x			# [1] ブロック(正方形)
-MODEL_FILENAME = data/MODEL/Block_rectangle.x		# [2] ブロック(長方形)
-MODEL_FILENAME = data/MODEL/block.x					# [3] ブロック
-MODEL_FILENAME = data/MODEL/arch.x					# [4] アーチ
+MODEL_FILENAME = data/MODEL/arch.x					# [1] アーチ
+MODEL_FILENAME = data/MODEL/Block_square.x			# [2] ブロック(正方形)
+MODEL_FILENAME = data/MODEL/Block_square_two.x		# [3] ブロック(正方形2つ)
+MODEL_FILENAME = data/MODEL/Block_square_three.x	# [4] ブロック(正方形3つ)
+MODEL_FILENAME = data/MODEL/Block_square_four.x		# [5] ブロック(正方形4つ)
+MODEL_FILENAME = data/MODEL/Block_rectangle.x		# [6] ブロック(長方形)
 
 #------------------------------------------------------------------------------
 # モデル配置情報
 #------------------------------------------------------------------------------
+#------------------
+# ブロック(正方形)
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 100 80 400
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形)
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 0 160 400
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形4つ)
+#------------------
+MODELSET
+	TYPE = 5
+	POS = -200 0 200
+	ROT = 0 0 0
+END_MODELSET
+
+#-------------------------------------------------------------
+# 階段
+#-------------------------------------------------------------
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 3
+	POS = 200 0 800
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 230 60 770
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 5
+	POS = 320 60 740
+	ROT = 90 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 3
+	POS = 320 120 800
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 350 180 770
+	ROT = 0 0 0
+END_MODELSET
+
+#-------------------------------------------------------------
+# ステージの端
+#-------------------------------------------------------------
 #------------------
 # 木 (1個目)
 #------------------
@@ -60,37 +140,10 @@ MODELSET
 END_MODELSET
 
 #------------------
-# ブロック(正方形)
-#------------------
-MODELSET
-	TYPE = 1
-	POS = 0 0 400
-	ROT = 0 0 0
-END_MODELSET
-
-#------------------
-# ブロック(正方形)
-#------------------
-MODELSET
-	TYPE = 1
-	POS = 100 80 400
-	ROT = 0 0 0
-END_MODELSET
-
-#------------------
-# ブロック(正方形)
-#------------------
-MODELSET
-	TYPE = 1
-	POS = 0 160 400
-	ROT = 0 0 0
-END_MODELSET
-
-#------------------
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -800
 	ROT = 0 90 0
 END_MODELSET
@@ -99,7 +152,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -700
 	ROT = 0 90 0
 END_MODELSET
@@ -108,7 +161,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -600
 	ROT = 0 90 0
 END_MODELSET
@@ -117,16 +170,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
-	POS = -900 0 -500
-	ROT = 0 90 0
-END_MODELSET
-
-#------------------
-# アーチ (2個目)
-#------------------
-MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -500
 	ROT = 0 90 0
 END_MODELSET
@@ -135,7 +179,7 @@ END_MODELSET
 # アーチ (3個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -400
 	ROT = 0 90 0
 END_MODELSET
@@ -144,7 +188,7 @@ END_MODELSET
 # アーチ (4個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -300
 	ROT = 0 90 0
 END_MODELSET
@@ -153,7 +197,7 @@ END_MODELSET
 # アーチ (5個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -200
 	ROT = 0 90 0
 END_MODELSET
@@ -162,7 +206,7 @@ END_MODELSET
 # アーチ (6個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 -100
 	ROT = 0 90 0
 END_MODELSET
@@ -171,7 +215,7 @@ END_MODELSET
 # アーチ (7個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 0
 	ROT = 0 90 0
 END_MODELSET
@@ -180,7 +224,7 @@ END_MODELSET
 # アーチ (8個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 100
 	ROT = 0 90 0
 END_MODELSET
@@ -189,7 +233,7 @@ END_MODELSET
 # アーチ (29個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 200
 	ROT = 0 90 0
 END_MODELSET
@@ -198,7 +242,7 @@ END_MODELSET
 # アーチ (210個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 300
 	ROT = 0 90 0
 END_MODELSET
@@ -207,7 +251,7 @@ END_MODELSET
 # アーチ (11個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 400
 	ROT = 0 90 0
 END_MODELSET
@@ -216,7 +260,7 @@ END_MODELSET
 # アーチ (12個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 500
 	ROT = 0 90 0
 END_MODELSET
@@ -225,7 +269,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 600
 	ROT = 0 90 0
 END_MODELSET
@@ -233,7 +277,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 700
 	ROT = 0 90 0
 END_MODELSET
@@ -242,7 +286,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -900 0 800
 	ROT = 0 90 0
 END_MODELSET
@@ -251,7 +295,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -800
 	ROT = 0 90 0
 END_MODELSET
@@ -260,7 +304,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -700
 	ROT = 0 90 0
 END_MODELSET
@@ -269,7 +313,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -600
 	ROT = 0 90 0
 END_MODELSET
@@ -278,16 +322,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
-	POS = 900 0 -500
-	ROT = 0 90 0
-END_MODELSET
-
-#------------------
-# アーチ (2個目)
-#------------------
-MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -500
 	ROT = 0 90 0
 END_MODELSET
@@ -296,7 +331,7 @@ END_MODELSET
 # アーチ (3個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -400
 	ROT = 0 90 0
 END_MODELSET
@@ -305,7 +340,7 @@ END_MODELSET
 # アーチ (4個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -300
 	ROT = 0 90 0
 END_MODELSET
@@ -314,7 +349,7 @@ END_MODELSET
 # アーチ (5個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -200
 	ROT = 0 90 0
 END_MODELSET
@@ -323,7 +358,7 @@ END_MODELSET
 # アーチ (6個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 -100
 	ROT = 0 90 0
 END_MODELSET
@@ -332,7 +367,7 @@ END_MODELSET
 # アーチ (7個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 0
 	ROT = 0 90 0
 END_MODELSET
@@ -341,7 +376,7 @@ END_MODELSET
 # アーチ (8個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 100
 	ROT = 0 90 0
 END_MODELSET
@@ -350,7 +385,7 @@ END_MODELSET
 # アーチ (29個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 200
 	ROT = 0 90 0
 END_MODELSET
@@ -359,7 +394,7 @@ END_MODELSET
 # アーチ (210個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 300
 	ROT = 0 90 0
 END_MODELSET
@@ -368,7 +403,7 @@ END_MODELSET
 # アーチ (11個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 400
 	ROT = 0 90 0
 END_MODELSET
@@ -377,7 +412,7 @@ END_MODELSET
 # アーチ (12個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 500
 	ROT = 0 90 0
 END_MODELSET
@@ -386,7 +421,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 600
 	ROT = 0 90 0
 END_MODELSET
@@ -394,7 +429,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 700
 	ROT = 0 90 0
 END_MODELSET
@@ -403,7 +438,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 900 0 800
 	ROT = 0 90 0
 END_MODELSET
@@ -412,7 +447,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 800 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -421,7 +456,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 700 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -430,7 +465,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 600 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -439,7 +474,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 500 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -448,7 +483,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 400 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -457,7 +492,7 @@ END_MODELSET
 # アーチ (3個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 300 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -466,7 +501,7 @@ END_MODELSET
 # アーチ (4個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 200 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -475,7 +510,7 @@ END_MODELSET
 # アーチ (5個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 100 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -484,7 +519,7 @@ END_MODELSET
 # アーチ (6個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 0 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -493,7 +528,7 @@ END_MODELSET
 # アーチ (7個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -100 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -502,7 +537,7 @@ END_MODELSET
 # アーチ (8個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -200 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -511,7 +546,7 @@ END_MODELSET
 # アーチ (29個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -300 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -520,7 +555,7 @@ END_MODELSET
 # アーチ (210個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -400 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -529,7 +564,7 @@ END_MODELSET
 # アーチ (11個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -500 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -538,7 +573,7 @@ END_MODELSET
 # アーチ (12個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -600 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -547,7 +582,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -700 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -555,7 +590,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -800 0 -900
 	ROT = 0 0 0
 END_MODELSET
@@ -564,7 +599,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 800 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -573,7 +608,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 700 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -582,7 +617,7 @@ END_MODELSET
 # アーチ (1個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 600 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -591,7 +626,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 500 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -600,7 +635,7 @@ END_MODELSET
 # アーチ (2個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 400 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -609,7 +644,7 @@ END_MODELSET
 # アーチ (3個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 300 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -618,7 +653,7 @@ END_MODELSET
 # アーチ (4個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 200 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -627,7 +662,7 @@ END_MODELSET
 # アーチ (5個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 100 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -636,7 +671,7 @@ END_MODELSET
 # アーチ (6個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = 0 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -645,7 +680,7 @@ END_MODELSET
 # アーチ (7個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -100 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -654,7 +689,7 @@ END_MODELSET
 # アーチ (8個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -200 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -663,7 +698,7 @@ END_MODELSET
 # アーチ (29個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -300 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -672,7 +707,7 @@ END_MODELSET
 # アーチ (210個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -400 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -681,7 +716,7 @@ END_MODELSET
 # アーチ (11個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -500 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -690,7 +725,7 @@ END_MODELSET
 # アーチ (12個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -600 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -699,7 +734,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -700 0 900
 	ROT = 0 0 0
 END_MODELSET
@@ -707,7 +742,7 @@ END_MODELSET
 # アーチ (13個目)
 #------------------
 MODELSET
-	TYPE = 4
+	TYPE = 1
 	POS = -800 0 900
 	ROT = 0 0 0
 END_MODELSET

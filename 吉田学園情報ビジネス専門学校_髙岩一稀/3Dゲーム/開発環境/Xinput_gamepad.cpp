@@ -49,10 +49,17 @@ void LoadGamepad(void)
 //-----------------------------------------------------------------
 void XinputButtons(void)
 {
+	// •Ï”éŒ¾
+	bool bPressA = false;
+
 	if (g_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{// Aƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çtrue‚Éİ’è
-		g_XinputGamepad.bPressA = true;
+		bPressA = true;
 	}
+	g_XinputGamepad.bPressA = (g_XinputGamepad.bPressAold ^ bPressA) & bPressA;
+
+	// î•ñ‚ğ•Û‘¶
+	g_XinputGamepad.bPressAold = bPressA;
 }
 
 //-----------------------------------------------------------------

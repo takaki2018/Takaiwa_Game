@@ -35,7 +35,7 @@ HRESULT InitMeshField(void);									// メッシュフィールドの初期化処理
 void UninitMeshField(void);										// メッシュフィールドの終了処理
 void UpdateMeshField(void);										// メッシュフィールドの更新処理
 void DrawMeshField(void);										// メッシュフィールドの描画処理
-bool CollisionMeshField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld);
+bool CollisionMeshField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, int nIdxShadow);// 当たり判定
 void SetMeshField(D3DXVECTOR3 pos, float fWidth, float fDepth);	// メッシュフィールドの設置
 
 #endif

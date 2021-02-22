@@ -23,7 +23,8 @@ typedef enum
 //-------------------------------------------------------------------
 typedef struct
 {
-	bool bPressA = false;			// Aボタンが押されてるかどうか
+	bool bPressA;					// Aボタンが押されてるかどうか
+	bool bPressAold;				// 前回Aボタンが押されていたかどうか
 	bool bPressLStick;				// 左スティックを傾けたかどうか
 	float fAngle;					// 左スティックの入力角度
 }XinputGamepad;

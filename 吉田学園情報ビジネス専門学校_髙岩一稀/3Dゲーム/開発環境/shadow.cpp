@@ -7,6 +7,7 @@
 #include "shadow.h"
 #include "input.h"
 #include "gamepad.h"
+#include "model_set.h"
 
 //-----------------------------------------------------------------
 // マクロ定義
@@ -234,14 +235,8 @@ void SetPositionShadow(int nIdx, D3DXVECTOR3 pos)
 //-----------------------------------------------------------------
 void DeleteShadow(int nIdx)
 {	
-	// 影の構造体のポインタ変数
-	Shadow *pShadow = &g_aShadow[0];
-
-	// 何番目の影か
-	pShadow += nIdx;
-
 	// 使用状態をfalseにする
-	pShadow->bUse = false;
+	g_aShadow[nIdx].bUse = false;
 }
 
 //-----------------------------------------------------------------

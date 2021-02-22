@@ -33,7 +33,7 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;
 LPD3DXFONT g_pFont = NULL;				// FPSフォントのポインタ
 int g_nCountFPS;						// FPSカウンタ
-MODE g_mode = MODE_TITLE;
+MODE g_mode = MODE_GAME;
 
 //-----------------------------------------------------------------
 // プロトタイプ宣言
@@ -91,7 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL);
 
 	// 初期化処理
-	if (FAILED(Init(hInstance, hWnd, TRUE)))
+	if (FAILED(Init(hInstance, hWnd, FALSE)))
 	{
 		return -1;
 	}

@@ -7,6 +7,7 @@
 #include "meshfield.h"
 #include "input.h"
 #include "gamepad.h"
+#include "shadow.h"
 
 //-----------------------------------------------------------------
 // マクロ定義
@@ -250,22 +251,29 @@ void SetMeshField(D3DXVECTOR3 pos, float fWidth, float fDepth)
 //-----------------------------------------------------------------
 // メッシュフィールドとの当たり判定
 //-----------------------------------------------------------------
-bool CollisionMeshField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld)
+bool CollisionMeshField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld,int nIdxShadow)
 {
 	// 変数宣言
 	bool bLand = false;
 
+	// 当たり判定
 	if (pPosOld->x > g_aMeshField.pos.x - g_aMeshField.fsizeWidth / 2.0f && pPosOld->x < g_aMeshField.pos.x + g_aMeshField.fsizeWidth / 2.0f &&
 		pPosOld->z > g_aMeshField.pos.z - g_aMeshField.fsizeDepth / 2.0f && pPosOld->z < g_aMeshField.pos.z + g_aMeshField.fsizeDepth / 2.0f)
-	{
+	{// 範囲内にいるとき処理
 		if (pPosOld->y >= g_aMeshField.pos.y)
 		{
 			if (pPos->y < g_aMeshField.pos.y)
 			{
+				// 下にめり込んだら座標を合わせる
 				pPos->y = g_aMeshField.pos.y;
+
+				// 乗っていることを伝える
 				bLand = true;
+
 			}
 		}
+		// 影の位置をモデルの上にする
+		SetPositionShadow(nIdxShadow, D3DXVECTOR3(pPos->x, g_aMeshField.pos.y, pPos->z));
 	}
 	return bLand;
 }

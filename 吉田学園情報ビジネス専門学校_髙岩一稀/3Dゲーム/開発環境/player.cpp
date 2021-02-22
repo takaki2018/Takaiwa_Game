@@ -21,8 +21,7 @@
 //-----------------------------------------------------------------
 // マクロ定義
 //-----------------------------------------------------------------
-#define POLYGON_SIZE		(5.0f)		// ポリゴンのサイズ
-#define MOVE_MODEL			(1.5f)
+#define MOVE_MODEL			(2.0f)
 #define JUMP_PLAYER			(11.0f)
 #define PI_QUARTER			(D3DX_PI / 4.0f)
 #define GRAVITY				(0.5f)		// 重力
@@ -129,7 +128,7 @@ HRESULT InitPlayer(void)
 		g_player.aModel[nCntModel].pMesh->UnlockVertexBuffer();
 	}
 	// 影の配置
-	g_player.nIdx = SetShadow(D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z), 20.0f, 20.0f);
+	g_player.nIdx = SetShadow(D3DXVECTOR3(g_player.pos.x, g_player.pos.y, g_player.pos.z), 20.0f, 20.0f);
 
 	return S_OK;
 }
@@ -169,8 +168,8 @@ void UpdatePlayer(void)
 	StateManagerPlayer();
 
 	// 移動量の減衰(慣性)
-	g_player.move.x += (0.0f - g_player.move.x) * 0.2f;
-	g_player.move.z += (0.0f - g_player.move.z) * 0.2f;
+	g_player.move.x += (0.0f - g_player.move.x) * 0.3f;
+	g_player.move.z += (0.0f - g_player.move.z) * 0.3f;
 
 	// 重力設定
 	g_player.move.y -= GRAVITY;
@@ -186,23 +185,13 @@ void UpdatePlayer(void)
 	// コインとの当たり判定
 	CollisionCoin(&g_player.pos, &g_player.posOld, &g_player.minVecPlayer, &g_player.maxVecPlayer);
 
-	// モデルとの当たり判定
-	bool bCollisionModel = CollisionModelSet(&g_player.pos, &g_player.posOld, &g_player.minVecPlayer, &g_player.maxVecPlayer);
-
-	if (bCollisionModel == true)
-	{
-		// 移動量を0.0fにする
-		g_player.move.y = 0.0f;
-
-		if (g_player.state == PLAYERSTATE_FLOATING)
-		{// ジャンプ中のときジャンプしていない状態にする
-			g_player.state = PLAYERSTATE_NORMAL;
-		}
-	}
 	// メッシュフィールドとの当たり判定
-	bool bLand = CollisionMeshField(&g_player.pos, &g_player.posOld);
+	bool bLand = CollisionMeshField(&g_player.pos, &g_player.posOld, g_player.nIdx);
 
-	if (bLand == true)
+	// モデルとの当たり判定
+	bool bLandModel = CollisionModelSet(&g_player.pos, &g_player.posOld, &g_player.move,&g_player.minVecPlayer, &g_player.maxVecPlayer,g_player.nIdx);
+
+	if (bLand == true || bLandModel == true)
 	{
 		// 移動量を0.0fにする
 		g_player.move.y = 0.0f;
@@ -212,9 +201,11 @@ void UpdatePlayer(void)
 			g_player.state = PLAYERSTATE_NORMAL;
 		}
 	}
-
-	// 影の移動
-	SetPositionShadow(g_player.nIdx, D3DXVECTOR3(g_player.pos.x, 0.0f, g_player.pos.z));
+	else if (bLand == false && bLandModel == false)
+	{
+		// 何も乗っていないとき浮いている状態にする
+		g_player.state = PLAYERSTATE_FLOATING;
+	}
 
 	// 落ちたらフェード
 	if (g_player.pos.y < -100.0f)
@@ -355,6 +346,9 @@ void PlayerStateFloating(void)
 	// プレイヤーの移動処理
 	MovePlayer();
 
+	// モーションをジャンプモーションにする
+	g_player.MotionType = MOTIONTYPE_JUMP;
+
 	// 敵との当たり判定
 	bool bCollisionEnemy = CollisionEnemy(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.minVecPlayer, &g_player.maxVecPlayer);
 
@@ -363,9 +357,6 @@ void PlayerStateFloating(void)
 	{
 		g_player.state = PLAYERSTATE_DAMAGE;
 	}
-
-	// モーションをジャンプモーションにする
-	g_player.MotionType = MOTIONTYPE_JUMP;
 }
 
 //-----------------------------------------------------------------

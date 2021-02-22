@@ -22,7 +22,7 @@
 //-----------------------------------------------------------------
 // グローバル変数
 //-----------------------------------------------------------------
-Object g_aCoin[MAX_OBJECT];											// モデル情報
+Object g_CoinInfo[MAX_OBJECT];											// モデル情報
 D3DXVECTOR3 g_vtxMinObject, g_vtxMaxObject;						// 各頂点座標の最小値、最大値
 LPDIRECT3DTEXTURE9 g_apTextureObject[8] = {};					// テクスチャへのポインタ
 
@@ -42,25 +42,25 @@ HRESULT InitObject(void)
 	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
 	{
 		// 情報の初期化
-		g_aCoin[nCnt].pMeshModel = NULL;
-		g_aCoin[nCnt].pBuffMatModel = NULL;
-		g_aCoin[nCnt].nNumMatModel = NULL;
-		g_aCoin[nCnt].pos = D3DXVECTOR3(50.0f, 10.0f, 0.0f);
-		g_aCoin[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_aCoin[nCnt].rotDest = g_aCoin[nCnt].rot;
-		g_aCoin[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_aCoin[nCnt].moverot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		g_aCoin[nCnt].nIdx = -1;
+		g_CoinInfo[nCnt].pMeshModel = NULL;
+		g_CoinInfo[nCnt].pBuffMatModel = NULL;
+		g_CoinInfo[nCnt].nNumMatModel = NULL;
+		g_CoinInfo[nCnt].pos = D3DXVECTOR3(50.0f, 10.0f, 0.0f);
+		g_CoinInfo[nCnt].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_CoinInfo[nCnt].rotDest = g_CoinInfo[nCnt].rot;
+		g_CoinInfo[nCnt].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_CoinInfo[nCnt].moverot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		g_CoinInfo[nCnt].nIdx = -1;
 
 		// Xファイルの読み込み
 		if (FAILED(D3DXLoadMeshFromX("data/MODEL/test.x",
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
 			NULL,
-			&g_aCoin[nCnt].pBuffMatModel,
+			&g_CoinInfo[nCnt].pBuffMatModel,
 			NULL,
-			&g_aCoin[nCnt].nNumMatModel,
-			&g_aCoin[nCnt].pMeshModel)))
+			&g_CoinInfo[nCnt].nNumMatModel,
+			&g_CoinInfo[nCnt].pMeshModel)))
 		{
 			return E_FAIL;
 		}
@@ -69,9 +69,9 @@ HRESULT InitObject(void)
 	D3DXMATERIAL *pMat;		// マテリアルデータへのポインタ
 
 	// マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)g_aCoin[0].pBuffMatModel->GetBufferPointer();
+	pMat = (D3DXMATERIAL*)g_CoinInfo[0].pBuffMatModel->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)g_aCoin[0].nNumMatModel; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)g_CoinInfo[0].nNumMatModel; nCntMat++)
 	{
 		if (pMat[nCntMat].pTextureFilename != NULL)
 		{
@@ -86,13 +86,13 @@ HRESULT InitObject(void)
 	BYTE *pVtxBuff;			// 頂点バッファへのポインタ
 
 	// 頂点数の取得
-	nNumVtx = g_aCoin[0].pMeshModel->GetNumVertices();
+	nNumVtx = g_CoinInfo[0].pMeshModel->GetNumVertices();
 
 	// 頂点フォーマットのサイズを取得
-	sizeFVF = D3DXGetFVFVertexSize(g_aCoin[0].pMeshModel->GetFVF());
+	sizeFVF = D3DXGetFVFVertexSize(g_CoinInfo[0].pMeshModel->GetFVF());
 
 	// 頂点バッファのロック
-	g_aCoin[0].pMeshModel->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+	g_CoinInfo[0].pMeshModel->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
 	for (int nCntVtx = 0; nCntVtx < nNumVtx; nCntVtx++)
 	{
@@ -130,10 +130,10 @@ HRESULT InitObject(void)
 		pVtxBuff += sizeFVF;
 	}
 	// 頂点バッファのアンロック
-	g_aCoin[0].pMeshModel->UnlockVertexBuffer();
+	g_CoinInfo[0].pMeshModel->UnlockVertexBuffer();
 
 	// 影の配置
-	g_aCoin[0].nIdx = SetShadow(D3DXVECTOR3(g_aCoin[0].pos.x, 0.0f, g_aCoin[0].pos.z), SHADOW_SIZE, SHADOW_SIZE);
+	g_CoinInfo[0].nIdx = SetShadow(D3DXVECTOR3(g_CoinInfo[0].pos.x, 0.0f, g_CoinInfo[0].pos.z), SHADOW_SIZE, SHADOW_SIZE);
 
 	return S_OK;
 }
@@ -146,17 +146,17 @@ void UninitObject(void)
 	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
 	{
 		// メッシュ情報の開放
-		if (g_aCoin[nCnt].pBuffMatModel != NULL)
+		if (g_CoinInfo[nCnt].pBuffMatModel != NULL)
 		{
-			g_aCoin[nCnt].pBuffMatModel->Release();
-			g_aCoin[nCnt].pBuffMatModel = NULL;
+			g_CoinInfo[nCnt].pBuffMatModel->Release();
+			g_CoinInfo[nCnt].pBuffMatModel = NULL;
 		}
 
 		// マテリアル情報の開放
-		if (g_aCoin[nCnt].pMeshModel != NULL)
+		if (g_CoinInfo[nCnt].pMeshModel != NULL)
 		{
-			g_aCoin[nCnt].pMeshModel->Release();
-			g_aCoin[nCnt].pMeshModel = NULL;
+			g_CoinInfo[nCnt].pMeshModel->Release();
+			g_CoinInfo[nCnt].pMeshModel = NULL;
 		}
 	}
 }
@@ -184,7 +184,7 @@ void DrawObject(void)
 	pDevice = GetDevice();
 
 	// ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&g_aCoin[0].mtxWorld);
+	D3DXMatrixIdentity(&g_CoinInfo[0].mtxWorld);
 
 	// スケールを反映
 	//g_model[0].mtxWorld._11 = 0.8f;
@@ -192,23 +192,23 @@ void DrawObject(void)
 	//g_model[0].mtxWorld._33 = 0.8f;
 
 	// 向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, g_aCoin[0].rot.y, g_aCoin[0].rot.x, g_aCoin[0].rot.z);
-	D3DXMatrixMultiply(&g_aCoin[0].mtxWorld, &g_aCoin[0].mtxWorld, &mtxRot);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, g_CoinInfo[0].rot.y, g_CoinInfo[0].rot.x, g_CoinInfo[0].rot.z);
+	D3DXMatrixMultiply(&g_CoinInfo[0].mtxWorld, &g_CoinInfo[0].mtxWorld, &mtxRot);
 
 	// 位置を反映
-	D3DXMatrixTranslation(&mtxTrans, g_aCoin[0].pos.x, g_aCoin[0].pos.y, g_aCoin[0].pos.z);
-	D3DXMatrixMultiply(&g_aCoin[0].mtxWorld, &g_aCoin[0].mtxWorld, &mtxTrans);
+	D3DXMatrixTranslation(&mtxTrans, g_CoinInfo[0].pos.x, g_CoinInfo[0].pos.y, g_CoinInfo[0].pos.z);
+	D3DXMatrixMultiply(&g_CoinInfo[0].mtxWorld, &g_CoinInfo[0].mtxWorld, &mtxTrans);
 
 	// ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &g_aCoin[0].mtxWorld);
+	pDevice->SetTransform(D3DTS_WORLD, &g_CoinInfo[0].mtxWorld);
 
 	// 現在のマテリアルを取得
 	pDevice->GetMaterial(&matDef);
 
 	// マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)g_aCoin[0].pBuffMatModel->GetBufferPointer();
+	pMat = (D3DXMATERIAL*)g_CoinInfo[0].pBuffMatModel->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)g_aCoin[0].nNumMatModel; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)g_CoinInfo[0].nNumMatModel; nCntMat++)
 	{
 		// マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
@@ -217,7 +217,7 @@ void DrawObject(void)
 		pDevice->SetTexture(0, g_apTextureObject[nCntMat]);
 
 		// モデル(パーツ)の描画
-		g_aCoin[0].pMeshModel->DrawSubset(nCntMat);
+		g_CoinInfo[0].pMeshModel->DrawSubset(nCntMat);
 	}
 	// 保存していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
@@ -229,7 +229,7 @@ void DrawObject(void)
 void CollisionObject(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pvtxMin, D3DXVECTOR3 *pvtxMax)
 {
 	// 構造体のポインタ変数
-	Object *pObject = &g_aCoin[0];
+	Object *pObject = &g_CoinInfo[0];
 
 	for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++,pObject++)
 	{
