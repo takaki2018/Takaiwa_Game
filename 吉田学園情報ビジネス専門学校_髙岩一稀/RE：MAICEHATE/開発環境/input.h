@@ -1,0 +1,46 @@
+//-------------------------------------------------------------------
+//
+// インプットヘッダー (input.h)
+// Author:Itsuki Takaiwa
+//
+//-------------------------------------------------------------------
+#ifndef _INPUT_H_
+#define _INPUT_H_
+
+#include "main.h"
+
+//-------------------------------------------------------------------
+// マクロ定義
+//-------------------------------------------------------------------
+#define MAX_DATA (256)
+
+//-------------------------------------------------------------------
+// キー操作の状態
+//-------------------------------------------------------------------
+typedef enum
+{
+	KEYINFO_OK = 0,					// 決定
+	KEYINFO_UP,						// 上選択
+	KEYINFO_DOWN,					// 下選択
+	KEYINFO_RIGHT,					// 右移動
+	KEYINFO_LEFT,					// 左移動
+	KEYINFO_ROT_RIGHT,				// 視点移動(右)
+	KEYINFO_ROT_LEFT,				// 視点移動(左)
+	KEYINFO_POS_UP,					// 視点移動(上)
+	KEYINFO_POS_DOWN,				// 視点移動(下)
+	KEYINFO_PAUSE,					// ポーズ
+	KEYINFO_SHOOT,					// 弾の発射
+	KEYINFO_MAX,
+}KEYINFO;
+
+//-------------------------------------------------------------------
+// プロトタイプ宣言
+//-------------------------------------------------------------------
+HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd);
+void UninitKeyboard(void);
+void UpdateKeyboard(void);
+bool GetKeyboardPress(int nKey);
+bool GetKeyboardTrigger(int nKey);
+bool GetKeyboardReleace(int nKey);
+
+#endif
