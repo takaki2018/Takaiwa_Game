@@ -1,9 +1,9 @@
-//-----------------------------------------------------------------
+//==============================================================================================================
 //
 // プレイヤー (player.cpp)
 // Author:Itsuki Takaiwa
 //
-//-----------------------------------------------------------------
+//==============================================================================================================
 #include "player.h"
 #include "motion.h"
 #include "coin.h"
@@ -15,12 +15,12 @@
 #include "gamepad.h"
 #include "motion.h"
 #include "model_set.h"
+#include "count_down.h"
 #include "sound.h"
-#include "setparticle.h"
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // マクロ定義
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 #define MOVE_MODEL			(2.0f)
 #define JUMP_PLAYER			(11.0f)
 #define PI_QUARTER			(D3DX_PI / 4.0f)
@@ -28,22 +28,24 @@
 
 #define LENGTH				(8.0f)
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // グローバル変数
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 Player g_player;						// プレイヤー情報
 int g_nCntMotion;
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの初期化処理
-//-----------------------------------------------------------------
+// 引数		：void		- 何もなし
+// 返り値	：HRESULT	- 頂点バッファを生成できたかどうか返す
+//--------------------------------------------------------------------------------------------------------------
 HRESULT InitPlayer(void)
 {
 	// 変数宣言
 	LPDIRECT3DDEVICE9 pDevice = GetDevice(); 
 
 	// プレイヤー情報の読み込み
-	LoadPlayerdata();
+	LoadPlayerData();
 
 	// プレイヤー情報の初期化
 	g_player.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -136,9 +138,11 @@ HRESULT InitPlayer(void)
 	return S_OK;
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの終了処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void UninitPlayer(void)
 {
 	for (int nCnt = 0; nCnt < g_player.nNumModel; nCnt++)
@@ -159,9 +163,11 @@ void UninitPlayer(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの更新処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void UpdatePlayer(void)
 {
 	// プレイヤーモーション
@@ -217,9 +223,11 @@ void UpdatePlayer(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの描画処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void DrawPlayer(void)
 {
 	// 変数宣言
@@ -301,47 +309,11 @@ void DrawPlayer(void)
 	pDevice->SetMaterial(&matDef);
 }
 
-//-----------------------------------------------------------------
-// プレイヤーの頂点座標の補正
-//-----------------------------------------------------------------
-void VecPlayer(void)
-{
-	// 最大値と最小値の入れ替え
-	if (g_player.maxVecPlayer.x < g_player.minVecPlayer.x)
-	{
-		// 変数宣言
-		float fVecX;		// 保存用
-
-		// 最大値と最小値を入れ替える
-		fVecX = g_player.maxVecPlayer.x;
-		g_player.maxVecPlayer.x = g_player.minVecPlayer.x;
-		g_player.minVecPlayer.x = fVecX;
-	}
-	if (g_player.maxVecPlayer.y < g_player.minVecPlayer.y)
-	{
-		// 変数宣言
-		float fVecY;		// 保存用
-
-		// 最大値と最小値を入れ替える
-		fVecY = g_player.maxVecPlayer.y;
-		g_player.maxVecPlayer.y = g_player.minVecPlayer.y;
-		g_player.minVecPlayer.y = fVecY;
-	}
-	if (g_player.maxVecPlayer.z < g_player.minVecPlayer.z)
-	{
-		// 変数宣言
-		float fVecZ;		// 保存用
-
-		// 最大値と最小値を入れ替える
-		fVecZ = g_player.maxVecPlayer.z;
-		g_player.maxVecPlayer.z = g_player.minVecPlayer.z;
-		g_player.minVecPlayer.z = fVecZ;
-	}
-}
-
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤー状態の判別
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void StateManagerPlayer(void)
 {
 	// プレイヤーの状態を調べる
@@ -361,9 +333,11 @@ void StateManagerPlayer(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤー状態が通常の時
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void PlayerStateNormal(void)
 {
 	// ゲームパッド情報の取得
@@ -390,20 +364,22 @@ void PlayerStateNormal(void)
 		Controller.lX == 0 && Controller.lY == 0)
 	{
 		// 何もしないときニュートラルモーションに設定
-		g_player.MotionType = MOTIONTYPE_NEUTRAL;
+		SetMotion(MOTIONTYPE_NEUTRAL, true, 10);
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤー状態が浮遊の時
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void PlayerStateFloating(void)
 {
 	// プレイヤーの移動処理
 	MovePlayer();
 
 	// モーションをジャンプモーションにする
-	g_player.MotionType = MOTIONTYPE_JUMP;
+	SetMotion(MOTIONTYPE_JUMP, true, 10);
 
 	// 敵との当たり判定
 	bool bCollisionEnemy = CollisionEnemy(&g_player.pos, &g_player.posOld, &g_player.move, &g_player.minVecPlayer, &g_player.maxVecPlayer);
@@ -418,22 +394,24 @@ void PlayerStateFloating(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーがダメージ状態のとき
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void PlayerStateDamage(void)
 {
 	// 状態カウンタを進める
 	g_player.nStateCounter++;
 
 	// のけぞりモーションに変える
-	g_player.MotionType = MOTIONTYPE_DAMAGE;
+	SetMotion(MOTIONTYPE_DAMAGE, true, 5);
 
 	// 状態カウンターが20になったとき処理
 	if (g_player.nStateCounter >= 20)
 	{
 		// モーションを戻す
-		g_player.MotionType = MOTIONTYPE_NEUTRAL;
+		SetMotion(MOTIONTYPE_NEUTRAL, true, 10);
 
 		// 状態をノーマルに戻す
 		g_player.state = PLAYERSTATE_NORMAL;
@@ -443,11 +421,16 @@ void PlayerStateDamage(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの移動処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void MovePlayer(void)
 {
+	// カウントダウンが終わったかどうか取得
+	bool bFinishCountDown = GetFinishCountDown();
+
 	// 構造体のポインタ変数
 	Camera pCamera = GetPlayerCamera();
 
@@ -473,16 +456,21 @@ void MovePlayer(void)
 		g_player.rot.y -= D3DX_PI * 2.0f;
 	}
 
-	// キーボード
-	MovePlayerKeyboard();
+	if (bFinishCountDown == true)
+	{
+		// キーボード
+		MovePlayerKeyboard();
 
-	// ゲームパッド
-	MovePlayerGamepad();
+		// ゲームパッド
+		MovePlayerGamepad();
+	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの移動処理(キーボード)
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void MovePlayerKeyboard(void)
 {
 	// 情報の取得
@@ -509,7 +497,7 @@ void MovePlayerKeyboard(void)
 			g_player.rotDest.y = camera.rot.y - D3DX_PI;
 		}
 		// 移動しているとき移動モーションに設定
-		g_player.MotionType = MOTIONTYPE_MOVE;
+		SetMotion(MOTIONTYPE_MOVE, true, 10);
 	}
 	else if (GetKeyboardPress(KEYINFO_DOWN) == true)
 	{
@@ -532,7 +520,7 @@ void MovePlayerKeyboard(void)
 			g_player.rotDest.y = camera.rot.y;
 		}
 		// 移動しているとき移動モーションに設定
-		g_player.MotionType = MOTIONTYPE_MOVE;
+		SetMotion(MOTIONTYPE_MOVE, true, 10);
 	}
 	else if (GetKeyboardPress(KEYINFO_RIGHT) == true)
 	{// モデル右移動
@@ -541,7 +529,7 @@ void MovePlayerKeyboard(void)
 		g_player.rotDest.y = camera.rot.y - D3DX_PI / 2.0f;
 
 		// 移動しているとき移動モーションに設定
-		g_player.MotionType = MOTIONTYPE_MOVE;
+		SetMotion(MOTIONTYPE_MOVE, true, 10);
 	}
 	else if (GetKeyboardPress(KEYINFO_LEFT) == true)
 	{// モデル左移動
@@ -550,7 +538,7 @@ void MovePlayerKeyboard(void)
 		g_player.rotDest.y = camera.rot.y + D3DX_PI / 2.0f;
 
 		// 移動しているとき移動モーションに設定
-		g_player.MotionType = MOTIONTYPE_MOVE;
+		SetMotion(MOTIONTYPE_MOVE, true, 10);
 	}
 	if(GetKeyboardTrigger(KEYINFO_SHOOT) == true &&
 		g_player.state != PLAYERSTATE_FLOATING)
@@ -564,9 +552,11 @@ void MovePlayerKeyboard(void)
 #endif
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤーの移動処理(ゲームパッド)
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void MovePlayerGamepad(void)
 {
 	// 情報の取得
@@ -595,7 +585,7 @@ void MovePlayerGamepad(void)
 			g_player.rotDest.y += D3DX_PI * 2.0f;
 		}
 		// モーションを移動モーションにする
-		g_player.MotionType = MOTIONTYPE_MOVE;
+		SetMotion(MOTIONTYPE_MOVE, true, 10);
 	}
 	// ジャンプ処理
 	if (GetJoypadTrigger(PLAYER_1, JPINFO_OKorJUMP) == true &&
@@ -609,80 +599,340 @@ void MovePlayerGamepad(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤー情報の取得
-//-----------------------------------------------------------------
+// 引数		：void		- 何もなし
+// 返り値	：Player	- Player型構造体のポインタを返す
+//--------------------------------------------------------------------------------------------------------------
 Player *GetPlayer(void)
 {
 	return &g_player;
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // プレイヤ-モーションの設定
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void PlayerMotion(void)
 {
 	// 変数宣言
-	int nNextKey;			// 次のキー
-
-	if (g_player.MotionTypeOld != g_player.MotionType)
-	{
-		// モーションカウンタを初期化
-		g_player.nCounterMotion = 0;
-
-		// 現在のキーを初期化
-		g_player.nKey = 0;
-
-		// ループするかどうか
-		g_player.bLoopMotion = g_player.aMotionInfo[g_player.MotionType].bLoop;
-
-		// キー数の確定
-		g_player.nNumKey = g_player.aMotionInfo[g_player.MotionType].nNumKey;
-	}
-	// モーションの保存
-	g_player.MotionTypeOld = g_player.MotionType;
-
-	// 次のキーの確定
-	if (g_player.nKey + 1 == g_player.nNumKey)
-	{
-		nNextKey = 0;
-	}
-	else
-	{
-		nNextKey = g_player.nKey + 1;
-	}
+	Player *pPlayer = GetPlayer();
+	KEY *pKey;				// キー情報
+	KEY *pKeyNext;			// 次のキー情報
+	KEY *pKeyBlend;			// ブレンドキー情報
+	KEY *pKeyNextBlend;		// 次のブレンドキー情報
+	float fPosX;
+	float fPosY;
+	float fPosZ;
+	float fRotX;
+	float fRotY;
+	float fRotZ;
 
 	for (int nCntModel = 0; nCntModel < g_player.nNumModel; nCntModel++)
 	{
-		//g_player.aModel[nCntModel].pos.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		//g_player.aModel[nCntModel].pos.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		//g_player.aModel[nCntModel].pos.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fPosZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fPosZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		g_player.aModel[nCntModel].rot.x = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotX - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotX) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		g_player.aModel[nCntModel].rot.y = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotY - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotY) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-		g_player.aModel[nCntModel].rot.z = g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ + (g_player.aMotionInfo[g_player.MotionType].aKeyInfo[nNextKey].aKey[nCntModel].fRotZ - g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].aKey[nCntModel].fRotZ) * ((float)g_player.nCounterMotion / (float)g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame);
-	
-		if (g_player.nKey == g_player.nNumKey - 1 && g_player.bLoopMotion == false)
+		if (g_player.nKey == g_player.nNumKey - 1 && g_player.bLoopMotion == false && pPlayer->bBlendMotion == false)
 		{
 			break;
 		}
-	}
 
-	if (g_player.nCounterMotion > g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nKey].nFrame)
-	{
-		g_player.nCounterMotion = 1;
+		// キーの確定
+		pKey = &pPlayer->aMotionInfo[pPlayer->MotionType].aKeyInfo[pPlayer->nKey].aKey[nCntModel];
+		pKeyNext = &pPlayer->aMotionInfo[pPlayer->MotionType].aKeyInfo[(pPlayer->nKey + 1) % pPlayer->nNumKey].aKey[nCntModel];
 
-		if (g_player.nKey >= g_player.nNumKey - 1 && g_player.bLoopMotion == true)
+		// 差分の確定
+		float fDiffMoitonPosX = pKeyNext->fPosX - pKey->fPosX;
+		float fDiffMoitonPosY = pKeyNext->fPosY - pKey->fPosY;
+		float fDiffMoitonPosZ = pKeyNext->fPosZ - pKey->fPosZ;
+		float fDiffMoitonRotX = pKeyNext->fRotX - pKey->fRotX;
+		float fDiffMoitonRotY = pKeyNext->fRotY - pKey->fRotY;
+		float fDiffMoitonRotZ = pKeyNext->fRotZ - pKey->fRotZ;
+
+		// 相対値の確定
+		float fRateMotion = (float)pPlayer->nCounterMotion / (float)pPlayer->aMotionInfo[pPlayer->MotionType].aKeyInfo[pPlayer->nKey].nFrame;
+
+		if (g_player.bBlendMotion == true)
 		{
-			g_player.nKey = 0;
+			// キーの確定
+			pKeyBlend = &pPlayer->aMotionInfo[pPlayer->MotionTypeBlend].aKeyInfo[pPlayer->nKeyBlend].aKey[nCntModel];
+			pKeyNextBlend = &pPlayer->aMotionInfo[pPlayer->MotionTypeBlend].aKeyInfo[(pPlayer->nKeyBlend + 1) % pPlayer->nNumKeyBlend].aKey[nCntModel];
+
+			// 差分の確定
+			float fDiffMoitonBlendPosX = pKeyNextBlend->fPosX - pKeyBlend->fPosX;
+			float fDiffMoitonBlendPosY = pKeyNextBlend->fPosY - pKeyBlend->fPosY;
+			float fDiffMoitonBlendPosZ = pKeyNextBlend->fPosZ - pKeyBlend->fPosZ;
+			float fDiffMoitonBlendRotX = pKeyNextBlend->fRotX - pKeyBlend->fRotX;
+			float fDiffMoitonBlendRotY = pKeyNextBlend->fRotY - pKeyBlend->fRotY;
+			float fDiffMoitonBlendRotZ = pKeyNextBlend->fRotZ - pKeyBlend->fRotZ;
+
+			// 相対値の確定
+			float fRateMotionBlend = (float)pPlayer->nCounterMotionBlend / (float)pPlayer->aMotionInfo[pPlayer->MotionTypeBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame;
+
+			float fRateBlend = (float)pPlayer->nCounterBlend / (float)pPlayer->nFrameBlend;
+
+			// 現在のモーションの位置と向きの確定
+			float fPosXCurrent = pKey->fPosX + (fDiffMoitonPosX * fRateMotion);
+			float fPosYCurrent = pKey->fPosY + (fDiffMoitonPosY * fRateMotion);
+			float fPosZCurrent = pKey->fPosZ + (fDiffMoitonPosZ * fRateMotion);
+			float fRotXCurrent = pKey->fRotX + (fDiffMoitonRotX * fRateMotion);
+			float fRotYCurrent = pKey->fRotY + (fDiffMoitonRotY * fRateMotion);
+			float fRotZCurrent = pKey->fRotZ + (fDiffMoitonRotZ * fRateMotion);
+
+			// 角度の制限
+			D3DXVECTOR3(fRotXCurrent, fRotYCurrent, fRotZCurrent) = AngleCorrection(fRotXCurrent, fRotYCurrent, fRotZCurrent);
+
+			// ブレンドモーションの位置と向きの確定
+			float fPosXBlend = pKeyBlend->fPosX + (fDiffMoitonBlendPosX * fRateMotionBlend);
+			float fPosYBlend = pKeyBlend->fPosY + (fDiffMoitonBlendPosY * fRateMotionBlend);
+			float fPosZBlend = pKeyBlend->fPosZ + (fDiffMoitonBlendPosZ * fRateMotionBlend);
+			float fRotXBlend = pKeyBlend->fRotX + (fDiffMoitonBlendRotX * fRateMotionBlend);
+			float fRotYBlend = pKeyBlend->fRotY + (fDiffMoitonBlendRotY * fRateMotionBlend);
+			float fRotZBlend = pKeyBlend->fRotZ + (fDiffMoitonBlendRotZ * fRateMotionBlend);
+
+			// 角度の制限
+			D3DXVECTOR3(fRotXBlend, fRotYBlend, fRotZBlend) = AngleCorrection(fRotXBlend, fRotYBlend, fRotZBlend);
+
+			// 現在のモーションとブレンドモーションの差分
+			float fDiffBlendPosX = fPosXBlend - fPosXCurrent;
+			float fDiffBlendPosY = fPosYBlend - fPosYCurrent;
+			float fDiffBlendPosZ = fPosZBlend - fPosZCurrent;
+			float fDiffBlendRotX = fRotXBlend - fRotXCurrent;
+			float fDiffBlendRotY = fRotYBlend - fRotYCurrent;
+			float fDiffBlendRotZ = fRotZBlend - fRotZCurrent;
+
+			// 角度の制限
+			D3DXVECTOR3(fDiffBlendRotX, fDiffBlendRotY, fDiffBlendRotZ) = AngleCorrection(fDiffBlendRotX, fDiffBlendRotY, fDiffBlendRotZ);
+
+			// ブレンドモーションの位置と向きの確定
+			fPosX = fPosXCurrent + (fDiffBlendPosX * fRateBlend);
+			fPosY = fPosYCurrent + (fDiffBlendPosY * fRateBlend);
+			fPosZ = fPosZCurrent + (fDiffBlendPosZ * fRateBlend);
+			fRotX = fRotXCurrent + (fDiffBlendRotX * fRateBlend);
+			fRotY = fRotYCurrent + (fDiffBlendRotY * fRateBlend);
+			fRotZ = fRotZCurrent + (fDiffBlendRotZ * fRateBlend);
 		}
 		else
 		{
-			g_player.nKey++;
+			// モーションの位置と向きの確定
+			fPosX = pKey->fPosX + (fDiffMoitonPosX * fRateMotion);
+			fPosY = pKey->fPosY + (fDiffMoitonPosY * fRateMotion);
+			fPosZ = pKey->fPosZ + (fDiffMoitonPosZ * fRateMotion);
+			fRotX = pKey->fRotX + (fDiffMoitonRotX * fRateMotion);
+			fRotY = pKey->fRotY + (fDiffMoitonRotY * fRateMotion);
+			fRotZ = pKey->fRotZ + (fDiffMoitonRotZ * fRateMotion);
+		}
+		// 角度の制限
+		D3DXVECTOR3(fRotX, fRotY, fRotZ) = AngleCorrection(fRotX, fRotY, fRotZ);
+
+		// 位置と向きの設定
+		pPlayer->aModel[nCntModel].pos.x = fPosX;
+		pPlayer->aModel[nCntModel].pos.y = fPosY;
+		pPlayer->aModel[nCntModel].pos.z = fPosZ;
+		pPlayer->aModel[nCntModel].rot.x = fRotX;
+		pPlayer->aModel[nCntModel].rot.y = fRotY;
+		pPlayer->aModel[nCntModel].rot.z = fRotZ;
+	}
+
+	if (g_player.bBlendMotion == true)
+	{
+		if (pPlayer->nCounterMotionBlend > pPlayer->aMotionInfo[pPlayer->MotionTypeBlend].aKeyInfo[pPlayer->nKeyBlend].nFrame)
+		{
+			// ブレンドモーションカウンタの初期化
+			pPlayer->nCounterMotionBlend = 0;
+
+			// キーの更新
+			pPlayer->nKeyBlend++;
+
+			// キーの確定
+			pPlayer->nKeyBlend = pPlayer->nKeyBlend % pPlayer->nNumKeyBlend;
+		}
+		else
+		{
+			if (pPlayer->nCounterBlend >= pPlayer->nFrameBlend)
+			{
+				// モーションの確定
+				pPlayer->MotionType = pPlayer->MotionTypeBlend;
+
+				// モーションカウンタを初期化
+				pPlayer->nCounterMotion = pPlayer->nCounterMotionBlend;
+
+				// 現在のキーを初期化
+				pPlayer->nKey = pPlayer->nKeyBlend;
+
+				// ループするかどうか
+				pPlayer->bLoopMotion = pPlayer->bLoopMotionBlend;
+
+				// キー数の確定
+				pPlayer->nNumKey = pPlayer->nNumKeyBlend;
+
+				// モーションブレンドを終える
+				pPlayer->bBlendMotion = false;
+			}
+			else
+			{
+				// ブレンドモーションカウンタの更新
+				pPlayer->nCounterMotionBlend++;
+
+				// ブレンドカウンタの更新
+				pPlayer->nCounterBlend++;
+			}
 		}
 	}
-	else if (g_player.nCounterMotion != g_player.aMotionInfo[g_player.MotionType].aKeyInfo[g_player.nNumKey - 1].nFrame || g_player.bLoopMotion == true)
+	else
 	{
-		// モーションカウンタの更新
-		g_player.nCounterMotion++;
+		// モーションカウンタが各キーの最終フレームに到達したとき
+  		if (pPlayer->nCounterMotion >= pPlayer->aMotionInfo[pPlayer->MotionType].aKeyInfo[pPlayer->nKey].nFrame)
+		{
+			if (g_player.bLoopMotion == false && pPlayer->nKey == pPlayer->nNumKey - 1)
+			{
+				// モーションカウンタの更新
+  				pPlayer->nCounterMotion = pPlayer->aMotionInfo[pPlayer->MotionType].aKeyInfo[pPlayer->nKey].nFrame;
+			}
+			else
+			{
+				// モーションカウンタの初期化
+				pPlayer->nCounterMotion = 0;
+
+				// キーの更新
+				pPlayer->nKey++;
+
+				// キーの確定
+				pPlayer->nKey = pPlayer->nKey % pPlayer->nNumKey;
+			}
+		}
+		else
+		{
+			// モーションカウンタの更新
+			pPlayer->nCounterMotion++;
+		}
 	}
+}
+
+//--------------------------------------------------------------------------------------------------------------
+// モーションの設定
+// 引数		：motiontype	- モーションタイプ
+//			：bBlend		- ブレンドするかどうか
+//			：nFrameBlend	- ブレンドフレーム数
+// 返り値	：void			- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
+void SetMotion(MOTIONTYPE motiontype, bool bBlend, int nFrameBlend)
+{
+	// 変数宣言
+	Player *pPlayer = GetPlayer();
+
+	// モーションタイプによって条件を変える
+	switch (motiontype)
+	{
+	case MOTIONTYPE_NEUTRAL:
+		if (g_player.state == PLAYERSTATE_FLOATING)
+		{
+			motiontype = MOTIONTYPE_JUMP;
+		}
+		break;
+
+	case MOTIONTYPE_MOVE:
+		if (g_player.state == PLAYERSTATE_FLOATING)
+		{
+			motiontype = MOTIONTYPE_JUMP;
+		}
+		break;
+
+	case MOTIONTYPE_JUMP:
+		break;
+
+	case MOTIONTYPE_LAND:
+		break;
+
+	case MOTIONTYPE_DAMAGE:
+		break;
+
+	default:
+		break;
+	}
+	//if (g_player.bFinishMotion == true)
+	{
+		if (bBlend == true && g_player.MotionTypeBlend != motiontype)
+		{
+			// モーションの確定
+			g_player.MotionTypeBlend = motiontype;
+
+			// モーションカウンタを初期化
+			g_player.nCounterMotionBlend = 0;
+
+			// 現在のキーを初期化
+			g_player.nKeyBlend = 0;
+
+			// ループするかどうか
+			g_player.bLoopMotionBlend = g_player.aMotionInfo[g_player.MotionTypeBlend].bLoop;
+
+			// キー数の確定
+			g_player.nNumKeyBlend = g_player.aMotionInfo[g_player.MotionTypeBlend].nNumKey;
+
+			// ブレンドフレームの設定
+			g_player.nFrameBlend = nFrameBlend;
+
+			// ブレンドするかどうか
+			g_player.bBlendMotion = bBlend;
+
+			// ブレンドカウンタの初期化
+			g_player.nCounterBlend = 0;
+		}
+		else if (bBlend == false && g_player.MotionType != motiontype)
+		{
+			// モーションの確定
+			g_player.MotionType = motiontype;
+
+			// モーションカウンタを初期化
+			g_player.nCounterMotion = 0;
+
+			// 現在のキーを初期化
+			g_player.nKey = 0;
+
+			// ループするかどうか
+			g_player.bLoopMotion = g_player.aMotionInfo[g_player.MotionType].bLoop;
+
+			// キー数の確定
+			g_player.nNumKey = g_player.aMotionInfo[g_player.MotionType].nNumKey;
+		}
+	}
+}
+
+//--------------------------------------------------------------------------------------------------------------
+// 角度の制限
+// 引数		：rotX			- X軸の角度情報
+//			：rotY			- Y軸の角度情報
+//			：rotZ			- Z軸の角度情報
+// 返り値	：D3DXVECTOR3	- 回転角を制限した後の角度情報を渡す
+//--------------------------------------------------------------------------------------------------------------
+D3DXVECTOR3 AngleCorrection(float rotX, float rotY, float rotZ)
+{
+	// 現在の回転角を制限
+	if (rotX > D3DX_PI)
+	{// 3.14fより大きくなったとき値を-3.14fにする
+		rotX -= D3DX_PI * 2.0f;
+	}
+	else if (rotX < -D3DX_PI)
+	{// -3.14fより小さくなったとき値に3.14fにする
+		rotX += D3DX_PI * 2.0f;
+	}
+	// 現在の回転角を制限
+	if (rotY  > D3DX_PI)
+	{// 3.14fより大きくなったとき値を-3.14fにする
+		rotY -= D3DX_PI * 2.0f;
+	}
+	else if (rotY < -D3DX_PI)
+	{// -3.14fより小さくなったとき値に3.14fにする
+		rotY += D3DX_PI * 2.0f;
+	}
+	// 現在の回転角を制限
+	if (rotZ > D3DX_PI)
+	{// 3.14fより大きくなったとき値を-3.14fにする
+		rotZ -= D3DX_PI * 2.0f;
+	}
+	else if (rotZ < -D3DX_PI)
+	{// -3.14fより小さくなったとき値に3.14fにする
+		rotZ += D3DX_PI * 2.0f;
+	}
+
+	return D3DXVECTOR3(rotX, rotY, rotZ);
 }

@@ -151,18 +151,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2Deffect.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="camera_bg.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="coin_sheets.cpp" />
-    <ClCompile Include="effect.cpp" />
+    <ClCompile Include="3Deffect.cpp" />
+    <ClCompile Include="count_down.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gamepad.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
-    <ClCompile Include="loadscreen.cpp" />
+    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="model_set.cpp" />
@@ -170,9 +172,13 @@
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="ranking.cpp" />
+    <ClCompile Include="ranking_bg.cpp" />
+    <ClCompile Include="ranking_logo.cpp" />
+    <ClCompile Include="ranking_rank.cpp" />
+    <ClCompile Include="ranking_score.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp" />
-    <ClCompile Include="selectmode.cpp" />
+    <ClCompile Include="press_enter.cpp" />
     <ClCompile Include="setparticle.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
@@ -180,21 +186,27 @@
     <ClCompile Include="title.cpp" />
     <ClCompile Include="titlelogo.cpp" />
     <ClCompile Include="title_bg.cpp" />
+    <ClCompile Include="tutorial_bg.cpp" />
+    <ClCompile Include="tutorial_image.cpp" />
+    <ClCompile Include="tutorial_marker.cpp" />
+    <ClCompile Include="tutorial_press_ok.cpp" />
     <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="2Deffect.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="camera_bg.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="coin_sheets.h" />
-    <ClInclude Include="effect.h" />
+    <ClInclude Include="3Deffect.h" />
+    <ClInclude Include="count_down.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gamepad.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
-    <ClInclude Include="loadscreen.h" />
+    <ClInclude Include="tutorial.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="model_set.h" />
@@ -202,9 +214,13 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ranking.h" />
+    <ClInclude Include="ranking_bg.h" />
+    <ClInclude Include="ranking_logo.h" />
+    <ClInclude Include="ranking_rank.h" />
+    <ClInclude Include="ranking_score.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h" />
-    <ClInclude Include="selectmode.h" />
+    <ClInclude Include="press_enter.h" />
     <ClInclude Include="setparticle.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
@@ -212,6 +228,10 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="titlelogo.h" />
     <ClInclude Include="title_bg.h" />
+    <ClInclude Include="tutorial_bg.h" />
+    <ClInclude Include="tutorial_image.h" />
+    <ClInclude Include="tutorial_marker.h" />
+    <ClInclude Include="tutorial_press_ok.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

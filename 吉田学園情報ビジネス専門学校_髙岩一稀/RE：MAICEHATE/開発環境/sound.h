@@ -29,6 +29,8 @@ typedef enum
 	SOUND_LABEL_SE_PAUSE_IN,	// ポーズ画面(入)
 	SOUND_LABEL_SE_PAUSE_OUT,	// ポーズ画面(出)
 	SOUND_LABEL_SE_OK,			// 決定
+	SOUND_LABEL_SE_COUNTDOWN,	// カウントダウン
+	SOUND_LABEL_SE_START,		// スタート
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
 

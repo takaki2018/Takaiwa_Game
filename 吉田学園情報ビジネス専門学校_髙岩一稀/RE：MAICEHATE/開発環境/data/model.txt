@@ -9,18 +9,21 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 7
+NUM_MODEL = 10
 
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/wood.x					# [0] 木
-MODEL_FILENAME = data/MODEL/arch.x					# [1] アーチ
-MODEL_FILENAME = data/MODEL/Block_square.x			# [2] ブロック(正方形)
-MODEL_FILENAME = data/MODEL/Block_square_two.x		# [3] ブロック(正方形2つ)
-MODEL_FILENAME = data/MODEL/Block_square_three.x	# [4] ブロック(正方形3つ)
-MODEL_FILENAME = data/MODEL/Block_square_four.x		# [5] ブロック(正方形4つ)
-MODEL_FILENAME = data/MODEL/Block_rectangle.x		# [6] ブロック(長方形)
+MODEL_FILENAME = data/MODEL/wood.x						# [0] 木
+MODEL_FILENAME = data/MODEL/arch.x						# [1] アーチ
+MODEL_FILENAME = data/MODEL/Block_square.x				# [2] ブロック(正方形)
+MODEL_FILENAME = data/MODEL/Block_square_two.x			# [3] ブロック(横向き正方形2つ)
+MODEL_FILENAME = data/MODEL/Block_square_three.x		# [4] ブロック(横向き正方形3つ)
+MODEL_FILENAME = data/MODEL/Block_square_four.x			# [5] ブロック(横向き正方形4つ)
+MODEL_FILENAME = data/MODEL/Block_rectangle.x			# [6] ブロック(長方形)
+MODEL_FILENAME = data/MODEL/Block_test.x				# [7] ブロック(正方形)
+MODEL_FILENAME = data/MODEL/Block_square_two_test.x		# [8] ブロック(縦向き正方形2つ)
+MODEL_FILENAME = data/MODEL/Block_square_four_test.x	# [9] ブロック(縦向き正方形4つ)
 
 #------------------------------------------------------------------------------
 # モデル配置情報
@@ -31,7 +34,7 @@ MODEL_FILENAME = data/MODEL/Block_rectangle.x		# [6] ブロック(長方形)
 MODELSET
 	TYPE = 5
 	POS = -200 0 200
-	ROT = 0 0 0
+	ROT = 0 45 0
 END_MODELSET
 
 #-------------------------------------------------------------
@@ -47,20 +50,11 @@ MODELSET
 END_MODELSET
 
 #------------------
-# ブロック(正方形4つ)
-#------------------
-MODELSET
-	TYPE = 5
-	POS = 320 60 740
-	ROT = 90 0 0
-END_MODELSET
-
-#------------------
 # ブロック(正方形)
 #------------------
 MODELSET
 	TYPE = 2
-	POS = 350 120 770
+	POS = 230 60 770
 	ROT = 0 0 0
 END_MODELSET
 
@@ -68,18 +62,45 @@ END_MODELSET
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 440 60 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 320 0 770
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形2つ)
+#------------------
+MODELSET
+	TYPE = 3
+	POS = 320 120 800
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形)
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 350 180 770
+	ROT = 0 0 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 440 180 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 440 0 770
+	ROT = 0 0 0
+END_MODELSET
+
+#------------------
+# ブロック(正方形4つ)
+#------------------
+MODELSET
+	TYPE = 9
+	POS = 440 120 770
+	ROT = 0 0 0
 END_MODELSET
 
 #-------------------------------------------------------------
@@ -89,54 +110,54 @@ END_MODELSET
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 560 60 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 560 0 770
+	ROT = 0 0 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 560 180 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 560 120 770
+	ROT = 0 0 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 680 60 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 680 0 770
+	ROT = 0 0 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 680 180 740
-	ROT = 90 0 0
+	TYPE = 9
+	POS = 680 120 770
+	ROT = 0 0 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 740 60 680
-	ROT = 0 0 90
+	TYPE = 9
+	POS = 710 0 680
+	ROT = 0 90 0
 END_MODELSET
 
 #------------------
 # ブロック(正方形4つ)
 #------------------
 MODELSET
-	TYPE = 5
-	POS = 740 180 680
-	ROT = 0 0 90
+	TYPE = 9
+	POS = 710 120 680
+	ROT = 0 90 0
 END_MODELSET
 
 #------------------
@@ -145,7 +166,7 @@ END_MODELSET
 MODELSET
 	TYPE = 3
 	POS = 740 180 440
-	ROT = 90 0 90
+	ROT = 0 90 0
 END_MODELSET
 
 #------------------
@@ -154,7 +175,7 @@ END_MODELSET
 MODELSET
 	TYPE = 3
 	POS = 740 180 200
-	ROT = 90 0 90
+	ROT = 0 90 0
 END_MODELSET
 
 #------------------

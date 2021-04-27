@@ -1,23 +1,28 @@
-//-----------------------------------------------------------------
+//==============================================================================================================
 //
 // モデルセット (model_set.cpp)
 // Author:Itsuki Takaiwa
 //
-//-----------------------------------------------------------------
+//==============================================================================================================
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+
 #include "model_set.h"
 #include "shadow.h"
+#include "player.h"
+#include "camera.h"
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // グローバル変数
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 ModelSetInfo g_ModelSetInfo;												// モデル情報
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルセットの初期化処理
-//-----------------------------------------------------------------
+// 引数		：void		- 何もなし
+// 返り値	：HRESULT	- 頂点バッファを生成できたかどうか返す
+//--------------------------------------------------------------------------------------------------------------
 HRESULT InitModelSet(void)
 {
 	// 変数宣言
@@ -60,9 +65,11 @@ HRESULT InitModelSet(void)
 	return S_OK;
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルセットの終了処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void UninitModelSet(void)
 {
 	for (int nCnt = 0; nCnt < g_ModelSetInfo.nNumModel; nCnt++)
@@ -83,17 +90,21 @@ void UninitModelSet(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルセットの更新処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void UpdateModelSet(void)
 {
 
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルセットの描画処理
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void DrawModelSet(void)
 {
 	// 変数宣言
@@ -116,16 +127,12 @@ void DrawModelSet(void)
 			D3DXMatrixRotationYawPitchRoll(&mtxRot, g_ModelSetInfo.modelSet[nModelSet].rot.y, g_ModelSetInfo.modelSet[nModelSet].rot.x, g_ModelSetInfo.modelSet[nModelSet].rot.z);
 			D3DXMatrixMultiply(&g_ModelSetInfo.modelSet[nModelSet].mtxWorld, &g_ModelSetInfo.modelSet[nModelSet].mtxWorld, &mtxRot);
 
-			// 頂点座標の補正
-			D3DXVec3TransformCoord(&g_ModelSetInfo.modelSet[nModelSet].vtxMaxModel, &g_ModelSetInfo.modelInfo[g_ModelSetInfo.modelSet[nModelSet].nIdx].vtxMaxModel, &g_ModelSetInfo.modelSet[nModelSet].mtxWorld);
-			D3DXVec3TransformCoord(&g_ModelSetInfo.modelSet[nModelSet].vtxMinModel, &g_ModelSetInfo.modelInfo[g_ModelSetInfo.modelSet[nModelSet].nIdx].vtxMinModel, &g_ModelSetInfo.modelSet[nModelSet].mtxWorld);
-
-			// 最大値最小値の補正
-			VecModelSet(nModelSet);
-
 			// 位置を反映
 			D3DXMatrixTranslation(&mtxTrans, g_ModelSetInfo.modelSet[nModelSet].pos.x, g_ModelSetInfo.modelSet[nModelSet].pos.y, g_ModelSetInfo.modelSet[nModelSet].pos.z);
 			D3DXMatrixMultiply(&g_ModelSetInfo.modelSet[nModelSet].mtxWorld, &g_ModelSetInfo.modelSet[nModelSet].mtxWorld, &mtxTrans);
+
+			// 最大値最小値の補正
+			VecModelSet(nModelSet);
 
 			// ワールドマトリックスの設定
 			pDevice->SetTransform(D3DTS_WORLD, &g_ModelSetInfo.modelSet[nModelSet].mtxWorld);
@@ -153,10 +160,12 @@ void DrawModelSet(void)
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルのテクスチャ
-//-----------------------------------------------------------------
-void TexModel(int nModelSet)
+// 引数		：nCntModelSet	- 何番目のモデル配置情報か
+// 返り値	：void			- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
+void TexModel(int nCntModelSet)
 {
 	// 変数宣言
 	D3DXMATERIAL *pMat;		// マテリアルデータへのポインタ
@@ -166,22 +175,24 @@ void TexModel(int nModelSet)
 	pDevice = GetDevice();
 
 	// マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)g_ModelSetInfo.modelInfo[nModelSet].pBuffMatModel->GetBufferPointer();
+	pMat = (D3DXMATERIAL*)g_ModelSetInfo.modelInfo[nCntModelSet].pBuffMatModel->GetBufferPointer();
 
-	for (int nCntMat = 0; nCntMat < (int)g_ModelSetInfo.modelInfo[nModelSet].nNumMatModel; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)g_ModelSetInfo.modelInfo[nCntModelSet].nNumMatModel; nCntMat++)
 	{
 		if (pMat[nCntMat].pTextureFilename != NULL)
 		{
 			// テクスチャの読み込み
-			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_ModelSetInfo.modelInfo[nModelSet].apTextureModelSet[nCntMat]);
+			D3DXCreateTextureFromFile(pDevice, pMat[nCntMat].pTextureFilename, &g_ModelSetInfo.modelInfo[nCntModelSet].apTextureModelSet[nCntMat]);
 		}
 	}
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルの頂点座標
-//-----------------------------------------------------------------
-void VecModel(int nModelSet)
+// 引数		：nCntModelSet	- 何番目のモデル配置情報か
+// 返り値	：void			- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
+void VecModel(int nCntModelSet)
 {
 	// 変数宣言
 	int nNumVtx;			// 頂点数
@@ -189,13 +200,13 @@ void VecModel(int nModelSet)
 	BYTE *pVtxBuff;			// 頂点バッファへのポインタ
 
 	// 頂点数の取得
-	nNumVtx = g_ModelSetInfo.modelInfo[nModelSet].pMeshModel->GetNumVertices();
+	nNumVtx = g_ModelSetInfo.modelInfo[nCntModelSet].pMeshModel->GetNumVertices();
 
 	// 頂点フォーマットのサイズを取得
-	sizeFVF = D3DXGetFVFVertexSize(g_ModelSetInfo.modelInfo[nModelSet].pMeshModel->GetFVF());
+	sizeFVF = D3DXGetFVFVertexSize(g_ModelSetInfo.modelInfo[nCntModelSet].pMeshModel->GetFVF());
 
 	// 頂点バッファのロック
-	g_ModelSetInfo.modelInfo[nModelSet].pMeshModel->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+	g_ModelSetInfo.modelInfo[nCntModelSet].pMeshModel->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
 
 	for (int nCntVtx = 0; nCntVtx < nNumVtx; nCntVtx++)
 	{
@@ -203,111 +214,114 @@ void VecModel(int nModelSet)
 		D3DXVECTOR3 vtx = *(D3DXVECTOR3*)pVtxBuff;
 
 		// 頂点を比較してモデルの最小値最大値を抜き出す
-		if (g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.x > vtx.x)
+		if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.x > vtx.x)
 		{// X座標の最小値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.x = vtx.x;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.x = vtx.x;
 		}
-		else if (g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.x < vtx.x)
+		else if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.x < vtx.x)
 		{// X座標の最大値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.x = vtx.x;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.x = vtx.x;
 		}
 
-		if (g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.y > vtx.y)
+		if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.y > vtx.y)
 		{// Y座標の最小値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.y = vtx.y;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.y = vtx.y;
 		}
-		else if (g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.y < vtx.y)
+		else if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.y < vtx.y)
 		{// Y座標の最大値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.y = vtx.y;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.y = vtx.y;
 		}
 
-		if (g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.z > vtx.z)
+		if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.z > vtx.z)
 		{// Z座標の最小値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMinModel.z = vtx.z;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMinModel.z = vtx.z;
 		}
-		else if (g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.z < vtx.z)
+		else if (g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.z < vtx.z)
 		{// Z座標の最大値
-			g_ModelSetInfo.modelInfo[nModelSet].vtxMaxModel.z = vtx.z;
+			g_ModelSetInfo.modelInfo[nCntModelSet].vtxMaxModel.z = vtx.z;
 		}
 		// 頂点フォーマットのサイズ文ポインタを進める
 		pVtxBuff += sizeFVF;
 	}
 	// 頂点バッファのアンロック
-	g_ModelSetInfo.modelInfo[nModelSet].pMeshModel->UnlockVertexBuffer();
+	g_ModelSetInfo.modelInfo[nCntModelSet].pMeshModel->UnlockVertexBuffer();
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルの頂点座標の補正
-//-----------------------------------------------------------------
-void VecModelSet(int nNumModelSet)
+// 引数		：nCntModelSet	- 何番目のモデル配置情報か
+// 返り値	：void			- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
+void VecModelSet(int nCntModelSet)
 {
-	// 最大値と最小値の入れ替え
-	if (g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.x < g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.x)
-	{
-		// 変数宣言
-		float fVecX;		// 保存用
+	// 変数宣言
+	D3DXVECTOR3 pVecMax = g_ModelSetInfo.modelInfo[g_ModelSetInfo.modelSet[nCntModelSet].nIdx].vtxMaxModel;	// モデルの最大頂点
+	D3DXVECTOR3 pVecMin = g_ModelSetInfo.modelInfo[g_ModelSetInfo.modelSet[nCntModelSet].nIdx].vtxMinModel;	// モデルの最小頂点
+	D3DXVECTOR3 pRot = g_ModelSetInfo.modelSet[nCntModelSet].rot;											// 向き
+	D3DXVECTOR3 aPosVec[4];		// 各頂点座標
 
-		// 最大値と最小値を入れ替える
-		fVecX = g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.x;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.x = g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.x;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.x = fVecX;
-	}
-	if (g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.y < g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.y)
-	{
-		// 変数宣言
-		float fVecY;		// 保存用
+	// 頂点の回転
+	aPosVec[0].x = pVecMin.x * cosf(pRot.y) + pVecMin.z * sinf(pRot.y);
+	aPosVec[0].y = pVecMin.y;
+	aPosVec[0].z = pVecMin.z * cosf(pRot.y) + pVecMin.x * -sinf(pRot.y);
 
-							// 最大値と最小値を入れ替える
-		fVecY = g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.y;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.y = g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.y;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.y = fVecY;
-	}
-	if (g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.z < g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.z)
-	{
-		// 変数宣言
-		float fVecZ;		// 保存用
+	aPosVec[1].x = pVecMin.x * cosf(pRot.y) + pVecMax.z * sinf(pRot.y);
+	aPosVec[1].y = pVecMin.y;
+	aPosVec[1].z = pVecMax.z * cosf(pRot.y) + pVecMin.x * -sinf(pRot.y);
+	
+	aPosVec[2].x = pVecMax.x * cosf(pRot.y) + pVecMax.z * sinf(pRot.y);
+	aPosVec[2].y = pVecMin.y;
+	aPosVec[2].z = pVecMax.z * cosf(pRot.y) + pVecMax.x * -sinf(pRot.y);
+	
+	aPosVec[3].x = pVecMax.x * cosf(pRot.y) + pVecMin.z * sinf(pRot.y);
+	aPosVec[3].y = pVecMin.y;
+	aPosVec[3].z = pVecMin.z * cosf(pRot.y) + pVecMax.x * -sinf(pRot.y);
 
-		// 最大値と最小値を入れ替える
-		fVecZ = g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.z;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMaxModel.z = g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.z;
-		g_ModelSetInfo.modelSet[nNumModelSet].vtxMinModel.z = fVecZ;
-	}
+	// モデルの各頂点座標
+	g_ModelSetInfo.modelSet[nCntModelSet].aPos[0] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nCntModelSet].pos.x + aPosVec[0].x, g_ModelSetInfo.modelSet[nCntModelSet].pos.y + aPosVec[0].y , g_ModelSetInfo.modelSet[nCntModelSet].pos.z + aPosVec[0].z);
+	g_ModelSetInfo.modelSet[nCntModelSet].aPos[1] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nCntModelSet].pos.x + aPosVec[1].x, g_ModelSetInfo.modelSet[nCntModelSet].pos.y + aPosVec[1].y , g_ModelSetInfo.modelSet[nCntModelSet].pos.z + aPosVec[1].z);
+	g_ModelSetInfo.modelSet[nCntModelSet].aPos[2] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nCntModelSet].pos.x + aPosVec[2].x, g_ModelSetInfo.modelSet[nCntModelSet].pos.y + aPosVec[2].y , g_ModelSetInfo.modelSet[nCntModelSet].pos.z + aPosVec[2].z);
+	g_ModelSetInfo.modelSet[nCntModelSet].aPos[3] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nCntModelSet].pos.x + aPosVec[3].x, g_ModelSetInfo.modelSet[nCntModelSet].pos.y + aPosVec[3].y , g_ModelSetInfo.modelSet[nCntModelSet].pos.z + aPosVec[3].z);
+
+	// モデルの各頂点座標に向けてのベクトル
+	g_ModelSetInfo.modelSet[nCntModelSet].aVecA[0] = g_ModelSetInfo.modelSet[nCntModelSet].aPos[0] - g_ModelSetInfo.modelSet[nCntModelSet].aPos[3];
+	g_ModelSetInfo.modelSet[nCntModelSet].aVecA[1] = g_ModelSetInfo.modelSet[nCntModelSet].aPos[1] - g_ModelSetInfo.modelSet[nCntModelSet].aPos[0];
+	g_ModelSetInfo.modelSet[nCntModelSet].aVecA[2] = g_ModelSetInfo.modelSet[nCntModelSet].aPos[2] - g_ModelSetInfo.modelSet[nCntModelSet].aPos[1];
+	g_ModelSetInfo.modelSet[nCntModelSet].aVecA[3] = g_ModelSetInfo.modelSet[nCntModelSet].aPos[3] - g_ModelSetInfo.modelSet[nCntModelSet].aPos[2];
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデルの当たり判定
-//-----------------------------------------------------------------
+// 引数		：*pPos			- 参照する現在の位置情報のポインタ
+//			：*pPosOld		- 参照する前回の位置情報のポインタ
+//			：*pMove		- 参照する移動量
+//			：*pvtxMin		- 参照する最小座標
+//			：*pvtxMax		- 参照する最大座標
+//			：nIdxShadow	- 影番号
+// 返り値	：void			- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 bool CollisionModelSet(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *pvtxMin, D3DXVECTOR3 *pvtxMax,int nIdxShadow)
 {
 	// 構造体のポインタ変数
 	ModelSetInfo *pModel = &g_ModelSetInfo;
+	Camera pCamera = GetPlayerCamera();
 
 	// 変数宣言
+	bool bLandModel = false;		// コインを獲得したかどうか
 	bool bCollisionModel = false;		// コインを獲得したかどうか
+	bool bCollisionSide = false;
 
-	for (int nModelSet = 0; nModelSet < MAX_MODEL; nModelSet++)
+ 	for (int nModelSet = 0; nModelSet < MAX_MODEL; nModelSet++)
 	{
 		if (pModel->modelSet[nModelSet].bUse == true)
 		{
-			// モデルの各頂点座標
-			g_ModelSetInfo.modelSet[nModelSet].aPos[0] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nModelSet].pos.x + g_ModelSetInfo.modelSet[nModelSet].vtxMinModel.x, 0.0f, g_ModelSetInfo.modelSet[nModelSet].pos.z + g_ModelSetInfo.modelSet[nModelSet].vtxMinModel.z);
-			g_ModelSetInfo.modelSet[nModelSet].aPos[1] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nModelSet].pos.x + g_ModelSetInfo.modelSet[nModelSet].vtxMinModel.x, 0.0f, g_ModelSetInfo.modelSet[nModelSet].pos.z + g_ModelSetInfo.modelSet[nModelSet].vtxMaxModel.z);
-			g_ModelSetInfo.modelSet[nModelSet].aPos[2] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nModelSet].pos.x + g_ModelSetInfo.modelSet[nModelSet].vtxMaxModel.x, 0.0f, g_ModelSetInfo.modelSet[nModelSet].pos.z + g_ModelSetInfo.modelSet[nModelSet].vtxMaxModel.z);
-			g_ModelSetInfo.modelSet[nModelSet].aPos[3] = D3DXVECTOR3(g_ModelSetInfo.modelSet[nModelSet].pos.x + g_ModelSetInfo.modelSet[nModelSet].vtxMaxModel.x, 0.0f, g_ModelSetInfo.modelSet[nModelSet].pos.z + g_ModelSetInfo.modelSet[nModelSet].vtxMinModel.z);
-
-			// モデルの各頂点座標に向けてのベクトル
-			g_ModelSetInfo.modelSet[nModelSet].aVecA[0] = g_ModelSetInfo.modelSet[nModelSet].aPos[1] - g_ModelSetInfo.modelSet[nModelSet].aPos[0];
-			g_ModelSetInfo.modelSet[nModelSet].aVecA[1] = g_ModelSetInfo.modelSet[nModelSet].aPos[2] - g_ModelSetInfo.modelSet[nModelSet].aPos[1];
-			g_ModelSetInfo.modelSet[nModelSet].aVecA[2] = g_ModelSetInfo.modelSet[nModelSet].aPos[3] - g_ModelSetInfo.modelSet[nModelSet].aPos[2];
-			g_ModelSetInfo.modelSet[nModelSet].aVecA[3] = g_ModelSetInfo.modelSet[nModelSet].aPos[0] - g_ModelSetInfo.modelSet[nModelSet].aPos[3];
-
 			// モデルの各頂点から対象までのベクトル
-			pModel->modelSet[nModelSet].aVecB[0] = D3DXVECTOR3((pPos->x + pvtxMax->x) - pModel->modelSet[nModelSet].aPos[0].x, 0.0f, pPos->z - pModel->modelSet[nModelSet].aPos[0].z);
-			pModel->modelSet[nModelSet].aVecB[1] = D3DXVECTOR3(pPos->x - pModel->modelSet[nModelSet].aPos[1].x, 0.0f, (pPos->z + pvtxMin->z) - pModel->modelSet[nModelSet].aPos[1].z);
-			pModel->modelSet[nModelSet].aVecB[2] = D3DXVECTOR3((pPos->x + pvtxMin->x) - pModel->modelSet[nModelSet].aPos[2].x, 0.0f, pPos->z - pModel->modelSet[nModelSet].aPos[2].z);
-			pModel->modelSet[nModelSet].aVecB[3] = D3DXVECTOR3(pPos->x - pModel->modelSet[nModelSet].aPos[3].x, 0.0f, (pPos->z + pvtxMax->z) - pModel->modelSet[nModelSet].aPos[3].z);
+			pModel->modelSet[nModelSet].aVecB[0] = D3DXVECTOR3((pPos->x + pvtxMax->x) - pModel->modelSet[nModelSet].aPos[0].x, 0.0f, (pPos->z + pvtxMax->z) - pModel->modelSet[nModelSet].aPos[0].z);
+			pModel->modelSet[nModelSet].aVecB[1] = D3DXVECTOR3((pPos->x + pvtxMax->x) - pModel->modelSet[nModelSet].aPos[1].x, 0.0f, (pPos->z + pvtxMin->z) - pModel->modelSet[nModelSet].aPos[1].z);
+			pModel->modelSet[nModelSet].aVecB[2] = D3DXVECTOR3((pPos->x + pvtxMin->x) - pModel->modelSet[nModelSet].aPos[2].x, 0.0f, (pPos->z + pvtxMin->z) - pModel->modelSet[nModelSet].aPos[2].z);
+			pModel->modelSet[nModelSet].aVecB[3] = D3DXVECTOR3((pPos->x + pvtxMin->x) - pModel->modelSet[nModelSet].aPos[3].x, 0.0f, (pPos->z + pvtxMax->z) - pModel->modelSet[nModelSet].aPos[3].z);
 
-			// 外積を用いた当たり判定
+			// 外積を用いた当たり判定 
 			pModel->modelSet[nModelSet].fVec[0] = (pModel->modelSet[nModelSet].aVecA[0].z * pModel->modelSet[nModelSet].aVecB[0].x) - (pModel->modelSet[nModelSet].aVecA[0].x * pModel->modelSet[nModelSet].aVecB[0].z);
 			pModel->modelSet[nModelSet].fVec[1] = (pModel->modelSet[nModelSet].aVecA[1].z * pModel->modelSet[nModelSet].aVecB[1].x) - (pModel->modelSet[nModelSet].aVecA[1].x * pModel->modelSet[nModelSet].aVecB[1].z);
 			pModel->modelSet[nModelSet].fVec[2] = (pModel->modelSet[nModelSet].aVecA[2].z * pModel->modelSet[nModelSet].aVecB[2].x) - (pModel->modelSet[nModelSet].aVecA[2].x * pModel->modelSet[nModelSet].aVecB[2].z);
@@ -317,84 +331,48 @@ bool CollisionModelSet(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMo
 			if (pModel->modelSet[nModelSet].fVec[0] > 0.0f && pModel->modelSet[nModelSet].fVec[1] > 0.0f &&
 				pModel->modelSet[nModelSet].fVec[2] > 0.0f && pModel->modelSet[nModelSet].fVec[3] > 0.0f)
 			{
-				if ((pPosOld->y >= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y) && 
-					(pPos->y < pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y))
+
+				if ((pPosOld->y >= pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y) &&
+					(pPos->y < pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y))
 				{
 					// モデルの上から入り込んだ場合、モデルの上に立つ
-					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y;
+					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y;
 
-					// 乗ってることを伝える
-					bCollisionModel = true;
+					bLandModel = true;
 				}
-				else if ((pPosOld->y + pvtxMax->y + 25.0f <= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y) &&
-					(pPos->y + pvtxMax->y + 25.0f > pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y))
+				else if ((pPosOld->y + pvtxMax->y + 25.0f <= pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMinModel.y) &&
+					(pPos->y + pvtxMax->y + 25.0f > pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMinModel.y))
 				{
 					// モデルの下から入り込んだ場合、入り込まないようにモデルの下座標にし、移動量を初期化
-					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y - pvtxMax->y - 25.0f;
+					pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMinModel.y - pvtxMax->y - 25.0f;
 					pMove->y = 0.0f;
 				}
-				else if (pPos->y <= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y  &&
-					pPos->y + pvtxMax->y + 25.0f >= pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMinModel.y)
+				else if (pPos->y < pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y &&
+					pPos->y + pvtxMax->y + 25.0f > pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMinModel.y)
 				{
-					if ((pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y) - pPos->y < 1.0f)
-					{// 滑らかに移動するために今の座標からモデルの座標を引いた値が1.0f以下のとき座標をモデルにあわせる
-						pPos->y = pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y;
-					}
-					else if ((pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMaxModel.z) - (pPos->z + pvtxMin->z) < 1.5f)
-					{// 滑らかに移動するために今の座標からモデルの座標を引いた値が1.0f以下のとき座標をモデルにあわせる
-						pPos->z = pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMaxModel.z - pvtxMin->z;
-					}
-					else if ((pPos->z + pvtxMax->z) - (pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMinModel.z) < 1.5f)
-					{// 滑らかに移動するために今の座標からモデルの座標を引いた値が1.0f以下のとき座標をモデルにあわせる
-						pPos->z = pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMinModel.z - pvtxMax->z;
-					}
-					else if ((pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMaxModel.x) - (pPos->x + pvtxMin->x) < 1.5f)
-					{// 滑らかに移動するために今の座標からモデルの座標を引いた値が1.0f以下のとき座標をモデルにあわせる
-						pPos->x = pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMaxModel.x - pvtxMin->x;
-					}
-					else if ((pPos->x + pvtxMax->x ) - (pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMinModel.x) < 1.5f)
-					{// 滑らかに移動するために今の座標からモデルの座標を引いた値が1.0f以下のとき座標をモデルにあわせる
-						pPos->x = pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMinModel.x - pvtxMax->x;
-					}
-					else
-					{
-						if (pPos->z > pPosOld->z && pPosOld->z + pvtxMax->z <= pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMinModel.z)
-						{// 対象が手前から当たったとき
-							pPos->z = pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMinModel.z - pvtxMax->z;
-							pMove->z = 0.0f;
-						}
-						else if (pPos->z < pPosOld->z && pPosOld->z + pvtxMin->z >= pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMaxModel.z)
-						{// 対象が奥から当たったとき
-							pPos->z = pModel->modelSet[nModelSet].pos.z + pModel->modelSet[nModelSet].vtxMaxModel.z - pvtxMin->z;
-							pMove->z = 0.0f;
-						}
-						else if (pPos->x > pPosOld->x && (pPosOld->x + pvtxMax->x <= pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMinModel.x))
-						{// 対象が左から当たったとき
-							pPos->x = pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMinModel.x - pvtxMax->x;
-							pMove->x = 0.0f;
-						}
-						else if (pPos->x < pPosOld->x && (pPosOld->x + pvtxMin->x >= pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMaxModel.x))
-						{// 対象が右から当たったとき
-							pPos->x = pModel->modelSet[nModelSet].pos.x + pModel->modelSet[nModelSet].vtxMaxModel.x - pvtxMin->x;
-							pMove->x = 0.0f;
-						}
-					}
-				}
-				if (pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y <= pPos->y)
+					// 側面に当たった場合参照した座標を前の座標に戻す
+					pPos->z = pPosOld->z;
+					pMove->z = 0.0f;
+					pPos->x = pPosOld->x;
+					pMove->x = 0.0f;
+				}	
+				if (pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y <= pPos->y)
 				{
-					// 影の位置をモデルの上にする
-					SetPositionShadow(nIdxShadow, D3DXVECTOR3(pPos->x, pModel->modelSet[nModelSet].pos.y + pModel->modelSet[nModelSet].vtxMaxModel.y, pPos->z));
+					// モデルの上に対象物がある場合、影の位置をモデルの上にする
+					SetPositionShadow(nIdxShadow, D3DXVECTOR3(pPos->x, pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y, pPos->z));
 				}
 			}
 		}
 	}
 
-	return bCollisionModel;
+	return bLandModel;
 }
 
-//-----------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
 // モデル配置情報の読み込み
-//-----------------------------------------------------------------
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//--------------------------------------------------------------------------------------------------------------
 void LoadSetModel(void)
 {
 	// FILE型のポインタ関数
@@ -479,13 +457,9 @@ void LoadSetModel(void)
 						&rot.y,
 						&rot.z);
 
-					rot.x = rot.x / 180.0f;
-					rot.y = rot.y / 180.0f;
-					rot.z = rot.z / 180.0f;
-
-					g_ModelSetInfo.modelSet[nCntModelSet].rot.x = rot.x * D3DX_PI;
-					g_ModelSetInfo.modelSet[nCntModelSet].rot.y = rot.y * D3DX_PI;
-					g_ModelSetInfo.modelSet[nCntModelSet].rot.z = rot.z * D3DX_PI;
+					g_ModelSetInfo.modelSet[nCntModelSet].rot.x = (rot.x / 180.0f) * D3DX_PI;
+					g_ModelSetInfo.modelSet[nCntModelSet].rot.y = (rot.y / 180.0f) * D3DX_PI;
+					g_ModelSetInfo.modelSet[nCntModelSet].rot.z = (rot.z / 180.0f) * D3DX_PI;
 				}
 				// END_MODELSETKEYを見つけたらモデル配置をする
 				if (strcmp(&aText[0], "END_MODELSET") == 0)
@@ -502,4 +476,14 @@ void LoadSetModel(void)
 	}
 	// ファイルを閉じる
 	fclose(pFile);
+}
+
+//--------------------------------------------------------------------------------------------------------------
+// モデル配置情報の取得
+// 引数		：void		- 何もなし
+// 返り値	：ModelSet	- モデルは配置情報を渡す
+//--------------------------------------------------------------------------------------------------------------
+ModelSet GetmodelSet(void)
+{
+	return g_ModelSetInfo.modelSet[0];
 }

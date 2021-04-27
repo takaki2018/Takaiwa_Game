@@ -47,6 +47,8 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{ "data/SE/PAUSE_IN.wav",0 },			// ポーズ画面(入)
 	{ "data/SE/PAUSE_OUT.wav",0 },			// ポーズ画面(出)
 	{ "data/SE/ok.wav",0 },					// 決定
+	{ "data/SE/COUNTDOWN.wav",0 },			// カウントダウン
+	{ "data/SE/START.wav",0 },				// スタート
 };
 
 //=============================================================================

@@ -1,35 +1,3 @@
-﻿  ui.cpp
-  title_bg.cpp
-  titlelogo.cpp
-  title.cpp
-  timer.cpp
-  sound.cpp
-  shadow.cpp
-  setparticle.cpp
-  selectmode.cpp
-  score.cpp
-  result.cpp
-  ranking.cpp
-  player.cpp
-  pause.cpp
-  motion.cpp
-  model_set.cpp
-  meshfield.cpp
-  main.cpp
-  loadscreen.cpp
-  light.cpp
-  コードを生成中...
-  コンパイル中...
-  input.cpp
-  gamepad.cpp
-  game.cpp
-  fade.cpp
-  enemy.cpp
-  effect.cpp
-  coin_sheets.cpp
-  coin.cpp
-  camera_bg.cpp
-  camera.cpp
-  コードを生成中...
-  3Dgame_Takaiwa.vcxproj -> c:\users\student\documents\visual studio 2015\Projects\3Dgame_Takaiwa\Debug\3Dgame_Takaiwa.exe
-  3Dgame_Takaiwa.vcxproj -> c:\users\student\documents\visual studio 2015\Projects\3Dgame_Takaiwa\Debug\3Dgame_Takaiwa.pdb (Full PDB)
+﻿  game.cpp
+  3Dgame_Takaiwa.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\3Dgame_Takaiwa\Debug\3Dgame_Takaiwa.exe
+  3Dgame_Takaiwa.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\3Dgame_Takaiwa\Debug\3Dgame_Takaiwa.pdb (Full PDB)

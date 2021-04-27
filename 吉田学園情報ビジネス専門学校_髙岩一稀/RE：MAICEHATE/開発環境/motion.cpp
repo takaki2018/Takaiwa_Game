@@ -1,434 +1,380 @@
-//-----------------------------------------------------------------
+//============================================================================================================
 //
 // モーション (motion.cpp)
 // Author:Itsuki Takaiwa
 //
-//-----------------------------------------------------------------
+//============================================================================================================
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include "motion.h"
 #include "player.h"
 
-//-----------------------------------------------------------------
-// グローバル変数
-//-----------------------------------------------------------------
-MOTION_INFO g_MotionInfo;					// モーション情報
-
-//-----------------------------------------------------------------
-// モーションの決定
-//-----------------------------------------------------------------
-void SetMotion(void)
+//------------------------------------------------------------------------------------------------------------
+// 構造体の定義
+//------------------------------------------------------------------------------------------------------------
+typedef struct
 {
-	NeutralMotion();
-}
+	bool bGetScript;		// SCRIPTを見つけたかどうか
+	bool bPlayerSet;		// PLAYERSETを見つけたかどうか
+	bool bPartsSet;			// PRATSSETを見つけたかどうか
+	bool bMotionSet;		// MOTIONSETを見つけたかどうか
+	bool bKeySet;			// KEYSETを見つけたかどうか
+	bool bKey;				// KEYを見つけたかどうか
+}WordToFindOut;				// 単語を見つけたかどうか
 
-//-----------------------------------------------------------------
-// ニュートラルモーション
-//-----------------------------------------------------------------
-void NeutralMotion(void)
+typedef struct
 {
-	// ニュートラルモーションの設定
-	// 構造体のポインタ変数
-	Player *pPlayer = GetPlayer();
+	int nCntModel;			// モデル数
+	int nCntParts;			// パーツ数
+	int nCntMotion;			// モーション数
+	int nCntKey;			// キー情報数
+	int nCntKeyParts;		// キー数
+}NumberOfEachInfomation;	// 各情報管理用
 
-	// ループするかどうか設定
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].bLoop = true;			// 0がループしない、1がループする
+//------------------------------------------------------------------------------------------------------------
+// プロトタイプ宣言
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerModelFileName(FILE *pFile,char *pText, NumberOfEachInfomation *Noei, Player *pPlayer);							// プレイヤーモデルのファイル情報を読み込む
+void LoadPlayerModelPartsSet(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer);		// プレイヤーモデルのパーツセット情報を読み込む
+void LoadPlayerMotionData(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer);		// プレイヤーのモーション情報を読み込む
+void LoadPlayerMotionBasicsInfo(FILE *pFile, char *pText, NumberOfEachInfomation *Noei, Player *pPlayer);						// プレイヤーのモーションの基礎情報を読み込む
+void LoadPlayerMotionKeySet(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer);		// プレイヤーのモーションキーセット情報を読み込む
+void LoadPlayerMotionKey(FILE *pFile, char *pText, NumberOfEachInfomation *Noei, Player *pPlayer);								// プレイヤーのモーションの各キー情報を読み込む
 
-	// キー数の設定
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].nNumKey = 2;
-
-	// 各モデルのフレーム数の設定
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].nFrame = 40;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].nFrame = 40;
-
-	// 各モデルのキー要素の値を設定
-	// パーツ0(1個目)のキー0
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[0].fRotZ = 0.0f;
-
-	// パーツ0(1個目)のキー1
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[1].fRotZ = 0.0f;
-
-	// パーツ0(1個目)のキー2
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[2].fRotZ = 0.79f;
-
-	// パーツ0(1個目)のキー3
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fRotX = -0.03f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fRotY = -0.16f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[3].fRotZ = 0.09f;
-
-	// パーツ0(1個目)のキー4
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[4].fRotZ = -0.79f;
-
-	// パーツ0(1個目)のキー5
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fRotX = 0.03f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fRotY = 0.16f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[5].fRotZ = -0.09f;
-
-	// パーツ0(1個目)のキー6
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[6].fRotZ = -0.09f;
-
-	// パーツ0(1個目)のキー7
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[7].fRotZ = 0.0f;
-
-	// パーツ0(1個目)のキー8
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[8].fRotZ = 0.09f;
-
-	// パーツ0(1個目)のキー9
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[0].aKey[9].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー0
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fPosY = -1.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fRotX = -0.03f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[0].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー1
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fRotX = -0.06f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[1].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー2
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fRotY = -0.35f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[2].fRotZ = 1.26f;
-
-	// パーツ1(2個目)のキー3
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fRotX = -0.06f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[3].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー4
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fRotY = 0.35f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[4].fRotZ = -1.26f;
-
-	// パーツ1(2個目)のキー5
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fRotX = 0.6f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fRotY = 0.22f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[5].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー6
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fPosY = 0.5f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fRotX = 0.06f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[6].fRotZ = -0.09f;
-
-	// パーツ1(2個目)のキー7
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fRotY = -0.18f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[7].fRotZ = 0.0f;
-
-	// パーツ1(2個目)のキー8
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fPosY = 0.5f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fRotX = 0.06f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fRotY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[8].fRotZ = 0.09f;
-
-	// パーツ1(2個目)のキー9
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fPosX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fPosY = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fPosZ = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fRotX = 0.0f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fRotY = 0.18f;
-	pPlayer->aMotionInfo[MOTIONTYPE_NEUTRAL].aKeyInfo[1].aKey[9].fRotZ = 0.0f;
-}
-
-//-----------------------------------------------------------------
-// モーションの読み込み
-//-----------------------------------------------------------------
-void LoadPlayerdata(void)
+//------------------------------------------------------------------------------------------------------------
+// プレイヤー情報の読み込み
+// 引数		：void	- 何もなし
+// 返り値	：void	- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerData(void)
 {
 	// FILE型のポインタ関数
 	FILE *pFile;
 
-	// 構造体のポインタ変数
-	Player *pPlayer = GetPlayer();
-
 	// ファイルを開く
 	pFile = fopen("data/motion.txt", "r");
 
-	// 変数宣言
-	bool bGetScript = false;
-	bool bPlayerSet = false;
-	bool bPartsSet = false;
-	bool bMotionSet = false;
-	bool bKeySet = false;
-	bool bKey = false;
-
-	char aLine[128];
-	char aText[128];
-	int nCntModel = 0;
-	int nCntParts = 0;
-	int nCntMotion = -1;
-	int nNumLoop = 0;
-	int nCntKey = -1;
-	int nCntKeyParts = -1;
-
-	// SCRIPTを探す
-	while (fgets(aLine, 128, pFile) != NULL)
+	// NULLチェック
+	if (pFile != NULL)
 	{
-		fscanf(pFile, "%s", &aText[0]);
+		// 構造体の変数宣言
+		WordToFindOut Wtfo;				// 単語を見つけたかどうか
+		NumberOfEachInfomation Noei;	// 各情報管理用
+		Player *pPlayer = GetPlayer();	// プレイヤー情報
 
-		// SCRIPTを見つけたらそれ以降を読み込む
-		if (strcmp(&aText[0], "SCRIPT") == 0)
+		// 変数宣言
+		char aLine[128];			
+		char aText[128];
+
+		// 構造体変数の初期化
+		Wtfo.bGetScript = false;	// SCRIPTを見つけたかどうか
+		Wtfo.bPlayerSet = false;	// PLAYERSETを見つけたかどうか
+		Wtfo.bPartsSet = false;		// PRATSSETを見つけたかどうか
+		Wtfo.bMotionSet = false;	// MOTIONSETを見つけたかどうか
+		Wtfo.bKeySet = false;		// KEYSETを見つけたかどうか
+		Wtfo.bKey = false;			// KEYを見つけたかどうか
+
+		Noei.nCntModel = 0;			// モデル数
+		Noei.nCntParts = 0;			// パーツ数
+		Noei.nCntMotion = 0;		// ループ管理用
+		Noei.nCntKey = 0;			// キー情報数
+		Noei.nCntKeyParts = 0;		// キー数
+
+		// SCRIPTを探す
+		while (fgets(aLine, 128, pFile) != NULL)
 		{
-			bGetScript = true;
+			// 毎行空白を見つけるまで読み込む
+			fscanf(pFile, "%s", &aText[0]);
+
+			// SCRIPTを見つけたらそれ以降を読み込む許可を与える
+			if (strcmp(&aText[0], "SCRIPT") == 0)
+			{
+				Wtfo.bGetScript = true;
+			}
+
+			if (Wtfo.bGetScript == true)
+			{
+				// プレイヤーモデルのファイル情報の読み込み
+				LoadPlayerModelFileName(pFile, &aText[0], &Noei, pPlayer);
+
+				// PLAYERSETを見つけたらプレイヤー情報を読み込む許可を与える
+				if (strcmp(&aText[0], "PLAYERSET") == 0)
+				{
+					Wtfo.bPlayerSet = true;
+				}
+				// プレイヤーセット情報の読み込み許可がある場合
+				if (Wtfo.bPlayerSet == true)
+				{
+					/// プレイヤーモデルのパーツセット情報を読み込む
+					LoadPlayerModelPartsSet(pFile, &aText[0], &Wtfo, &Noei, pPlayer);
+
+					// END_PLAYERSETを見つけたらプレイヤー情報を読み込むを終える
+					if (strcmp(&aText[0], "END_PLAYERSET") == 0)
+					{
+						Wtfo.bPlayerSet = false;
+					}
+				}
+				// モーション情報の読み込み
+				// MOTIONSETを見つけたらモーション情報を読み込む許可を与える
+				if (strcmp(&aText[0], "MOTIONSET") == 0)
+				{
+					Wtfo.bMotionSet = true;
+				}
+				// モーション情報を読み込む許可があるとき処理
+				if (Wtfo.bMotionSet == true)
+				{
+					// プレイヤーのモーション情報を読み込む
+					LoadPlayerMotionData(pFile, &aText[0], &Wtfo, &Noei, pPlayer);
+
+					// END_MOTIONSETを見つけたらモーション情報の読み込みを終える
+					if (strcmp(&aText[0], "END_MOTIONSET") == 0)
+					{
+						Wtfo.bMotionSet = false;
+
+						// モーション数の加算
+						Noei.nCntMotion++;
+
+						// キーセット数の初期化
+						Noei.nCntKey = 0;
+					}
+				}
+
+				// END_SCRIPTを見つけたら読み込みを終える
+				if (strcmp(&aText[0], "END_SCRIPT") == 0)
+				{
+					break;
+				}
+			}
 		}
+		// ファイルを閉じる
+		fclose(pFile);
+	}
+	else
+	{
+	}
+}
 
-		if (bGetScript == true)
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーモデルのファイル情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerModelFileName(FILE *pFile, char *pText,NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// NUM_MODELを見つけたらモデルの総数を格納
+	if (strcmp(pText, "NUM_MODEL") == 0)
+	{
+		fscanf(pFile, "%s %d", pText, &pPlayer->nNumModel);
+	}
+	// MODEL_FILENAMEを見つけたらXファイル名を格納
+	if (strcmp(pText, "MODEL_FILENAME") == 0 && Noei->nCntModel < pPlayer->nNumModel)
+	{
+		fscanf(pFile, "%s %s", pText, &pPlayer->aModel[Noei->nCntModel].aFileName[0]);
+
+		// モデルの総数だけ格納するのでカウントを増やす
+		Noei->nCntModel++;
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーモデルのパーツセット情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Wtfo		- WordToFindOut(単語を見つけたかどうか)構造体のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerModelPartsSet(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// PARTSSETを見つけたら各パーツの情報を格納する許可を与える
+	if (strcmp(pText, "PARTSSET") == 0)
+	{
+		Wtfo->bPartsSet = true;
+	}
+	// 各パーツの情報を格納する許可があるとき処理
+	if (Wtfo->bPartsSet == true)
+	{
+		// PARENTを見つけたらXファイル名を格納
+		if (strcmp(pText, "PARENT") == 0)
 		{
-			// プレイヤーのモデル情報の読み込み
-			// NUM_MODELを見つけたらモデルの総数を格納
-			if (strcmp(&aText[0], "NUM_MODEL") == 0)
+			fscanf(pFile, "%s %d", pText, &pPlayer->aModel[Noei->nCntParts].nIdxModelParent);
+		}
+		// POSを見つけたら座標情報を格納
+		if (strcmp(pText, "POS") == 0)
+		{
+			fscanf(pFile, "%s %f %f %f", pText,
+				&pPlayer->aModel[Noei->nCntParts].pos.x,
+				&pPlayer->aModel[Noei->nCntParts].pos.y,
+				&pPlayer->aModel[Noei->nCntParts].pos.z);
+		}
+		// ROTを見つけたら角度情報を格納
+		if (strcmp(pText, "ROT") == 0)
+		{
+			fscanf(pFile, "%s %f %f %f", pText,
+				&pPlayer->aModel[Noei->nCntParts].rot.x,
+				&pPlayer->aModel[Noei->nCntParts].rot.y,
+				&pPlayer->aModel[Noei->nCntParts].rot.z);
+		}
+		// END_PARTSSETを見つけたら各パーツの情報を格納を終える
+		if (strcmp(pText, "END_PARTSSET") == 0)
+		{
+			Wtfo->bPartsSet = false;
+
+			if (Noei->nCntParts < pPlayer->nNumModel)
 			{
-				fscanf(pFile, "%s %d", &aText[0], &pPlayer->nNumModel);
-			}
-			// MODEL_FILENAMEを見つけたらXファイル名を格納
-			if (strcmp(&aText[0], "MODEL_FILENAME") == 0 && nCntModel < pPlayer->nNumModel)
-			{
-				fscanf(pFile, "%s %s", &aText[0], &pPlayer->aModel[nCntModel].aFileName[0]);
-
-				// モデルの総数だけ格納するのでカウントを増やす
-				nCntModel++;
-			}
-			// PLAYERSETを見つけたらプレイヤー情報を読み込む許可を与える
-			if (strcmp(&aText[0], "PLAYERSET") == 0)
-			{
-				bPlayerSet = true;
-			}
-			// PARTSSETを見つけたら各パーツの情報を格納する許可を与える
-			if (strcmp(&aText[0], "PARTSSET") == 0 && bPlayerSet == true)
-			{
-				bPartsSet = true;
-			}
-			// 各パーツの情報を格納する許可があるとき処理
-			if (bPartsSet == true)
-			{
-				// PARENTを見つけたらXファイル名を格納
-				if (strcmp(&aText[0], "PARENT") == 0)
-				{
-					fscanf(pFile, "%s %d", &aText[0], &pPlayer->aModel[nCntParts].nIdxModelParent);
-				}
-				// POSを見つけたら座標情報を格納
-				if (strcmp(&aText[0], "POS") == 0)
-				{
-					fscanf(pFile, "%s %f %f %f", &aText[0], 
-						&pPlayer->aModel[nCntParts].pos.x,
-						&pPlayer->aModel[nCntParts].pos.y,
-						&pPlayer->aModel[nCntParts].pos.z);
-
-					if (nCntParts == 0)
-					{
-						// 親のパーツのとき座標を保存
-						pPlayer->posParent.x = pPlayer->aModel[nCntParts].pos.x;
-						pPlayer->posParent.y = pPlayer->aModel[nCntParts].pos.y;
-						pPlayer->posParent.z = pPlayer->aModel[nCntParts].pos.z;
-					}
-				}
-				// ROTを見つけたら角度情報を格納
-				if (strcmp(&aText[0], "ROT") == 0)
-				{
-					fscanf(pFile, "%s %f %f %f", &aText[0],
-						&pPlayer->aModel[nCntParts].rot.x,
-						&pPlayer->aModel[nCntParts].rot.y,
-						&pPlayer->aModel[nCntParts].rot.z);
-				}
-				// END_PARTSSETを見つけたら各パーツの情報を格納を終える
-				if (strcmp(&aText[0], "END_PARTSSET") == 0 && bPlayerSet == true)
-				{
-					bPartsSet = false;
-
-					if (nCntParts < pPlayer->nNumModel)
-					{
-						// パーツの総数だけ格納するのでカウントを増やす
-						nCntParts++;
-					}
-				}
-			}
-			// END_PLAYERSETを見つけたらプレイヤー情報を読み込むを終える
-			if (strcmp(&aText[0], "END_PLAYERSET") == 0)
-			{
-				bPlayerSet = false;
-			}
-
-			// モーション情報の読み込み
-			// MOTIONSETを見つけたらモーション情報を読み込む許可を与える
-			if (strcmp(&aText[0], "MOTIONSET") == 0)
-			{
-				bMotionSet = true;
-
-				// モーションが複数あるかもしれないのでカウント
-				nCntMotion++;
-			}
-			// モーション情報を読み込む許可があるとき処理
-			if (bMotionSet == true)
-			{
-				// LOOPを見つけたらモーションをループさせるかどうか決める
-				if (strcmp(&aText[0], "LOOP") == 0)
-				{
-					fscanf(pFile, "%s %d", &aText[0], &nNumLoop);
-
-					// 数字でループするかどうか判断
-					if (nNumLoop == 1)
-					{
-						pPlayer->aMotionInfo[nCntMotion].bLoop = true;
-					}
-					else
-					{
-						pPlayer->aMotionInfo[nCntMotion].bLoop = false;
-					}
-				}
-				// NUM_KEYを見つけたらキー数を格納
-				if (strcmp(&aText[0], "NUM_KEY") == 0)
-				{
-					fscanf(pFile, "%s %d", &aText[0], &pPlayer->aMotionInfo[nCntMotion].nNumKey);
-				}
-				// KEYSETを見つけたら各キー情報を読み込む許可を与える
-				if (strcmp(&aText[0], "KEYSET") == 0)
-				{
-					bKeySet = true;
-
-					// キーは複数あるのでカウント
-					nCntKey++;
-				}
-				// 各キー情報を読み込む許可があるとき処理
-				if (bKeySet == true)
-				{
-					// FRAMEを見つけたらフレーム数を格納
-					if (strcmp(&aText[0], "FRAME") == 0)
-					{
-						fscanf(pFile, "%s %d", &aText[0], &pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].nFrame);
-					}
-					// KEYを見つけたら各パーツに情報を読み込む許可を与える
-					if (strcmp(&aText[0], "KEY") == 0)
-					{
-						bKey = true;
-
-						// パーツも複数あるのでカウント
-						nCntKeyParts++;
-					}
-					// 各パーツに情報を読み込む許可があるとき処理
-					if (bKey == true)
-					{
-						// POSを見つけたら座標情報を格納
-						if (strcmp(&aText[0], "POS") == 0)
-						{
-							fscanf(pFile, "%s %f %f %f", &aText[0],
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fPosX,
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fPosY,
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fPosZ);
-						}
-						// ROTを見つけたら角度情報を格納
-						if (strcmp(&aText[0], "ROT") == 0)
-						{
-							fscanf(pFile, "%s %f %f %f", &aText[0],
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fRotX,
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fRotY,
-								&pPlayer->aMotionInfo[nCntMotion].aKeyInfo[nCntKey].aKey[nCntKeyParts].fRotZ);
-						}
-						// END_KEYを見つけたら各パーツに情報の読み込みを終える
-						if (strcmp(&aText[0], "END_KEY") == 0)
-						{
-							bKey = false;
-						}
-					}
-					// END_KEYSETを見つけたら各キー情報の読み込みを終える
-					if (strcmp(&aText[0], "END_KEYSET") == 0)
-					{
-						bKeySet = false;
-
-						// パーツカウント用の変数を初期化
-						nCntKeyParts = -1;
-					}
-				}
-				// END_MOTIONSETを見つけたらモーション情報の読み込みを終える
-				if (strcmp(&aText[0], "END_MOTIONSET") == 0)
-				{
-					bMotionSet = false;
-
-					// キーカウント用の変数を初期化
-					nCntKey = -1;
-				}
-			}
-
-			// END_SCRIPTを見つけたら読み込みを終える
-			if (strcmp(&aText[0], "END_SCRIPT") == 0)
-			{
-				break;
+				// パーツの総数だけ格納するのでカウントを増やす
+				Noei->nCntParts++;
 			}
 		}
 	}
-	// ファイルを閉じる
-	fclose(pFile);
+}
+
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーのモーション情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Wtfo		- WordToFindOut(単語を見つけたかどうか)構造体のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerMotionData(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// プレイヤーのモーションループ情報を読み込む
+	LoadPlayerMotionBasicsInfo(pFile, pText, Noei, pPlayer);
+
+	// KEYSETを見つけたら各キー情報を読み込む許可を与える
+	if (strcmp(pText, "KEYSET") == 0)
+	{
+		Wtfo->bKeySet = true;
+	}
+	// 各キー情報を読み込む許可があるとき処理
+	if (Wtfo->bKeySet == true)
+	{
+		// プレイヤーのモーションキーセット情報を読み込む
+		LoadPlayerMotionKeySet(pFile, pText, Wtfo, Noei, pPlayer);
+
+		// END_KEYSETを見つけたら各キー情報の読み込みを終える
+		if (strcmp(pText, "END_KEYSET") == 0)
+		{
+			Wtfo->bKeySet = false;
+
+			// キーセット数の加算
+			Noei->nCntKey++;
+
+			// キー数の初期化
+			Noei->nCntKeyParts = 0;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーのモーションの基礎情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerMotionBasicsInfo(FILE *pFile, char *pText,NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// 変数宣言
+	int nLoopNum = 0;			// ループ番号格納用
+
+	// LOOPを見つけたらモーションをループさせるかどうか決める
+	if (strcmp(pText, "LOOP") == 0)
+	{
+		fscanf(pFile, "%s %d", pText, &nLoopNum);
+
+		// 数字でループするかどうか判断
+		if (nLoopNum == 1)
+		{
+			pPlayer->aMotionInfo[Noei->nCntMotion].bLoop = true;
+		}
+		else
+		{
+			pPlayer->aMotionInfo[Noei->nCntMotion].bLoop = false;
+		}
+	}
+	// NUM_KEYを見つけたらキー数を格納
+	if (strcmp(pText, "NUM_KEY") == 0)
+	{
+		fscanf(pFile, "%s %d", pText, &pPlayer->aMotionInfo[Noei->nCntMotion].nNumKey);
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーのモーションキーセット情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Wtfo		- WordToFindOut(単語を見つけたかどうか)構造体のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerMotionKeySet(FILE *pFile, char *pText, WordToFindOut *Wtfo, NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// FRAMEを見つけたらフレーム数を格納
+	if (strcmp(pText, "FRAME") == 0)
+	{
+		fscanf(pFile, "%s %d", pText, &pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].nFrame);
+	}
+	// KEYを見つけたら各パーツに情報を読み込む許可を与える
+	if (strcmp(pText, "KEY") == 0)
+	{
+		Wtfo->bKey = true;
+	}
+	// 各パーツに情報を読み込む許可があるとき処理
+	if (Wtfo->bKey == true)
+	{
+		// プレイヤーのモーションの各キー情報を読み込む
+		LoadPlayerMotionKey(pFile, pText, Noei, pPlayer);
+
+		// END_KEYを見つけたら各パーツに情報の読み込みを終える
+		if (strcmp(pText, "END_KEY") == 0)
+		{
+			Wtfo->bKey = false;
+
+			// キー数を加算
+			Noei->nCntKeyParts++;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------------------------------------
+// プレイヤーのモーションの各キー情報を読み込む
+// 引数		：*pFile	- ファイルのポインタ
+//			：*pText	- 詠み込んだ文字列情報のポインタ
+//			：*Noei		- NumberOfEachInfomation(各情報管理用)構造体のポインタ
+//			：*pPlayer	- プレイヤー情報のポインタ
+// 返り値	：void		- 何も返さない
+//------------------------------------------------------------------------------------------------------------
+void LoadPlayerMotionKey(FILE *pFile, char *pText, NumberOfEachInfomation *Noei, Player *pPlayer)
+{
+	// POSを見つけたら座標情報を格納
+	if (strcmp(pText, "POS") == 0)
+	{
+		fscanf(pFile, "%s %f %f %f", pText,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosX,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosY,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosZ);
+
+		// 各パーツのモーション位置情報に各パーツの座標を加算し一を補正する
+		pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosX += pPlayer->aModel[Noei->nCntKeyParts].pos.x;
+		pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosY += pPlayer->aModel[Noei->nCntKeyParts].pos.y;
+		pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fPosZ += pPlayer->aModel[Noei->nCntKeyParts].pos.z;
+	}
+	// ROTを見つけたら角度情報を格納
+	if (strcmp(pText, "ROT") == 0)
+	{
+		fscanf(pFile, "%s %f %f %f", pText,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fRotX,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fRotY,
+			&pPlayer->aMotionInfo[Noei->nCntMotion].aKeyInfo[Noei->nCntKey].aKey[Noei->nCntKeyParts].fRotZ);
+	}
 }

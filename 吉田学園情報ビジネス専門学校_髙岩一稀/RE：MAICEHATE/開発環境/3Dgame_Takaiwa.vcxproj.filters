@@ -99,9 +99,6 @@
     <ClCompile Include="coin_sheets.cpp">
       <Filter>ソース ファイル\03_game\ui</Filter>
     </ClCompile>
-    <ClCompile Include="effect.cpp">
-      <Filter>ソース ファイル\00_main\effect</Filter>
-    </ClCompile>
     <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\03_game</Filter>
     </ClCompile>
@@ -119,9 +116,6 @@
     </ClCompile>
     <ClCompile Include="light.cpp">
       <Filter>ソース ファイル\00_main</Filter>
-    </ClCompile>
-    <ClCompile Include="loadscreen.cpp">
-      <Filter>ソース ファイル\02_tutorial</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\00_main</Filter>
@@ -147,15 +141,6 @@
     <ClCompile Include="result.cpp">
       <Filter>ソース ファイル\04_result</Filter>
     </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>ソース ファイル\03_game\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="selectmode.cpp">
-      <Filter>ソース ファイル\01_title</Filter>
-    </ClCompile>
-    <ClCompile Include="setparticle.cpp">
-      <Filter>ソース ファイル\00_main\effect</Filter>
-    </ClCompile>
     <ClCompile Include="shadow.cpp">
       <Filter>ソース ファイル\03_game</Filter>
     </ClCompile>
@@ -177,6 +162,51 @@
     <ClCompile Include="ui.cpp">
       <Filter>ソース ファイル\03_game\ui</Filter>
     </ClCompile>
+    <ClCompile Include="3Deffect.cpp">
+      <Filter>ソース ファイル\00_main\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="2Deffect.cpp">
+      <Filter>ソース ファイル\00_main\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="setparticle.cpp">
+      <Filter>ソース ファイル\00_main\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking_rank.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking_logo.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking_score.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking_bg.cpp">
+      <Filter>ソース ファイル\05_ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="press_enter.cpp">
+      <Filter>ソース ファイル\01_title</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial_bg.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial_image.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial_marker.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial_press_ok.cpp">
+      <Filter>ソース ファイル\02_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="count_down.cpp">
+      <Filter>ソース ファイル\03_game\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\03_game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fade.h">
@@ -197,20 +227,11 @@
     <ClInclude Include="camera_bg.h">
       <Filter>ヘッダー ファイル\00_main\camera</Filter>
     </ClInclude>
-    <ClInclude Include="effect.h">
-      <Filter>ヘッダー ファイル\00_main\effect</Filter>
-    </ClInclude>
     <ClInclude Include="gamepad.h">
       <Filter>ヘッダー ファイル\00_main\input device</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>ヘッダー ファイル\00_main\input device</Filter>
-    </ClInclude>
-    <ClInclude Include="setparticle.h">
-      <Filter>ヘッダー ファイル\00_main\effect</Filter>
-    </ClInclude>
-    <ClInclude Include="selectmode.h">
-      <Filter>ヘッダー ファイル\01_title</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
       <Filter>ヘッダー ファイル\01_title</Filter>
@@ -220,9 +241,6 @@
     </ClInclude>
     <ClInclude Include="titlelogo.h">
       <Filter>ヘッダー ファイル\01_title</Filter>
-    </ClInclude>
-    <ClInclude Include="loadscreen.h">
-      <Filter>ヘッダー ファイル\02_tutorial</Filter>
     </ClInclude>
     <ClInclude Include="motion.h">
       <Filter>ヘッダー ファイル\03_game\player</Filter>
@@ -268,6 +286,48 @@
     </ClInclude>
     <ClInclude Include="ranking.h">
       <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="3Deffect.h">
+      <Filter>ヘッダー ファイル\00_main\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="2Deffect.h">
+      <Filter>ヘッダー ファイル\00_main\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="setparticle.h">
+      <Filter>ヘッダー ファイル\00_main\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking_score.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking_logo.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking_rank.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking_bg.h">
+      <Filter>ヘッダー ファイル\05_ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="press_enter.h">
+      <Filter>ヘッダー ファイル\01_title</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_bg.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_image.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_marker.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_press_ok.h">
+      <Filter>ヘッダー ファイル\02_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="count_down.h">
+      <Filter>ヘッダー ファイル\03_game\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
