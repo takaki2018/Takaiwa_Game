@@ -9,6 +9,22 @@
 
 #include "main.h"
 
+//--------------------------------------------------------------------------------------------------------------
+// 構造体の定義
+//--------------------------------------------------------------------------------------------------------------
+typedef struct
+{
+	D3DXVECTOR3 pos;		// 位置
+	D3DXCOLOR col;			// 色
+	float fWidth;			// 幅
+	float fHeight;			// 高さ
+	float fMoveAlpha;		// α値の移動
+	int nFlashCnt;			// 点滅カウント
+	bool bDisPlay;			// 表示するかどうか
+	bool bPressOK;			// 押したかどうか
+	bool bGameTrasition;	// ゲーム画面に遷移するかどうか
+}TutorialPressOK;
+
 //----------------------------------------------------------------------------------------------------------------
 // プロトタイプ宣言
 //----------------------------------------------------------------------------------------------------------------
@@ -21,6 +37,6 @@ void BeforePressingOK(void);			// チュートリアル用PressOKを押す前の処理
 void AfterPreesingOK(void);				// チュートリアル用PressOKを押した後の処理
 
 void SetColTutorialPressOK(void);		// チュートリアル用PressOKの色の設定
-bool GetGameTransition(void);			// ゲームに遷移するかどうかを引き渡す
+TutorialPressOK GetPressOKInfo(void);	// チュートリアル用PressOK情報の取得
 
 #endif

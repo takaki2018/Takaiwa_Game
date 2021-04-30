@@ -353,7 +353,7 @@ bool CollisionModelSet(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMo
 					// 側面に当たった場合参照した座標を前の座標に戻す
 					pPos->z = pPosOld->z;
 					pMove->z = 0.0f;
-					pPos->x = pPosOld->x;
+					pPos->x = pPosOld->x ;
 					pMove->x = 0.0f;
 				}	
 				if (pModel->modelSet[nModelSet].pos.y + pModel->modelInfo[pModel->modelSet[nModelSet].nIdx].vtxMaxModel.y <= pPos->y)

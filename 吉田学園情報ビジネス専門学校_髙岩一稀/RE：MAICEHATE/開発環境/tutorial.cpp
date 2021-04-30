@@ -70,24 +70,26 @@ void UninitTutorial(void)
 void UpdateTutorial(void)
 {
 	// ゲーム画面に遷移するかどうか
-	bool bGameTransition = GetGameTransition();
+	TutorialPressOK tutorialPressOK = GetPressOKInfo();
 
 	// チュートリアル背景の更新処理
 	UpdateTutorialBg();
-
-	// チュートリアル画像の更新処理
-	UpdateTutorialImage();
-
-	// チュートリアルマーカーの更新処理
-	UpdateTutorialMarker();
 
 	// チュートリアル用PressOKの更新処理
 	UpdateTutorialPressOK();
 
 	// ゲーム画面に遷移するかどうか
-	if (bGameTransition == true)
+	if (tutorialPressOK.bGameTrasition == true)
 	{
 		SetFade(FADE_OUT,MODE_GAME);
+	}
+	else if (tutorialPressOK.bPressOK == false)
+	{
+		// チュートリアル画像の更新処理
+		UpdateTutorialImage();
+
+		// チュートリアルマーカーの更新処理
+		UpdateTutorialMarker();
 	}
 }
 

@@ -241,7 +241,7 @@ void DrawGame(void)
 	if (g_bPause == true)
 	{
 		// ポーズ画面の描画処理
-		//DrawPause();
+		DrawPause();
 	}
 	// エフェクトの描画処理
 	Draw3DEffect();
