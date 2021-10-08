@@ -1,0 +1,3 @@
+STAGEDATA = "data/STAGEDATA/stage2.csv"
+WIDTH = 21
+HEIGHT = 15
