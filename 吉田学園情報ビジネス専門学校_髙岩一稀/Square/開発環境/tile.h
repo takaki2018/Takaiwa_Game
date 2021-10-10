@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // タイル処理 [tile.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _TILE_H_
@@ -14,15 +14,15 @@
 //*****************************************************************************
 #define TILE_SIZE		(45.0f)		// タイルの大きさ
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // 前方宣言
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CBullet;		// 弾クラス
 class CTileRevival;	// タイル復活クラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // タイルクラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CTile : public CScene2D
 {
 public:
@@ -48,6 +48,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void FillTileTypeBlack(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void FillTileTypeWhite(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void FillTileTypeChangeBlack(D3DXVECTOR3 pos, D3DXVECTOR2 size);
@@ -55,7 +56,6 @@ public:
 	void EffectReflection(D3DXVECTOR3 *pPos,D3DXVECTOR3 *pMove, D3DXVECTOR2 size);
 	bool CollisionObject(D3DXVECTOR3 *pos, D3DXVECTOR3 posOld, D3DXVECTOR3 *move, D3DXVECTOR2 size);
 	void FillTileforBullet(D3DXVECTOR3 pos, D3DXVECTOR2 size,D3DXVECTOR3 posOld,D3DXCOLOR colEffect,TILETYPE tileType, CBullet *pBullet);
-	void FillTileforEnemy(D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 posOld, D3DXCOLOR colEffect, TILETYPE tileType);
 	void CollisionPlayer(void);
 	void CollisionEnemy(CBullet *pBullet);
 	void FillTile(TILETYPE tileType);

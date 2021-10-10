@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ゲーム画面処理 [game.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "game.h"
@@ -32,12 +32,12 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CPlayer *CGame::m_pPlayer = NULL;
-CUI *CGame::m_pUI = NULL;
-CSpawnEnemy *CGame::m_pSpawnEnemy = NULL;
-CGameClear *CGame::m_pGameClear = NULL;
-CModel *CGame::m_pModel = NULL;
-int CGame::m_nCntTileFrameEffect = 0;
+CPlayer *CGame::m_pPlayer = NULL;				// プレイヤー情報のポインタ
+CUI *CGame::m_pUI = NULL;						// UI情報のポインタ
+CSpawnEnemy *CGame::m_pSpawnEnemy = NULL;		// 敵発生情報のポインタ
+CGameClear *CGame::m_pGameClear = NULL;			// ゲームクリア情報のポインタ
+CModel *CGame::m_pModel = NULL;					// モデル情報のポインタ
+int CGame::m_nCntTileFrameEffect = 0;			// タイルフレームエフェクトを出すカウンター
 
 //=============================================================================
 // CGameのコンストラクタ
@@ -226,6 +226,8 @@ void CGame::Update(void)
 			}
 		}
 	}
+
+	// タイルフレームエフェクトの生成
 	TileFrameEffectCreate();
 }
 
@@ -249,75 +251,103 @@ void CGame::TileFrameEffectCreate(void)
 	if (m_nCntTileFrameEffect % 30 == 0)
 	{
 		// 端の番号の取得
-		// 横
-		int *pNumTileEdgeSide = CStage::GetTileEdgeSide();
-		int nNumTileSide = CStage::GetCntTileEdgeSide();
-		nNumTileSide = rand() % nNumTileSide;
-
-		// 縦
-		int *pNumTileEdgeVertical = CStage::GetTileEdgeVertical();
-		int nNumTileVertical = CStage::GetCntTileEdgeVertical();
-		nNumTileVertical = rand() % nNumTileVertical;
+		CStage::TileEdge tileEdge = CStage::GetTileEdge();
+		CStage::NumTileEdge nNumTileEdge = CStage::GetNumTileEdge();
+		int nNumTile;
 
 		// タイル情報の取得
-		CTile *pTileSide = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, pNumTileEdgeSide[nNumTileSide]);
-		CTile *pTileVertical = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, pNumTileEdgeSide[nNumTileVertical]);
+		CTile *pTile;
 
-		// NULLチェック
-		if (pTileSide != NULL)
+		D3DXVECTOR3 posTile;
+		D3DXVECTOR2 sizeTile;
+
+		int nCnt = rand() % 4;
+
+		// 2方向で分ける
+		switch (nCnt)
 		{
-			// タイルが透明以外のとき生成
-			if (pTileSide->GetTileType() != CTile::TILETYPE_INVISIBLE)
+		case 0:
+			nNumTile = rand() % nNumTileEdge.nNumTileEdgeLeft;
+			pTile = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, tileEdge.nTileEdgeLeft[nNumTile]);
+			// NULLチェック
+			if (pTile != NULL)
 			{
-				D3DXVECTOR3 posTileSide = pTileSide->GetPosition();
-				D3DXVECTOR3 sizeTileSide = pTileSide->GetSize();
-
-				int nCnt = rand() % 2;
-
-				// 2方向で分ける
-				switch (nCnt)
+				// タイルが透明以外のとき生成
+				if (pTile->GetTileType() != CTile::TILETYPE_INVISIBLE)
 				{
-				case 0:
-					CTileFrameEffect::Create(D3DXVECTOR3(posTileSide.x + sizeTileSide.x / 2.0f, posTileSide.y - sizeTileSide.y / 2.0f, posTileSide.z),
+					// 位置とサイズの取得
+					posTile = pTile->GetPosition();
+					sizeTile = pTile->GetSize();
+
+					// タイルフレームエフェクトの生成
+					CTileFrameEffect::Create(D3DXVECTOR3(posTile.x + sizeTile.x / 2.0f, posTile.y - sizeTile.y / 2.0f, posTile.z),
 						D3DXVECTOR2(20.0f, 5.0f),
 						D3DXVECTOR3(25.0f, 0.0f, 0.0f));
-					break;
+				}
+			}
+			break;
 
-				case 1:
-					CTileFrameEffect::Create(D3DXVECTOR3(posTileSide.x - sizeTileSide.x / 2.0f, posTileSide.y - sizeTileSide.y / 2.0f, posTileSide.z),
+		case 1:
+			nNumTile = rand() % nNumTileEdge.nNumTileEdgeRight;
+			pTile = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, tileEdge.nTileEdgeRight[nNumTile]);
+			// NULLチェック
+			if (pTile != NULL)
+			{
+				// タイルが透明以外のとき生成
+				if (pTile->GetTileType() != CTile::TILETYPE_INVISIBLE)
+				{
+					// 位置とサイズの取得
+					posTile = pTile->GetPosition();
+					sizeTile = pTile->GetSize();
+
+					// タイルフレームエフェクトの生成
+					CTileFrameEffect::Create(D3DXVECTOR3(posTile.x - sizeTile.x / 2.0f, posTile.y - sizeTile.y / 2.0f, posTile.z),
 						D3DXVECTOR2(20.0f, 5.0f),
 						D3DXVECTOR3(-25.0f, 0.0f, 0.0f));
-					break;
 				}
-
 			}
-		}
-		// NULLチェック
-		if (pTileVertical != NULL)
-		{
-			// タイルが透明以外のとき生成
-			if (pTileVertical->GetTileType() != CTile::TILETYPE_INVISIBLE)
+			break;
+
+		case 2:
+			nNumTile = rand() % nNumTileEdge.nNumTileEdgeTop;
+			pTile = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, tileEdge.nTileEdgeTop[nNumTile]);
+			// NULLチェック
+			if (pTile != NULL)
 			{
-				D3DXVECTOR3 posTileVertical = pTileVertical->GetPosition();
-				D3DXVECTOR3 sizeTileVertical = pTileVertical->GetSize();
-
-				int nCnt = rand() % 2;
-
-				// 四方向で分ける
-				switch (nCnt)
+				// タイルが透明以外のとき生成
+				if (pTile->GetTileType() != CTile::TILETYPE_INVISIBLE)
 				{
-				case 0:
-					CTileFrameEffect::Create(D3DXVECTOR3(posTileVertical.x - sizeTileVertical.x / 2.0f, posTileVertical.y + sizeTileVertical.y / 2.0f, posTileVertical.z),
+					// 位置とサイズの取得
+					posTile = pTile->GetPosition();
+					sizeTile = pTile->GetSize();
+
+					// タイルフレームエフェクトの生成
+					CTileFrameEffect::Create(D3DXVECTOR3(posTile.x - sizeTile.x / 2.0f, posTile.y + sizeTile.y / 2.0f, posTile.z),
 						D3DXVECTOR2(5.0f, 20.0f),
 						D3DXVECTOR3(0.0f, 25.0f, 0.0f));
-					break;
-				case 1:
-					CTileFrameEffect::Create(D3DXVECTOR3(posTileVertical.x + sizeTileVertical.x / 2.0f, posTileVertical.y - sizeTileVertical.y / 2.0f, posTileVertical.z),
-						D3DXVECTOR2(5.0f, 20.0f),
-						D3DXVECTOR3(0.0f, -25.0f, 0.0f));
-					break;
 				}
 			}
+			break;
+		case 3:
+			nNumTile = rand() % nNumTileEdge.nNumTileEdgeBottom;
+			pTile = (CTile*)CScene::GetScene(CScene::PRIORITY_TILE, tileEdge.nTileEdgeBottom[nNumTile]);
+			// NULLチェック
+			if (pTile != NULL)
+			{
+				// タイルが透明以外のとき生成
+				if (pTile->GetTileType() != CTile::TILETYPE_INVISIBLE)
+				{
+					// 位置とサイズの取得
+					posTile = pTile->GetPosition();
+					sizeTile = pTile->GetSize();
+
+					// タイルフレームエフェクトの生成
+					CTileFrameEffect::Create(D3DXVECTOR3(posTile.x + sizeTile.x / 2.0f, posTile.y - sizeTile.y / 2.0f, posTile.z),
+						D3DXVECTOR2(5.0f, 20.0f),
+						D3DXVECTOR3(0.0f, -25.0f, 0.0f));
+				}
+			}
+			break;
 		}
 	}
 }

@@ -14,11 +14,9 @@
 #include "logo.h"
 #include "input_joypad.h"
 
-//--------------------------------------------------------------------------------------------------------------
+//*****************************************************************************
 // マクロ定義
-//--------------------------------------------------------------------------------------------------------------
-#define MAX_PATTERN				(5)					// アニメーションパターンNo.の最大数
-
+//*****************************************************************************
 #define PAUSE_MENU_BG_X			(SCREEN_WIDTH / 2)	// ポーズメニューの中心座標X
 #define PAUSE_MENU_BG_Y			(370.0f)			// ポーズメニューの中心座標Y
 #define PAUSE_MENU_BG_WIDTH		(400.0f)			// ポーズメニューの幅
@@ -34,7 +32,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[CTutorial::TEXTURE_MAX] = {};
+LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[CTutorial::TEXTURE_MAX] = {}; // チュートリアル画面のテクスチャのポインタ
 
 //=============================================================================
 // CTutorialのコンストラクタ
@@ -72,6 +70,7 @@ HRESULT CTutorial::Load()
 
 	// テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_keyboard.png", &m_pTexture[TEXTURE_KEYBOARD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_gamepad.png", &m_pTexture[TEXTURE_GAMEPAD]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_gamescreen.png", &m_pTexture[TEXTURE_GAMESCREEN]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_game.png", &m_pTexture[TEXTURE_GAME]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/marker.png", &m_pTexture[TEXTURE_CURSOR]);
@@ -117,11 +116,9 @@ CTutorial *CTutorial::Create(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	return pTutorial;
 }
 
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 // チュートリアルの初期化処理
-// 引数		：void		- 何もなし
-// 返り値	：HRESULT	- 頂点バッファを生成できたかどうか返す
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 {
 	// 変数宣言
@@ -129,10 +126,12 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	D3DXVECTOR3 aPos[TUTORIALUI_MAX] = { D3DXVECTOR3(pos.x,pos.y,pos.z),
 		D3DXVECTOR3(pos.x,340.0f,pos.z),
 		D3DXVECTOR3(pos.x,340.0f,pos.z),
+		D3DXVECTOR3(pos.x,340.0f,pos.z),
 		D3DXVECTOR3(pos.x,340.0f,pos.z) };
 
 	// ポーズ画面に使用するUIの位置
 	D3DXVECTOR2 aSize[TUTORIALUI_MAX] = { D3DXVECTOR2(size.x,size.y),
+		D3DXVECTOR2(960.0f,540.0f),
 		D3DXVECTOR2(960.0f,540.0f),
 		D3DXVECTOR2(960.0f,540.0f),
 		D3DXVECTOR2(960.0f,540.0f) };
@@ -164,7 +163,7 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 		m_apCursor[nCntCursor] = new CScene2D(CScene::PRIORITY_NONE);
 
 		// カーソルの初期化処理
-		m_apCursor[nCntCursor]->Init(D3DXVECTOR3(580.0f + 60.0f * nCntCursor, 650.0f, 0.0f), D3DXVECTOR2(20.0f, 20.0f));
+		m_apCursor[nCntCursor]->Init(D3DXVECTOR3(5580.0f + 60.0f * nCntCursor, 650.0f, 0.0f), D3DXVECTOR2(20.0f, 20.0f));
 
 		// テクスチャの割り当て
 		if (m_pTexture[TEXTURE_CURSOR] != NULL)
@@ -189,11 +188,9 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	return S_OK;
 }
 
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 // チュートリアルの終了処理
-// 引数		：void	- 何もなし
-// 返り値	：void	- 何も返さない
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 void CTutorial::Uninit(void)
 {
 	for (int nCntTutorialUI = 0; nCntTutorialUI < TUTORIALUI_MAX; nCntTutorialUI++)
@@ -220,11 +217,9 @@ void CTutorial::Uninit(void)
 	Release();
 }
 
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 // チュートリアルの更新処理
-// 引数		：void	- 何もなし
-// 返り値	：void	- 何も返さない
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 void CTutorial::Update(void)
 {
 	// キーボード情報の取得
@@ -237,7 +232,7 @@ void CTutorial::Update(void)
 	// フェード情報の取得
 	CFade *pFade = CManager::GetFade();
 
-	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_LEFT) || pTrigger[CInputJoypad::CROSSKEYTRIGGER_LEFT])
+	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_LEFT) || pTrigger[CInputJoypad::STICK_AND_CROSSKEY_LEFT])
 	{
 		// 上にいくとき番号を減らす
 		m_nCursor--;
@@ -250,7 +245,7 @@ void CTutorial::Update(void)
 		// 効果音
 		CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_MOVE_CURSOR);
 	}
-	else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_RIGHT) || pTrigger[CInputJoypad::CROSSKEYTRIGGER_RIGHT])
+	else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_RIGHT) || pTrigger[CInputJoypad::STICK_AND_CROSSKEY_RIGHT])
 	{
 		// 下にいくとき番号を増やす
 		m_nCursor++;
@@ -300,11 +295,9 @@ void CTutorial::Update(void)
 	}
 }
 
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 // チュートリアルの描画処理
-// 引数		：void	- 何もなし
-// 返り値	：void	- 何も返さない
-//--------------------------------------------------------------------------------------------------------------
+//=============================================================================
 void CTutorial::Draw(void)
 {
 	// チュートリアルの描画処理

@@ -169,8 +169,6 @@
     <ClCompile Include="life.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="model.cpp" />
-    <ClCompile Include="particle_manager.cpp" />
-    <ClCompile Include="scene3D.cpp" />
     <ClCompile Include="sceneX.cpp" />
     <ClCompile Include="tile_frame_effect.cpp" />
     <ClCompile Include="tile_revival.cpp" />
@@ -216,8 +214,6 @@
     <ClInclude Include="game_logo.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="particle_manager.h" />
-    <ClInclude Include="scene3D.h" />
     <ClInclude Include="sceneX.h" />
     <ClInclude Include="tile_frame_effect.h" />
     <ClInclude Include="tile_revival.h" />

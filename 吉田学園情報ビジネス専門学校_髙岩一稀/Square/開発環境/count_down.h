@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // カウントダウン処理 [count_down.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _COUNTDOWN_H_
@@ -21,14 +21,15 @@ class CNumber;		// 数字クラス
 class CLogo;		// ロゴクラス
 class CUIBg;		// 背景クラス
 
-//-----------------------------------------------------------------------------
-// ライフクラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// カウントダウンクラス(派生クラス)
+//*****************************************************************************
 class CCountDown : public CScene
 {
 public:
 	CCountDown(int nPriority);
 	~CCountDown();
+
 	static HRESULT Load(void);
 	static void Unload(void);
 	static CCountDown *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
@@ -36,6 +37,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static bool GetFinishCountDown(void) { return m_bFinishCountDown; }
 	int GetCountDown(void) { return m_nNumCountDown; }
 

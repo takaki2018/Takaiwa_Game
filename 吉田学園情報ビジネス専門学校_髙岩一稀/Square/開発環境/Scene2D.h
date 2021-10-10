@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // シーン2D処理 [scene2D.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _SCENE2D_H_
@@ -26,19 +26,21 @@ typedef  struct
 	D3DXVECTOR2 tex;
 } VERTEX_2D;
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // オブジェクトクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CScene2D : public CScene
 {
 public:
 	CScene2D(int nPriority);
 	~CScene2D();
+
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);
+
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR2 GetSize(void) { return D3DXVECTOR2(m_fWidth,m_fHeight); }
 	D3DXVECTOR3 GetRotate(void) { return m_rot; }

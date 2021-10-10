@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // マネージャー処理 [manager.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "manager.h"
@@ -29,21 +29,21 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CRenderer *CManager::m_pRenderer = NULL;
-CInputKeyboard *CManager::m_pInputKeyboard = NULL;
-CInputJoypad *CManager::m_pInputJoypad = NULL;
-CSound *CManager::m_pSound = NULL;
-CTitle *CManager::m_pTitle = NULL;
-CTutorial *CManager::m_pTutorial = NULL;
-CGame *CManager::m_pGame = NULL;
-CResult *CManager::m_pResult = NULL;
-CManager::MODE CManager::m_mode = MODE_TITLE;
-CFade *CManager::m_pFade = NULL;
-bool CManager::m_bPause = false;
-bool CManager::m_bTutorial = false;
-CGameDataKeepObject *CManager::m_pGemeData = NULL;
-CCamera *CManager::m_pCamera = NULL;
-CLight *CManager::m_pLight = NULL;
+CRenderer *CManager::m_pRenderer = NULL;				// レンダラー情報のポインタ
+CInputKeyboard *CManager::m_pInputKeyboard = NULL;		// キーボード情報のポインタ
+CInputJoypad *CManager::m_pInputJoypad = NULL;			// ゲームパッド情報のポインタ
+CSound *CManager::m_pSound = NULL;						// サウンド情報のポインタ
+CTitle *CManager::m_pTitle = NULL;						// タイトル情報のポインタ
+CTutorial *CManager::m_pTutorial = NULL;				// チュートリアル情報のポインタ
+CGame *CManager::m_pGame = NULL;						// ゲーム情報のポインタ
+CResult *CManager::m_pResult = NULL;					// リザルト情報のポインタ
+CManager::MODE CManager::m_mode = MODE_TITLE;			// モード情報のポインタ
+CFade *CManager::m_pFade = NULL;						// フェード情報のポインタ
+bool CManager::m_bPause = false;						// ポーズ中かどうか
+bool CManager::m_bTutorial = false;						// チュートリアル中かどうか
+CGameDataKeepObject *CManager::m_pGemeData = NULL;		// ゲームデータ保存用情報のポインタ
+CCamera *CManager::m_pCamera = NULL;					// カメラ情報のポインタ
+CLight *CManager::m_pLight = NULL;						// ライト情報のポインタ
 
 //=============================================================================
 // CManagerのコンストラクタ
@@ -134,6 +134,7 @@ HRESULT CManager::Init(HINSTANCE hInstance,HWND hWnd, bool bWindow)
 	}
 
 #ifdef _DEBUG
+	// デバック表示の初期化
 	CDebugProc *pDebug = new CDebugProc;
 	pDebug->Init();
 #endif
@@ -206,9 +207,6 @@ void CManager::Update(void)
 {
 	switch (m_mode)
 	{
-	case MODE_TITLE:
-		break;
-
 	case MODE_GAME:
 		// ポーズ処理
 		if ((m_pInputKeyboard->GetTrigger(CInputKeyboard::KEYINFO_PAUSE) || 
@@ -376,30 +374,6 @@ void CManager::UnloadTexture(void)
 
 	// チュートリアルのテクスチャアンロード
 	CTutorial::Unload();
-}
-
-//=============================================================================
-// レンダラー情報の取得
-//=============================================================================
-CRenderer *CManager::GetRenderer(void)
-{
-	return m_pRenderer;
-}
-
-//=============================================================================
-// キーボード情報の取得
-//=============================================================================
-CInputKeyboard *CManager::GetInputKeyboard(void)
-{
-	return m_pInputKeyboard;
-}
-
-//=============================================================================
-// ジョイパッド情報の取得
-//=============================================================================
-CInputJoypad *CManager::GetInputJoypad(void)
-{
-	return m_pInputJoypad;
 }
 
 //=============================================================================

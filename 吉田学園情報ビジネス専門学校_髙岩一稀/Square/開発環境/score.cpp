@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // スコア処理 [score.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "score.h"
@@ -168,13 +168,17 @@ void CScore::RightJustified(void)
 
 		if (nNumber <= 0)
 		{
+			// 0以下の時終わる
 			break;
 		}
 		else
 		{
+			// 桁数の増加
 			m_nDigit++;
+
 			if (m_apNumber[m_nDigit - 1] == NULL)
 			{
+				// 情報がNULLなら生成
 				D3DXVECTOR3 pos = m_apNumber[nCntDigit - 1]->GetPosition();
 				D3DXVECTOR2 size = m_apNumber[nCntDigit - 1]->GetSize();
 				m_apNumber[m_nDigit - 1] = CNumber::Create(D3DXVECTOR3(pos.x - m_fSpace, pos.y, pos.z), size);
@@ -204,17 +208,22 @@ void CScore::LeftJustified(void)
 	// 桁数を計算
 	for (int nCntDigit = 1; nCntDigit < MAX_DIGIT; nCntDigit++)
 	{
+		// 数字の保存
 		int nNumber = (m_nScore / (int)powf(10.0f, (float)nCntDigit));
 
 		if (nNumber <= 0)
 		{
+			// 0以下の時終わる
 			break;
 		}
 		else
 		{
+			// 桁数の増加
 			m_nDigit++;
+
 			if (m_apNumber[m_nDigit - 1] == NULL)
 			{
+				// 情報がNULLなら生成
 				D3DXVECTOR3 pos = m_apNumber[nCntDigit - 1]->GetPosition();
 				D3DXVECTOR2 size = m_apNumber[nCntDigit - 1]->GetSize();
 				m_apNumber[m_nDigit - 1] = CNumber::Create(D3DXVECTOR3(pos.x + m_fSpace, pos.y, 0.0f), size);

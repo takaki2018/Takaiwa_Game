@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // リザルトロゴ処理 [result_logo.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _RESULTLOGO_H_
@@ -15,9 +15,9 @@
 class CLogo;			// ロゴクラス
 class CUIBg;			// UI背景クラス
 
-//-----------------------------------------------------------------------------
-// タイトルロゴクラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// リザルトロゴクラス(派生クラス)
+//*****************************************************************************
 class CResultLogo : public CScene
 {
 public:
@@ -25,7 +25,6 @@ public:
 	typedef enum
 	{
 		LOGOTYPE_RESULT = 0,		// リザルトロゴ
-		LOGOTYPE_ARCADEMODE,		// アーケードモードロゴ
 		LOGOTYPE_RANK,				// ランクロゴ
 		LOGOTYPE_YOURSCORE,			// YourScoreロゴ
 		LOGOTYPE_NEWRECORD,			// NewRecordロゴ
@@ -36,11 +35,13 @@ public:
 
 	CResultLogo(int nPriority);
 	~CResultLogo();
+
 	static CResultLogo *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static CLogo **GetResultLogo(void) { return &m_apLogo[0]; }
 
 private:

@@ -1,46 +1,46 @@
-//-------------------------------------------------------------------
+//=============================================================================
 //
 // ジョイパッド処理 (input_joypad.cpp)
 // Author:Itsuki Takaiwa
 //
-//-------------------------------------------------------------------
+//=============================================================================
 #include "input_joypad.h"
 
-//-------------------------------------------------------------------
+//*****************************************************************************
 // マクロ定義
-//-------------------------------------------------------------------
+//*****************************************************************************
 #define DEADZONE        (2500)      // 各軸の25%を無効ゾーンとする
 #define RANGE_MAX       (10000)     // 有効範囲の最大値
 #define RANGE_MIN       (-10000)    // 有効範囲の最小値
 
 #define MAX_DIRECTION	(4)			// キー方向の最大数
 
-//-------------------------------------------------------------------
+//*****************************************************************************
 // 静的メンバ変数宣言
-//-------------------------------------------------------------------	
+//*****************************************************************************	
 CInputJoypad::CONTROLLER CInputJoypad::m_Controller[MAX_CONTROLLER] = {};		// コントローラー情報のポインタ
 CInputJoypad::JPINFO CInputJoypad::m_Stick[MAX_CONTROLLER] = {};				// スティック情報
 int CInputJoypad::m_nNumController = 0;											// 使用するコントローラーのカウント
 
-//-------------------------------------------------------------------	
+//=============================================================================	
 // CManagerのコンストラクタ
-//-------------------------------------------------------------------	
+//=============================================================================	
 CInputJoypad::CInputJoypad()
 {
 
 }
 
-//-------------------------------------------------------------------	
+//=============================================================================	
 // CManagerのデストラクタ
-//-------------------------------------------------------------------	
+//=============================================================================	
 CInputJoypad::~CInputJoypad()
 {
 
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 初期化処理
-//-------------------------------------------------------------------
+//=============================================================================
 HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	// インプット処理の共通初期化処理
@@ -168,9 +168,9 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 	return S_OK;
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 終了処理
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::Uninit(void)
 {
 	for (int nCnt = 0; nCnt < m_nNumController; nCnt++)
@@ -187,9 +187,9 @@ void CInputJoypad::Uninit(void)
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 更新処理
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::Update(void)
 {
 	// 変数宣言
@@ -241,94 +241,94 @@ void CInputJoypad::Update(void)
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // Lスティックのプレス情報
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::LStickPressInfo(int nCnt, DIJOYSTATE2 State)
 {
 	// 変数の初期化
-	bool bLStickPress[LSTICKPRESS_MAX] = { false,false,false,false };
+	bool bLStickPress[STICK_AND_CROSSKEY_MAX] = { false,false,false,false };
 
 	if (State.lY >= 7000)
 	{// 左
-		bLStickPress[LSTICKPRESS_UP] = true;
+		bLStickPress[STICK_AND_CROSSKEY_UP] = true;
 	}
 	else if (State.lY <= -7000)
 	{// 右
-		bLStickPress[LSTICKPRESS_DOWN] = true;
+		bLStickPress[STICK_AND_CROSSKEY_DOWN] = true;
 	}
 	else if (State.lX >= 7000)
 	{// 左
-		bLStickPress[LSTICKPRESS_RIGHT] = true;
+		bLStickPress[STICK_AND_CROSSKEY_RIGHT] = true;
 	}
 	else if (State.lX <= -7000)
 	{// 右
-		bLStickPress[LSTICKPRESS_LEFT] = true;
+		bLStickPress[STICK_AND_CROSSKEY_LEFT] = true;
 	}
 
-	for (int nCntPress = 0; nCntPress < LSTICKPRESS_MAX; nCntPress++)
+	for (int nCntPress = 0; nCntPress < STICK_AND_CROSSKEY_MAX; nCntPress++)
 	{// プレス情報
 		m_Stick[nCnt].bLStickPress[nCntPress] = bLStickPress[nCntPress];
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // Rスティックのプレス情報
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::RStickPressInfo(int nCnt, DIJOYSTATE2 State)
 {
 	// 変数の初期化
-	bool bRStickPress[LSTICKPRESS_MAX] = { false,false,false,false };
+	bool bRStickPress[STICK_AND_CROSSKEY_MAX] = { false,false,false,false };
 
 	if (State.lRz <= -7000)
 	{// 左
-		bRStickPress[LSTICKPRESS_UP] = true;
+		bRStickPress[STICK_AND_CROSSKEY_UP] = true;
 	}
 	else if (State.lRz >= 7000)
 	{// 右
-		bRStickPress[LSTICKPRESS_DOWN] = true;
+		bRStickPress[STICK_AND_CROSSKEY_DOWN] = true;
 	}
 	else if (State.lZ >= 7000)
 	{// 左
-		bRStickPress[LSTICKPRESS_RIGHT] = true;
+		bRStickPress[STICK_AND_CROSSKEY_RIGHT] = true;
 	}
 	else if (State.lZ <= -7000)
 	{// 右
-		bRStickPress[LSTICKPRESS_LEFT] = true;
+		bRStickPress[STICK_AND_CROSSKEY_LEFT] = true;
 	}
 
-	for (int nCntPress = 0; nCntPress < LSTICKPRESS_MAX; nCntPress++)
+	for (int nCntPress = 0; nCntPress < STICK_AND_CROSSKEY_MAX; nCntPress++)
 	{// プレス情報
 		m_Stick[nCnt].bRStickPress[nCntPress] = bRStickPress[nCntPress];
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // スティックのトリガー情報
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::StickTriggerInfo(int nCnt, DIJOYSTATE2 State)
 {
 	// 変数の初期化
-	bool bStickTrigger[STICKTRIGGER_MAX] = { false,false,false,false };
+	bool bStickTrigger[STICK_AND_CROSSKEY_MAX] = { false,false,false,false };
 
 	if (State.lY <= -7000)
 	{// 上
-		bStickTrigger[STICKTRIGGER_UP] = true;
+		bStickTrigger[STICK_AND_CROSSKEY_UP] = true;
 	}
 	else if (State.lY >= 7000)
 	{// 下
-		bStickTrigger[STICKTRIGGER_DOWN] = true;
+		bStickTrigger[STICK_AND_CROSSKEY_DOWN] = true;
 	}
 	else if (State.lX >= 7000)
 	{// 左
-		bStickTrigger[STICKTRIGGER_RIGHT] = true;
+		bStickTrigger[STICK_AND_CROSSKEY_RIGHT] = true;
 	}
 	else if (State.lX <= -7000)
 	{// 右
-		bStickTrigger[STICKTRIGGER_LEFT] = true;
+		bStickTrigger[STICK_AND_CROSSKEY_LEFT] = true;
 	}
 
-	for (int nCntTrigger = 0; nCntTrigger < STICKTRIGGER_MAX; nCntTrigger++)
+	for (int nCntTrigger = 0; nCntTrigger < STICK_AND_CROSSKEY_MAX; nCntTrigger++)
 	{// トリガー情報
 		m_Stick[nCnt].bStickTrigger[nCntTrigger] = (m_Stick[nCnt].bStickOldTrigger[nCntTrigger] ^ bStickTrigger[nCntTrigger]) & bStickTrigger[nCntTrigger];
 
@@ -337,55 +337,55 @@ void CInputJoypad::StickTriggerInfo(int nCnt, DIJOYSTATE2 State)
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 十字キーのプレス情報
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::CrossKeyPressInfo(int nCnt, DIJOYSTATE2 State)
 {
 	// 変数の初期化
-	bool bCrossKeyPress[LSTICKPRESS_MAX] = { false,false ,false,false };
+	bool bCrossKeyPress[STICK_AND_CROSSKEY_MAX] = { false,false ,false,false };
 
 	if (State.rgdwPOV[0] >= 3000 && State.rgdwPOV[0] <= 15000)
 	{// 左
-		bCrossKeyPress[LSTICKPRESS_RIGHT] = true;
+		bCrossKeyPress[STICK_AND_CROSSKEY_RIGHT] = true;
 	}
 	else if (State.rgdwPOV[0] >= 21000 && State.rgdwPOV[0] <= 33000)
 	{// 右
-		bCrossKeyPress[LSTICKPRESS_LEFT] = true;
+		bCrossKeyPress[STICK_AND_CROSSKEY_LEFT] = true;
 	}
 
-	for (int nCntPress = 0; nCntPress < LSTICKPRESS_MAX; nCntPress++)
+	for (int nCntPress = 0; nCntPress < STICK_AND_CROSSKEY_MAX; nCntPress++)
 	{// プレス情報
 		m_Stick[nCnt].bCrossKeyPress[nCntPress] = bCrossKeyPress[nCntPress];
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 十字キーのトリガー情報
-//-------------------------------------------------------------------
+//=============================================================================
 void CInputJoypad::CrossKeyTriggerInfo(int nCnt, DIJOYSTATE2 State)
 {
 	// 変数の初期化
-	bool bCrossKeyTrigger[STICKTRIGGER_MAX] = { false,false,false,false };
+	bool bCrossKeyTrigger[STICK_AND_CROSSKEY_MAX] = { false,false,false,false };
 
 	if ((State.rgdwPOV[0] >= 0 && State.rgdwPOV[0] <= 6000) || (State.rgdwPOV[0] >= 30000 && State.rgdwPOV[0] < 36000))
 	{// 上
-		bCrossKeyTrigger[STICKTRIGGER_UP] = true;
+		bCrossKeyTrigger[STICK_AND_CROSSKEY_UP] = true;
 	}
 	else if (State.rgdwPOV[0] >= 12000 && State.rgdwPOV[0] <= 24000)
 	{// 下
-		bCrossKeyTrigger[STICKTRIGGER_DOWN] = true;
+		bCrossKeyTrigger[STICK_AND_CROSSKEY_DOWN] = true;
 	}
 	else if (State.rgdwPOV[0] >= 3000 && State.rgdwPOV[0] <= 15000)
 	{// 左
-		bCrossKeyTrigger[STICKTRIGGER_RIGHT] = true;
+		bCrossKeyTrigger[STICK_AND_CROSSKEY_RIGHT] = true;
 	}
 	else if (State.rgdwPOV[0] >= 21000 && State.rgdwPOV[0] <= 33000)
 	{// 右
-		bCrossKeyTrigger[STICKTRIGGER_LEFT] = true;
+		bCrossKeyTrigger[STICK_AND_CROSSKEY_LEFT] = true;
 	}
 
-	for (int nCntTrigger = 0; nCntTrigger < STICKTRIGGER_MAX; nCntTrigger++)
+	for (int nCntTrigger = 0; nCntTrigger < STICK_AND_CROSSKEY_MAX; nCntTrigger++)
 	{// トリガー情報
 		m_Stick[nCnt].bCrossKeyTrigger[nCntTrigger] = (m_Stick[nCnt].bCrossKeyOldTrigger[nCntTrigger] ^ bCrossKeyTrigger[nCntTrigger]) & bCrossKeyTrigger[nCntTrigger];
 
@@ -394,9 +394,9 @@ void CInputJoypad::CrossKeyTriggerInfo(int nCnt, DIJOYSTATE2 State)
 	}
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // ボタン入力情報の取得
-//-------------------------------------------------------------------
+//=============================================================================
 bool CInputJoypad::GetJoypadPress(int nCnt, int nButton)
 {// プレス情報の確認
 	return (m_Controller[nCnt].State.rgbButtons[nButton] & 0x80) ? true : false;
@@ -412,9 +412,9 @@ bool CInputJoypad::GetJoypadReleace(int nCnt, int nButton)
 	return (m_Controller[nCnt].Release.rgbButtons[nButton] & 0x80) ? true : false;
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // スティック情報の取得
-//-------------------------------------------------------------------
+//=============================================================================
 DIJOYSTATE2 CInputJoypad::GetControllerPless(int nCnt)
 {// プレス情報
 	return m_Controller[nCnt].State;
@@ -435,9 +435,9 @@ bool *CInputJoypad::GetStickTrigger(int nCnt)
 	return &m_Stick[nCnt].bStickTrigger[0];
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 十字キー情報の取得
-//-------------------------------------------------------------------
+//=============================================================================
 bool *CInputJoypad::GetCrossKeyPress(int nCnt)
 {// プレス情報
 	return &m_Stick[nCnt].bCrossKeyPress[0];
@@ -448,9 +448,9 @@ bool *CInputJoypad::GetCrossKeyTrigger(int nCnt)
 	return &m_Stick[nCnt].bCrossKeyTrigger[0];
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // デバイス発見時に実行される
-//-------------------------------------------------------------------
+//=============================================================================
 BOOL CALLBACK CInputJoypad::EnumJoysticksCallback(const DIDEVICEINSTANCE *pdidInstance, VOID *pContext)
 {
 	// 変数宣言
@@ -466,9 +466,9 @@ BOOL CALLBACK CInputJoypad::EnumJoysticksCallback(const DIDEVICEINSTANCE *pdidIn
 	return DIENUM_CONTINUE;
 }
 
-//-------------------------------------------------------------------
+//=============================================================================
 // 接続されたコントローラーのカウント
-//-------------------------------------------------------------------
+//=============================================================================
 int CInputJoypad::GetnCntController(void)
 {
 	return m_nNumController;

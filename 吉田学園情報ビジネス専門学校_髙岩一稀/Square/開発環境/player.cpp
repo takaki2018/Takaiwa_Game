@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // プレイヤー処理 [player.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "player.h"
@@ -35,7 +35,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL;	// テクスチャ情報のポインタ
 
 //=============================================================================
 // CPlayerのコンストラクタ
@@ -198,18 +198,22 @@ void CPlayer::Move(void)
 	// 移動処理
 	if (pInputKeyboard->GetPress(pInputKeyboard->KEYINFO_UP))
 	{
+		// 上
 		m_move.y -= PLAYER_MOVE;
 	}
 	if (pInputKeyboard->GetPress(pInputKeyboard->KEYINFO_DOWN))
 	{
+		// 下
 		m_move.y += PLAYER_MOVE;
 	}
 	if (pInputKeyboard->GetPress(pInputKeyboard->KEYINFO_LEFT))
 	{
+		// 左
 		m_move.x -= PLAYER_MOVE;
 	}
 	if (pInputKeyboard->GetPress(pInputKeyboard->KEYINFO_RIGHT))
 	{
+		// 右
 		m_move.x += PLAYER_MOVE;
 	}
 

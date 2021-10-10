@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // シーン処理 [scene.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "scene.h"
@@ -12,8 +12,8 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CScene *CScene::m_pTop[PRIORITY_MAX] = {};
-CScene *CScene::m_pCur[PRIORITY_MAX] = {};
+CScene *CScene::m_pTop[PRIORITY_MAX] = {};	// 先頭のオブジェクトへのポインタ
+CScene *CScene::m_pCur[PRIORITY_MAX] = {};	// 現在(最後尾)のオブジェクトへのポインタ
 
 //=============================================================================
 // CSceneのデフォルトコンストラクタ
@@ -123,19 +123,23 @@ void CScene::ReleaseAll(void)
 				// リストから削除
 				if (pScene->m_pPrev != NULL)
 				{
+					// 自分の前がNULLじゃないとき
 					pScene->m_pPrev->m_pNext = pScene->m_pNext;
 				}
 				if (pScene->m_pNext != NULL)
 				{
+					// 自分の次がNULLじゃないとき
 					pScene->m_pNext->m_pPrev = pScene->m_pPrev;
 				}
 
 				if (pScene == m_pCur[nCntPriority])
 				{
+					// 自分が一番後ろの時
 					m_pCur[nCntPriority] = pScene->m_pPrev;
 				}
 				if (pScene == m_pTop[nCntPriority])
 				{
+					// 自分が先頭のとき
 					m_pTop[nCntPriority] = pScene->m_pNext;
 				}
 

@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 弾処理 [bullet.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "bullet.h"
@@ -23,7 +23,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CBullet::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CBullet::m_pTexture = NULL;		// テクスチャ情報のポインタ
 
 //=============================================================================
 // CBulletのコンストラクタ
@@ -227,13 +227,15 @@ void CBullet::CollisionTile(void)
 			CTile::TILETYPE tileType = pTile->GetTileType();
 
 			switch (tileType)
-			{// 黒タイルの場合
+			{
+				// 黒タイルの場合
 			case CTile::TILETYPE_BLACK:
 				if (m_bulletType == BULLETTYPE_PLEYER)
 				{
 					pTile->FillTileforBullet(pos, size, m_posOld, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), CTile::TILETYPE_WHITE,this);
 				}
 				break;
+
 				// 白タイルの場合
 			case CTile::TILETYPE_WHITE:
 				if (m_bulletType == BULLETTYPE_ENEMY)
@@ -241,6 +243,7 @@ void CBullet::CollisionTile(void)
 					pTile->FillTileTypeWhite(pos, size);
 				}
 				break;
+
 				// 透明タイルの場合
 			case CTile::TILETYPE_INVISIBLE:
 				if (pTile->CollisionObject(&pos, m_posOld, &m_move, size))
@@ -250,6 +253,7 @@ void CBullet::CollisionTile(void)
 					return;
 				}
 				break;
+
 				// 黒に変わるタイルだった場合
 			case CTile::TILETYPE_CHANGE_BLACK:
 				if (m_bulletType == BULLETTYPE_PLEYER)
@@ -257,9 +261,6 @@ void CBullet::CollisionTile(void)
 					pTile->FillTileTypeChangeBlack(pos, size);
 					pTile->FillTileforBullet(pos, size, m_posOld, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), CTile::TILETYPE_WHITE, this);
 				}
-				break;
-
-			default:
 				break;
 			}
 		}

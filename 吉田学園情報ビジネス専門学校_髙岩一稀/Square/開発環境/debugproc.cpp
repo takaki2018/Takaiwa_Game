@@ -1,20 +1,21 @@
 //=============================================================================
 //
 // デバック表示処理 [debugproc.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
 #include "debugproc.h"
 #include "manager.h"
 #include "renderer.h"
-#include "stdio.h"
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXFONT CDebugProc::m_pFont = NULL;
-char CDebugProc::m_aStr[1024] = {};
+LPD3DXFONT CDebugProc::m_pFont = NULL;		// フォントのポインタ
+char CDebugProc::m_aStr[1024] = {};			// 文字数を格納するバッファ
 
 //=============================================================================
 // CDebugProcのコンストラクタ
@@ -63,6 +64,7 @@ void CDebugProc::Uninit(void)
 //=============================================================================
 void CDebugProc::Draw(void)
 {
+	// 文字を配置する位置の決定
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	// フォントの表示
@@ -74,6 +76,9 @@ void CDebugProc::Draw(void)
 
 //=============================================================================
 // デバック表示用の文字追加処理
+// 引数		: *fmt	- 表示したい文字列
+//			: ...	- 可変長引数
+// 返り値	: void	- 何も返さない
 //=============================================================================
 void CDebugProc::Print(const char *fmt, ...)
 {
@@ -94,30 +99,44 @@ void CDebugProc::Print(const char *fmt, ...)
 	{
 		if (*fmt != '%')
 		{
+			// 文字が%以外のとき文字を保存する
 			wsprintf(&aWard[0], "%c", *fmt);
 		}
 		else
 		{
+			// 文字が%だったときポインタを進める
 			fmt++;
+
+			// 文字ごとに処理を変える
 			switch (*fmt)
 			{
+				// dだったとき引数に入っているint型の変数の値に変える
 			case 'd':
 				wsprintf(&aWard[0], "%d", va_arg(arg, int));
 				break;
 
+				// fだったとき引数に入っているdouble型の変数の値に変える
 			case 'f':
 				sprintf(&aWard[0], "%.2f", va_arg(arg, double));
 				break;
 
+				// sだったとき引数に入っているconst char*型の変数の値に変える
 			case 's':
 				wsprintf(&aWard[0], "%s", va_arg(arg, const char*));
 				break;
 
+				// cだったとき引数に入っているchar型の変数の値に変える
 			case 'c':
 				wsprintf(&aWard[0], "%c", va_arg(arg, char));
 				break;
+
+				// 文字が上記以外のとき文字を保存する
+			default:
+				wsprintf(&aWard[0], "%c", *fmt);
+				break;
 			}
 		}
+		// 何文字保存したかカウントする
 		nCnt += wsprintf(&aStr[nCnt], "%s",&aWard[0]);
 	}
 	// 識別を終える

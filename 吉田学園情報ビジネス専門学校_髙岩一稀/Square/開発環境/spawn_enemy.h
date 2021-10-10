@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 敵の発生処理 [spawn_enemy.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _SPAWNENEMY_H_
@@ -15,23 +15,25 @@
 #define MAX_FHASE		(10)		// 最大フェーズ数
 #define MAX_ENEMYSPAWN	(50)		// 1フェーズの登場する敵の最大数
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // 敵発生クラス(派生クラス)
-//------------------ ----------------------------------------------------------
+//***************************************************************************** ----------------------------------------------------------
 class CSpawnEnemy : public CScene
 {
 public:
 	CSpawnEnemy(int nPriority = 0);
 	~CSpawnEnemy();
+
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static int GetRemainingEnemy(void) { return m_nCntRemainingEnemy; }
 	static void SetRemainingEnemy(int nCntRemainingEnemy) { m_nCntRemainingEnemy = nCntRemainingEnemy; }
 
 private:
-	bool LoadSpawnEnemyData(void);
+	bool LoadSpawnEnemyData(void);	// 敵配置情報読み込み
 
 	// 敵発生情報をまとめた構造体
 	typedef struct

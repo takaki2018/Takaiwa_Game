@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // タイトルロゴ処理 [title_logo.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "title_logo.h"
@@ -20,7 +20,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-bool CTitleLogo::bTransition = false;
+bool CTitleLogo::bTransition = false;		// 遷移するかどうか
 
 //=============================================================================
 // CTitleLogoのコンストラクタ
@@ -78,13 +78,11 @@ HRESULT CTitleLogo::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	m_apLogo[LOGOTYPE_TITLE] = CLogo::Create(D3DXVECTOR3(pos.x, pos.y, 0.0f), D3DXVECTOR2(300.0f, 80.0f), CLogo::TEXTURETYPE_TITLELOGO);
 	m_apLogo[LOGOTYPE_PLAY] = CLogo::Create(apLogoBg[LOGOTYPE_PLAY - 1]->GetPosition(), D3DXVECTOR2(95.0f,30.0f), CLogo::TEXTURETYPE_PLAY);
 	m_apLogo[LOGOTYPE_TUTORIAL] = CLogo::Create(apLogoBg[LOGOTYPE_TUTORIAL - 1]->GetPosition(), D3DXVECTOR2(200.0f, 30.0f), CLogo::TEXTURETYPE_TUTORIAL);
-	m_apLogo[LOGOTYPE_RANKING] = CLogo::Create(apLogoBg[LOGOTYPE_RANKING - 1]->GetPosition(), D3DXVECTOR2(150.0f, 30.0f), CLogo::TEXTURETYPE_RANKING);
-	m_apLogo[LOGOTYPE_OPTION] = CLogo::Create(apLogoBg[LOGOTYPE_OPTION - 1]->GetPosition(), D3DXVECTOR2(150.0f, 30.0f), CLogo::TEXTURETYPE_OPTION);
 
 	m_nSelectLogo = LOGOTYPE_PLAY;
 
 	// 各ロゴの色を設定
-	for (int nCntLogo = LOGOTYPE_PLAY; nCntLogo <= LOGOTYPE_OPTION; nCntLogo++)
+	for (int nCntLogo = LOGOTYPE_PLAY; nCntLogo <= LOGOTYPE_TUTORIAL; nCntLogo++)
 	{
 		if (m_nSelectLogo == nCntLogo)
 		{
@@ -150,7 +148,7 @@ void CTitleLogo::Update(void)
 
 	if (pFade->GetFade() == CFade::FADE_NONE)
 	{
-		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_UP) || pTrigger[CInputJoypad::CROSSKEYTRIGGER_UP])
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_UP) || pTrigger[CInputJoypad::STICK_AND_CROSSKEY_UP])
 		{
 			// 上にいくとき番号を減らす
 			m_nSelectLogo--;
@@ -158,17 +156,17 @@ void CTitleLogo::Update(void)
 			if (m_nSelectLogo < LOGOTYPE_PLAY)
 			{
 				// コンティニューより小さくなったとき
-				m_nSelectLogo = LOGOTYPE_OPTION;
+				m_nSelectLogo = LOGOTYPE_TUTORIAL;
 			}
 			// 効果音
 			CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_MOVE_CURSOR);
 		}
-		else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_DOWN) || pTrigger[CInputJoypad::CROSSKEYTRIGGER_DOWN])
+		else if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_DOWN) || pTrigger[CInputJoypad::STICK_AND_CROSSKEY_DOWN])
 		{
 			// 下にいくとき番号を増やす
 			m_nSelectLogo++;
 
-			if (m_nSelectLogo > LOGOTYPE_OPTION)
+			if (m_nSelectLogo > LOGOTYPE_TUTORIAL)
 			{
 				// クイットより大きくなったとき
 				m_nSelectLogo = LOGOTYPE_PLAY;
@@ -178,7 +176,7 @@ void CTitleLogo::Update(void)
 		}
 
 		// 各ロゴの色を設定
-		for (int nCntLogo = LOGOTYPE_PLAY; nCntLogo <= LOGOTYPE_OPTION; nCntLogo++)
+		for (int nCntLogo = LOGOTYPE_PLAY; nCntLogo <= LOGOTYPE_TUTORIAL; nCntLogo++)
 		{
 			if (m_nSelectLogo == nCntLogo)
 			{
@@ -204,17 +202,12 @@ void CTitleLogo::Update(void)
 				bTransition = true;
 				CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_GAME_TRANSITION);		// 効果音
 				break;
+
 				// Tutorialロゴ
 			case LOGOTYPE_TUTORIAL:
 				// チュートリアル画面の生成処理
 				CTutorial::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f), D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
 				CManager::SetTutorial(true);
-				break;
-				// Rankingロゴ
-			case LOGOTYPE_RANKING:
-				break;
-				// Optionロゴ
-			case LOGOTYPE_OPTION:
 				break;
 			}
 		}

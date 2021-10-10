@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 敵処理 [enemy.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _ENEMY_H_
@@ -21,9 +21,9 @@
 //*****************************************************************************
 class CPlayer;			// プレイヤークラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // 敵クラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CEnemy : public CScene2D
 {
 public:
@@ -37,6 +37,7 @@ public:
 
 	CEnemy(int nPriority);
 	~CEnemy();
+
 	static HRESULT Load(void);
 	static void Unload(void);
 	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size,float fMoveAI,EnemyType enemyType);
@@ -44,6 +45,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	D3DXVECTOR3 CollitionTile(D3DXVECTOR3 pos, D3DXVECTOR2 size);	// タイルとのあたり判定
 	bool CollisionBullet(void);										// 弾との当たり判定
 	bool CollisionPlayer(CPlayer *pPlayer);							// プレイヤーとの当たり判定
@@ -54,7 +56,7 @@ public:
 private:
 	static LPDIRECT3DTEXTURE9 m_pTexture[ENEMYTYPE_NAX];			// テクスチャ情報のポインタ
 	D3DXVECTOR3 m_posOld;											// 前回の位置
-	float m_fMoveAI;													// 基本移動量
+	float m_fMoveAI;												// 基本移動量
 	D3DXVECTOR3 m_move;												// 移動量
 	EnemyType m_enemyType;											// 敵の種類
 };

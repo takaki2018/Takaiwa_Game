@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ゲームデータ保存オブジェクト処理 [gamedata_keep_object.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _GAMEDATAKEEPOBJECT_H_
@@ -9,9 +9,9 @@
 
 #include "main.h"
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // ゲームデータ保存オブジェクトクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CGameDataKeepObject
 {
 public:
@@ -21,6 +21,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static int GetScore(void) { return m_nKeepScore; }
 	static int GetMaxCombo(void) { return m_nKeepMaxCombo; }
 	static int GetKillEnemy(void) { return m_nKeepKillEnemy; }

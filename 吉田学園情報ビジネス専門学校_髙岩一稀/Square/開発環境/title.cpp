@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // タイトル画面処理 [title.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "title.h"
@@ -20,9 +20,9 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-bool CTitle::m_bPressEnter = false;
-CUIBg *CTitle::m_apLogoBg[MAX_LOGOBG] = {};
-
+bool CTitle::m_bPressEnter = false;				// エンターを押したかどうか
+CUIBg *CTitle::m_apLogoBg[MAX_LOGOBG] = {};		// ロゴ背景情報
+												
 //=============================================================================
 // CTitleのコンストラクタ
 //=============================================================================
@@ -55,24 +55,21 @@ HRESULT CTitle::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 
 	// UI背景の生成
 	CUIBg::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 370.0f, 0.0f),
-		D3DXVECTOR2(SCREEN_WIDTH, 400.0f),
+		D3DXVECTOR2(SCREEN_WIDTH, 320.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUIBg::TEXTURETYPE_UI);
 
 	// ロゴ背景の初期化
 	for (int nCntLogoBg = 0; nCntLogoBg < MAX_LOGOBG; nCntLogoBg++)
 	{
-		m_apLogoBg[nCntLogoBg] = CUIBg::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 320.0f + nCntLogoBg * 45.0f, 0.0f),
+		m_apLogoBg[nCntLogoBg] = CUIBg::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 370.0f + nCntLogoBg * 45.0f, 0.0f),
 			D3DXVECTOR2(1280.0f, 35.0f),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			CUIBg::TEXTURETYPE_LOGO);
 	}
 
 	// ロゴの生成
-	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 250.0f, 0.0f), D3DXVECTOR2(600.0f, 100.0f));
-
-	// モデルの生成
-	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR2(0.0f, 0.0f),"data/MODEL/block_black.x");
+	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 290.0f, 0.0f), D3DXVECTOR2(600.0f, 100.0f));
 
 	// BGM
 	CManager::GetSound()->Play(CSound::SOUND_LABEL_TITLE);

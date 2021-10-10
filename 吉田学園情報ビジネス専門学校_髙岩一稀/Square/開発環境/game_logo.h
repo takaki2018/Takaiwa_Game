@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ÉQÅ[ÉÄÉçÉSèàóù [game_logo.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _GAMELOGO_H_
@@ -14,9 +14,9 @@
 //*****************************************************************************
 class CLogo;			// ÉçÉSÉNÉâÉX
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // ÉQÅ[ÉÄÉçÉSÉNÉâÉX(îhê∂ÉNÉâÉX)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CGameLogo : public CScene
 {
 public:
@@ -31,11 +31,13 @@ public:
 
 	CGameLogo(int nPriority);
 	~CGameLogo();
+
 	static CGameLogo *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static bool GetTransition(void) { return bTransition; }
 
 private:

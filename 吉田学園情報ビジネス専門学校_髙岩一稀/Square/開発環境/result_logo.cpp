@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // リザルトロゴ処理 [result_logo.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "result_logo.h"
@@ -16,7 +16,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CLogo *CResultLogo::m_apLogo[LOGOTYPE_MAX] = {};
+CLogo *CResultLogo::m_apLogo[LOGOTYPE_MAX] = {};		// ロゴクラスのポインタ
 
 //=============================================================================
 // CResultLogoのコンストラクタ
@@ -69,10 +69,6 @@ HRESULT CResultLogo::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	m_apLogo[LOGOTYPE_RESULT] = CLogo::Create(D3DXVECTOR3(pos.x, pos.y, 0.0f), 
 		D3DXVECTOR2(220.0f, 60.0f), 
 		CLogo::TEXTURETYPE_RESULTLOGO);
-
-	m_apLogo[LOGOTYPE_ARCADEMODE] = CLogo::Create(D3DXVECTOR3(pos.x, pos.y + 60.0f, 0.0f),
-		D3DXVECTOR2(300.0f, 40.0f),
-		CLogo::TEXTURETYPE_ARCADEMODE);
 
 	m_apLogo[LOGOTYPE_YOURSCORE] = CLogo::Create(D3DXVECTOR3(400.0f, pos.y + 120.0f, 0.0f),
 		D3DXVECTOR2(250.0f, 40.0f),

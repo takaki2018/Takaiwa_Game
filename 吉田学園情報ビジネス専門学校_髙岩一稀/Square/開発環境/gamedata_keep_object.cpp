@@ -1,19 +1,18 @@
 //=============================================================================
 //
 // マネージャー処理 [manager.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "gamedata_keep_object.h"
-#include "result.h"
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-int CGameDataKeepObject::m_nKeepScore = 0;
-int CGameDataKeepObject::m_nKeepMaxCombo = 0;
-int CGameDataKeepObject::m_nKeepKillEnemy = 0;
-int CGameDataKeepObject::m_nTimer = 0;
+int CGameDataKeepObject::m_nKeepScore = 0;		// スコア
+int CGameDataKeepObject::m_nKeepMaxCombo = 0;	// 最大コンボ
+int CGameDataKeepObject::m_nKeepKillEnemy = 0;	// 敵を倒した数
+int CGameDataKeepObject::m_nTimer = 0;			// 経過時間
 
 //=============================================================================
 // CGameDataKeepObjectのコンストラクタ

@@ -73,11 +73,11 @@
     <Filter Include="ソース ファイル\object\3D">
       <UniqueIdentifier>{a2ce7b05-6bd6-4c89-9785-e7689ada56ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\3D">
-      <UniqueIdentifier>{a62f3a56-ba32-40b5-b03c-cf740aba85b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\object\tile">
       <UniqueIdentifier>{8891c7eb-9be7-43a9-a9be-6257a9f2e2d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\object\3D">
+      <UniqueIdentifier>{a62f3a56-ba32-40b5-b03c-cf740aba85b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -201,17 +201,11 @@
     <ClCompile Include="tutorial.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
-    <ClCompile Include="particle_manager.cpp">
-      <Filter>ソース ファイル\object\effect</Filter>
-    </ClCompile>
     <ClCompile Include="debugproc.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="tile.cpp">
       <Filter>ソース ファイル\object\tile</Filter>
-    </ClCompile>
-    <ClCompile Include="scene3D.cpp">
-      <Filter>ソース ファイル\object\3D</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>ソース ファイル\object\3D</Filter>
@@ -353,9 +347,6 @@
     <ClInclude Include="tutorial.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
-    <ClInclude Include="particle_manager.h">
-      <Filter>ヘッダー ファイル\object\effect</Filter>
-    </ClInclude>
     <ClInclude Include="debugproc.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -365,14 +356,11 @@
     <ClInclude Include="light.h">
       <Filter>ヘッダー ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="scene3D.h">
-      <Filter>ヘッダー ファイル\3D</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
-      <Filter>ヘッダー ファイル\3D</Filter>
+      <Filter>ヘッダー ファイル\object\3D</Filter>
     </ClInclude>
     <ClInclude Include="sceneX.h">
-      <Filter>ヘッダー ファイル\3D</Filter>
+      <Filter>ヘッダー ファイル\object\3D</Filter>
     </ClInclude>
     <ClInclude Include="tile.h">
       <Filter>ヘッダー ファイル\object\tile</Filter>

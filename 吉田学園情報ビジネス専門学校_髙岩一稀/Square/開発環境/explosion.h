@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 爆発処理 [explosion.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _EXPLOSION_H_
@@ -10,15 +10,8 @@
 #include "scene2D.h"
 
 //*****************************************************************************
-// マクロ定義
-//*****************************************************************************
-#define EXPLOSION_PATTERN	(8)		// アニメーションパターンの数
-#define EXPLOSION_ANIM		(5)		// 何フレームごとに更新するか
-#define EXPLOSION_SIZE		(20.0f)	// 爆発アニメーションのサイズ
-
-//-----------------------------------------------------------------------------
 // 爆発クラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CExplosion : public CScene2D
 {
 public:
@@ -42,6 +35,7 @@ public:
 
 	CExplosion(int nPriority);
 	~CExplosion();
+
 	static HRESULT Load(void);
 	static void Unload(void);
 	static CExplosion *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size,D3DXCOLOR col,float sizeMove, float fInertia,int nCntSwitch,
@@ -69,6 +63,7 @@ private:
 	void WaveExplosion(void);											// 衝撃波の時
 	bool HitEnemy(void);												// 敵との当たり判定
 	void CollosionTile(void);											// タイルとのあたり判定
+
 	static LPDIRECT3DTEXTURE9 m_pTexture[EXPLOSION_TEXTURETYPE_MAX];	// テクスチャ情報のポインタ
 	Explosion m_explosion;												// 爆発情報
 };

@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // キーボード処理 [input_keyboard.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _INPUTKEYBOARD_H_
@@ -12,7 +12,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MAX_DATA		(256)							// 最大データ数
+#define MAX_DATA							(256)												// 最大データ数
 #define KEY_LookAtPoint_LEFT				(CInputKeyboard::KEYINFO_LookAtPoint_LEFT)			// 注視点左回転
 #define KEY_LookAtPoint_RIGHT				(CInputKeyboard::KEYINFO_LookAtPoint_RIGHT)			// 注視点右回転
 #define KEY_Point_LEFT						(CInputKeyboard::KEYINFO_Point_LEFT)				// 視点左回転
@@ -26,9 +26,9 @@
 #define KEY_MOVE_Point_UP					(CInputKeyboard::KEYINFO_Point_UP)					// 視点上移動
 #define KEY_MOVE_Point_DOWN					(CInputKeyboard::KEYINFO_Point_DOWN)				// 視点下移動
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // キーボードクラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CInputKeyboard : public CInput
 {
 public:
@@ -38,16 +38,16 @@ public:
 	// キー入力情報
 	typedef enum
 	{
-		KEYINFO_OK = 0,		// 決定
-		KEYINFO_UP,			// 上選択
-		KEYINFO_DOWN,		// 下選択
-		KEYINFO_RIGHT,		// 右移動
-		KEYINFO_LEFT,		// 左移動
-		KEYINFO_PAUSE,		// ポーズ
-		KEYINFO_SHOT_UP,	// 上方向に進む弾の発射
-		KEYINFO_SHOT_DOWN,	// 下方向に進む弾の発射
-		KEYINFO_SHOT_RIGHT,	// 右方向に進む弾の発射
-		KEYINFO_SHOT_LEFT,	// 左方向に進む弾の発射
+		KEYINFO_OK = 0,				// 決定
+		KEYINFO_UP,					// 上選択
+		KEYINFO_DOWN,				// 下選択
+		KEYINFO_RIGHT,				// 右移動
+		KEYINFO_LEFT,				// 左移動
+		KEYINFO_PAUSE,				// ポーズ
+		KEYINFO_SHOT_UP,			// 上方向に進む弾の発射
+		KEYINFO_SHOT_DOWN,			// 下方向に進む弾の発射
+		KEYINFO_SHOT_RIGHT,			// 右方向に進む弾の発射
+		KEYINFO_SHOT_LEFT,			// 左方向に進む弾の発射
 		KEYINFO_LookAtPoint_LEFT,	// 注視点左回転
 		KEYINFO_LookAtPoint_RIGHT,	// 注視点右回転
 		KEYINFO_Point_LEFT,			// 視点左回転
@@ -67,10 +67,9 @@ public:
 	bool GetReleace(int nKey);
 
 private:
-	BYTE m_aKeyState[MAX_DATA];
-	BYTE m_aKeyStateTrigger[MAX_DATA];
-	BYTE m_aKeyStateReleace[MAX_DATA];
-	BYTE m_aKeyStateRepeat[MAX_DATA];
+	BYTE m_aKeyState[MAX_DATA];				// キー情報
+	BYTE m_aKeyStateTrigger[MAX_DATA];		// キートリガ-情報
+	BYTE m_aKeyStateReleace[MAX_DATA];		// キーリリース情報
 
 	int m_aKeyInfo[KEYINFO_MAX] =
 	{

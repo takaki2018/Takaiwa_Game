@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 爆発処理 [explosion.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "explosion.h"
@@ -17,7 +17,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CExplosion::m_pTexture[EXPLOSION_TEXTURETYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 CExplosion::m_pTexture[EXPLOSION_TEXTURETYPE_MAX] = {};	// テクスチャ情報のポインタ
 
 //=============================================================================
 // CExplosionのコンストラクタ
@@ -169,6 +169,7 @@ void CExplosion::NormalExplosion(void)
 	// カウント更新
 	m_explosion.nCnt++;
 
+	// サイズが増加しているとき
 	if (m_explosion.bSwitch == false)
 	{
 		// 切り返しカウントと同じになったらサイズ増加量に-1.0fを乗算する
@@ -181,6 +182,7 @@ void CExplosion::NormalExplosion(void)
 		}
 	}
 
+	// 爆発がプレイヤー以外のだったとき
 	if (m_explosion.explosionType != EXPLOSIONTYPE_PLAYER)
 	{
 		if (HitEnemy())
@@ -207,7 +209,8 @@ void CExplosion::NormalExplosion(void)
 	// 色の設定
 	SetCol(col);
 
-	if (col.a < 0.0f)
+	// α値が0.0f以下の時削除
+	if (col.a <= 0.0f)
 	{
 		Uninit();
 
@@ -249,7 +252,8 @@ void CExplosion::WaveExplosion(void)
 	// 色の設定
 	SetCol(col);
 
-	if (col.a < 0.0f)
+	// α値が0.0f以下の時削除
+	if (col.a <= 0.0f)
 	{
 		Uninit();
 	}
@@ -361,9 +365,6 @@ void CExplosion::CollosionTile(void)
 					// タイルとの当たり判定
 					pTile->FillTileTypeChangeBlack(pos, size);
 				}
-				break;
-
-			default:
 				break;
 			}
 		}

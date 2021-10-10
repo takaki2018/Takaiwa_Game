@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ロゴ処理 [bg.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _LOGO_H_
@@ -9,9 +9,9 @@
 
 #include "scene.h"
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // ロゴクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CLogo
 {
 public:
@@ -40,6 +40,7 @@ public:
 
 	CLogo();
 	~CLogo();
+
 	static HRESULT Load(void);
 	static void Unload(void);
 	static CLogo *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size,int nTextureNumber);
@@ -47,6 +48,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void StartBlinking(int nBlimkingInterval);
 	void SetPosition(D3DXVECTOR3 pos);
 	void SetCol(D3DXCOLOR col);
@@ -55,6 +57,7 @@ public:
 
 private:
 	void Blinking(void);										// 点滅処理
+
 	static LPDIRECT3DTEXTURE9 m_pTexture[TEXTURETYPE_MAX];		// テクスチャ情報のポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;							// 頂点バッファのポインタ
 	D3DXVECTOR3 m_pos;											// 位置情報

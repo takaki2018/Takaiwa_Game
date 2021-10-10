@@ -19,8 +19,8 @@ public:
 	~CDebugProc();
 	void Init(void);
 	void Uninit(void);
-	static void Print(const char *fmt, ...);
-	static void Draw(void);
+	static void Print(const char *fmt, ...);	// デバック表示用の文字追加処理
+	static void Draw(void);						// デバック表示処理
 
 private:
 	static LPD3DXFONT m_pFont;		// フォントのポインタ

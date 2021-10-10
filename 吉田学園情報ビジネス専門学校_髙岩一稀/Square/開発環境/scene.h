@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // シーン処理 [scene.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _SCENE_H_
@@ -26,9 +26,9 @@ typedef  struct
 	D3DXVECTOR2 tex;
 } VERTEX_3D;
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // オブジェクトクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CScene
 {
 public:
@@ -76,6 +76,7 @@ public:
 
 	CScene();
 	CScene(int nPriolity);
+
 	virtual ~CScene();
 	virtual HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size) = 0;
 	virtual void Uninit(void) = 0;
@@ -84,6 +85,7 @@ public:
 	static void ReleaseAll(void);
 	static void UpdateAll(void);
 	static void DrawAll(void);
+
 	OBJTYPE GetObjType(void) { return m_objType; }
 	void SetObjType(OBJTYPE objType) { m_objType = objType; }
 	CScene *GetScene(int nPriority) { return m_pTop[nPriority]; }
@@ -99,6 +101,7 @@ private:
 	static void UpdateGame(void);			// ゲームでの更新処理
 	static void UpdateResult(void);			// リザルトでの更新処理
 	static void ReleaseScene(void);			// 破棄処理
+
 	OBJTYPE m_objType;						// オブジェクトの種類
 	static CScene *m_pTop[PRIORITY_MAX];	// 先頭のオブジェクトへのポインタ
 	static CScene *m_pCur[PRIORITY_MAX];	// 現在(最後尾)のオブジェクトへのポインタ

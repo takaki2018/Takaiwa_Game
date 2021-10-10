@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // プレイヤー処理 [player.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _PLAYER_H_
@@ -9,9 +9,9 @@
 
 #include "scene2D.h"
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // プレイヤークラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CPlayer : public CScene2D
 {
 public:
@@ -26,6 +26,7 @@ public:
 
 	CPlayer(int nPriority);
 	~CPlayer();
+
 	static HRESULT Load(const char *TextureName);
 	static void Unload(void);
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
@@ -33,10 +34,11 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
 	void SetPosOld(D3DXVECTOR3 pos) { m_posOld = pos; }
-	void HitPlayer(void);											// プレイヤーが当たったとき処理
 	PlayerState GetPlayerState(void) { return m_playerState; }
+	void HitPlayer(void);											// プレイヤーが当たったとき処理
 
 private:
 	void Move(void);												// 移動処理
@@ -48,6 +50,7 @@ private:
 	void StateNormal(void);											// 通常状態のとき
 	void StateHit(void);											// オブジェクトと当たった状態のとき
 	void StateInvincible(void);										// 無敵状態のとき
+
 	static LPDIRECT3DTEXTURE9 m_pTexture;							// テクスチャ情報のポインタ
 	D3DXVECTOR3 m_posOld;											// 前回の位置
 	D3DXVECTOR3 m_move;												// 移動量

@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ゲーム画面処理 [game.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _GAME_H_
@@ -25,17 +25,19 @@ class CGame : public CScene
 {
 public:
 	CGame();
-	~CGame();
+	~CGame()
+		;
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static CPlayer *GetPlayer(void);
 	static CUI *GetUI(void);
 	static CModel *GetModel(void) { return m_pModel; }
 
 private:
-	void TileFrameEffectCreate(void);	// タイルフレームエフェクトの生成
+	void TileFrameEffectCreate(void);			// タイルフレームエフェクトの生成
 	static CPlayer *m_pPlayer;					// プレイヤー情報のポインタ
 	static CUI *m_pUI;							// UI情報のポインタ
 	static CSpawnEnemy  *m_pSpawnEnemy;			// 敵発生情報のポインタ

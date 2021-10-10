@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // UI処理 [UI.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _UI_H_
@@ -18,19 +18,21 @@ class CLife;				// ライフクラス
 class CUIBg;				// UI背景クラス
 class CCountDown;			// カウントダウンクラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // UIクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CUI
 {
 public:
 
 	CUI();
 	~CUI();
+
 	HRESULT Init(CManager::MODE mode);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static CScore *GetScore(void) { return m_pScore; }
 	static CHiScore *GetHiScore(void) { return m_pHiScore; }
 	static CLife *GetLife(void) { return m_pLife; }

@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // タイトルロゴ処理 [title_logo.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _TITLELOGO_H_
@@ -15,9 +15,9 @@
 class CLogo;			// ロゴクラス
 class CUIBg;			// UI背景クラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // タイトルロゴクラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CTitleLogo : public CScene
 {
 public:
@@ -27,18 +27,18 @@ public:
 		LOGOTYPE_TITLE = 0,		// タイトルロゴ
 		LOGOTYPE_PLAY,			// プレイロゴ
 		LOGOTYPE_TUTORIAL,		// チュートリアルロゴ
-		LOGOTYPE_RANKING,		// ランキングロゴ
-		LOGOTYPE_OPTION,		// オプションロゴ
 		LOGOTYPE_MAX,
 	}LOGOTYPE;
 
 	CTitleLogo(int nPriority);
 	~CTitleLogo();
+
 	static CTitleLogo *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static bool GetTransition(void) { return bTransition; }
 
 private:

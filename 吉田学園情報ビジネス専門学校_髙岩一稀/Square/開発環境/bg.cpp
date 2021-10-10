@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 背景処理 [bg.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "bg.h"
@@ -12,7 +12,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CBg::m_pTexture[TEXTURETYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 CBg::m_pTexture[TEXTURETYPE_MAX] = {}; // テクスチャ情報のポインタ
 
 //=============================================================================
 // CBgのコンストラクタ
@@ -20,6 +20,7 @@ LPDIRECT3DTEXTURE9 CBg::m_pTexture[TEXTURETYPE_MAX] = {};
 CBg::CBg(int nPriority) : CScene2D(nPriority)
 {
 	// 変数の初期化
+	m_nTextureNumber = 0;
 }
 
 //=============================================================================
@@ -53,7 +54,7 @@ void CBg::Unload(void)
 	// テクスチャの破棄
 	for (int nCntBg = 0; nCntBg < TEXTURETYPE_MAX; nCntBg++)
 	{
-		if (m_pTexture != NULL)
+		if (m_pTexture[nCntBg] != NULL)
 		{
 			m_pTexture[nCntBg]->Release();
 			m_pTexture[nCntBg] = NULL;

@@ -1,11 +1,12 @@
 //=============================================================================
 //
 // ハイスコア処理 [hiscore.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+
 #include "hiscore.h"
 #include "manager.h"
 #include "renderer.h"
@@ -113,12 +114,10 @@ void CHiScore::LoadHiScore(void)
 	// NULLチェック
 	if (pFile != NULL)
 	{
+		// スコアの書き出し
 		fscanf(pFile, "%d", &m_nHiScore);
 
+		// ファイルを閉じる
 		fclose(pFile);
-	}
-	else
-	{
-
 	}
 }

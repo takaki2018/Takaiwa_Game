@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 弾処理 [bullet.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _BUllET_H_
@@ -9,9 +9,9 @@
 
 #include "scene2D.h"
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // 弾クラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CBullet : public CScene2D
 {
 public:
@@ -44,13 +44,15 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void SetOldPosition(D3DXVECTOR3 posOld) { m_posOld = posOld; }
 	D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
 	BULLETTYPE GetBulletType(void) { return m_bulletType; }
 
 private:
-	void Move(void);
-	void CollisionTile(void);
+	void Move(void);						// 移動処理
+	void CollisionTile(void);				// タイルとのあたり判定
+
 	D3DXVECTOR3 m_move;						// 移動量
 	static LPDIRECT3DTEXTURE9 m_pTexture;	// テクスチャ情報のポインタ
 	int m_nLife;							// 弾の寿命

@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ナンバー処理 [number.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _NUMBER_H_
@@ -9,14 +9,15 @@
 
 #include "Scene2D.h"
 
-//-----------------------------------------------------------------------------
-// ナンバークラス(派生クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// ナンバークラス(基本クラス)
+//*****************************************************************************
 class CNumber
 {
 public:
 	CNumber();
 	~CNumber();
+
 	static HRESULT Load(void);
 	static void Unload(void);
 	static CNumber *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size);
@@ -24,6 +25,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void SetNumber(int nNumber);
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR2 GetSize(void) { return m_size; }

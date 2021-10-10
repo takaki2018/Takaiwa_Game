@@ -1,17 +1,17 @@
-//-------------------------------------------------------------------
+//=============================================================================
 //
 // モデルヘッダー (model.h)
 // Author:Itsuki Takaiwa
 //
-//-------------------------------------------------------------------
+//=============================================================================
 #ifndef _SCENEX_H_
 #define _SCENEX_H_
 
 #include "scene.h"
 
-//-------------------------------------------------------------------
+//*****************************************************************************
 // シーンXクラス(派生クラス)
-//-------------------------------------------------------------------
+//*****************************************************************************
 class CSceneX : public CScene
 {
 public:
@@ -23,11 +23,12 @@ public:
 	void Update(void);			
 	void Draw(void);			
 	void BindXFileName(char *pModelFileName) { m_pModelFileName = pModelFileName; }
+
 	D3DXVECTOR3 GetPosision(void) { return m_pos; }
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	D3DXVECTOR3 GetRotate(void) { return m_rot; }
 	void SetRotate(D3DXVECTOR3 rot);
-	LPD3DXBUFFER GetMat(void) { return m_pBuffMat; }
+	D3DXMATERIAL *GetMat(void);
 	int GetNumMat(void) { return m_nNumMat; }
 	void SetMat(D3DXMATERIAL *pMat, int nCntMat);
 

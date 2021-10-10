@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // UI処理 [UI.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "UI.h"
@@ -19,11 +19,11 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CScore *CUI::m_pScore = NULL;
-CHiScore *CUI::m_pHiScore = NULL;
-CLife *CUI::m_pLife = NULL;
-CUIBg *CUI::m_pLogoBg = NULL;
-CCountDown *CUI::m_pCountDown = NULL;
+CScore *CUI::m_pScore = NULL;			// スコア情報のポインタ
+CHiScore *CUI::m_pHiScore = NULL;		// ハイスコア情報のポインタ
+CLife *CUI::m_pLife = NULL;				// ライフ情報のポインタ
+CUIBg *CUI::m_pLogoBg = NULL;			// ロゴ背景情報
+CCountDown *CUI::m_pCountDown = NULL;	// カウントダウン情報のポインタ
 
 //=============================================================================
 // CUIのコンストラクタ

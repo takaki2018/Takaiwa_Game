@@ -24,10 +24,14 @@ public:
 		FADE_MAX,
 	}FADE;
 
+	CFade();
+	~CFade();
+
 	HRESULT Init(CManager::MODE modeNext);		
 	void Uninit(void);					
 	void Update(void);					
 	void Draw(void);					
+
 	static void SetFade(FADE fade, CManager::MODE modeNext);
 	static FADE GetFade(void);						
 

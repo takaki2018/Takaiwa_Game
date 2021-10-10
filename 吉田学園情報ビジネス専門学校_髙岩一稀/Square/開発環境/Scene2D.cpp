@@ -1,18 +1,12 @@
 //=============================================================================
 //
 // シーン2D処理 [scene2D.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "scene2D.h"
 #include "renderer.h"
 #include "manager.h"
-
-//*****************************************************************************
-// マクロ定義
-//*****************************************************************************
-#define TEXTURE_X		(1)							// アニメーションパターンNo.の横の最大数
-#define TEXTURE_Y		(1)							// アニメーションパターンNo.の縦の最大数
 
 //=============================================================================
 // CSceneのコンストラクタ
@@ -101,10 +95,10 @@ HRESULT CScene2D::Init(D3DXVECTOR3 pos , D3DXVECTOR2 size)
 	pVtx[3].col = m_col;
 
 	// テクスチャ座標
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 1.0f / TEXTURE_Y);
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[1].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(1.0f / TEXTURE_X, 1.0f / TEXTURE_Y);
-	pVtx[3].tex = D3DXVECTOR2(1.0f / TEXTURE_X, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(1.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 0.0f);
 
 	// 頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();

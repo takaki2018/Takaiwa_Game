@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // モデル処理 [model.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "model.h"
@@ -11,16 +11,15 @@
 #include "input_keyboard.h"
 #include "debugproc.h"
 
-//*****************************************************************************
-// 静的メンバ変数宣言
-//*****************************************************************************
-
 //=============================================================================
 // CModelのコンストラクタ
 //=============================================================================
 CModel::CModel(int nPriority) : CSceneX(nPriority)
 {
-	// 変数の初期化
+	// メンバ変数の初期化
+	m_moveRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_nCnt = 0;
+	m_bAppear = false;
 }
 
 //=============================================================================
@@ -61,21 +60,27 @@ CModel *CModel::Create(D3DXVECTOR3 pos, D3DXVECTOR2 size, char *pModelFileName)
 //=============================================================================
 HRESULT CModel::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 {
-	// CScene2Dの初期化処理
+	// CSceneXの初期化処理
 	CSceneX::Init(pos, size);
 
+	// メンバ変数の初期化
 	m_moveRot = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	m_nCnt = 0;
+	m_bAppear = false;
 
 	// マテリアル情報の取得
-	/*LPD3DXBUFFER pMat = GetMat();
+	D3DXMATERIAL *pMat = GetMat();
 	int nNumMat = GetNumMat();
 
 	for (int nCnt = 0; nCnt < nNumMat; nCnt++)
 	{
-		pMat[nCnt].GetBufferPointer
+		// α値の設定
+		pMat[nCnt].MatD3D.Diffuse.a = 0.0f;
+
+		// マテリアルの設定
+		SetMat(pMat,nCnt);
 	}
-	*/
+
 	return S_OK;
 }
 
@@ -84,7 +89,7 @@ HRESULT CModel::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 //=============================================================================
 void CModel::Uninit(void)
 {
-	// CScene2Dの終了処理
+	// CSceneXの終了処理
 	CSceneX::Uninit();
 }
 
@@ -93,7 +98,7 @@ void CModel::Uninit(void)
 //=============================================================================
 void CModel::Update(void)
 {
-	// CScene2Dの更新処理
+	// CSceneXの更新処理
 	CSceneX::Update();
 
 	// 角度情報の取得
@@ -111,6 +116,28 @@ void CModel::Update(void)
 
 	// 角度の設定
 	SetRotate(rot);
+
+	if (m_bAppear == false)
+	{
+		// マテリアル情報の取得
+		D3DXMATERIAL *pMat = GetMat();
+		int nNumMat = GetNumMat();
+
+		for (int nCnt = 0; nCnt < nNumMat; nCnt++)
+		{
+			// α値の設定
+			pMat[nCnt].MatD3D.Diffuse.a += 0.0005f;
+
+			// マテリアルの設定
+			SetMat(pMat, nCnt);
+
+			// α値が1.0fを超えたら見えたことを伝える
+			if (pMat[nCnt].MatD3D.Diffuse.a >= 1.0f)
+			{
+				m_bAppear = true;
+			}
+		}
+	}
 
 #ifdef _DEBUG
 	CDebugProc::Print("\n--- モデルの角度 ---\n");

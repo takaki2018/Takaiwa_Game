@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // ゲームクリア処理 [game_clear.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "game_clear.h"
@@ -11,9 +11,9 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-bool CGameClear::m_bTransition = false;
-int CGameClear::m_nCntInterval = 0;
-CGameClear::GameTransition CGameClear::m_gameTransition = CGameClear::GAMETRANSITION_CLEAR;
+bool CGameClear::m_bTransition = false;															// 遷移するかどうか
+int CGameClear::m_nCntInterval = 0;																// 遷移までの時間
+CGameClear::GameTransition CGameClear::m_gameTransition = CGameClear::GAMETRANSITION_CLEAR;		// 遷移条件
 
 //=============================================================================
 // CGameClearのコンストラクタ

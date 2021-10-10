@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 敵発生処理 [spawn_enemy.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #define _CRT_SECURE_NO_WARNINGS
@@ -16,8 +16,8 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-int CSpawnEnemy::m_nCntRemainingEnemy = 0;
-char CSpawnEnemy::SpawnEnemyText[MAX_FHASE][128] = 
+int CSpawnEnemy::m_nCntRemainingEnemy = 0;				// 残り敵数
+char CSpawnEnemy::SpawnEnemyText[MAX_FHASE][128] =		// 敵発生情報テキストのテキスト名格納用
 {"data/TEXTFILE/SpawnEnemy_Info/Fhase_1.txt",
 "data/TEXTFILE/SpawnEnemy_Info/Fhase_2.txt" ,
 "data/TEXTFILE/SpawnEnemy_Info/Fhase_3.txt" ,

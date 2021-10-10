@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // マネージャー処理 [manager.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _MANAGER_H_
@@ -36,9 +36,9 @@ class CGameDataKeepObject;	// ゲームデータ保存用オブジェクトクラス
 class CCamera;				// カメラクラス
 class CLight;				// ライトクラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // マネージャークラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CManager
 {
 public:
@@ -53,6 +53,7 @@ public:
 
 	CManager();
 	~CManager();
+
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd, bool bWindow);
 	void Uninit(void);
 	void Update(void);
@@ -60,10 +61,11 @@ public:
 	void LoadTexture(void);
 	void UnloadTexture(void);
 	static void SetMode(MODE mode);
+
 	static MODE GetMode(void) { return m_mode; }
-	static CRenderer *GetRenderer(void);
-	static CInputKeyboard *GetInputKeyboard(void);
-	static CInputJoypad *GetInputJoypad(void);
+	static CRenderer *GetRenderer(void) { return m_pRenderer; }
+	static CInputKeyboard *GetInputKeyboard(void) { return m_pInputKeyboard; }
+	static CInputJoypad *GetInputJoypad(void) { return m_pInputJoypad; }
 	static CFade *GetFade(void) { return m_pFade; }
 	static CGameDataKeepObject *GetGameData(void) { return m_pGemeData; }
 	static CSound *GetSound(void) { return m_pSound; }

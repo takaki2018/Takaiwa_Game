@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // タイル処理 [tile.cpp]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #include "tile.h"
@@ -26,7 +26,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CTile::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CTile::m_pTexture = NULL;		// テクスチャ情報のポインタ
 
 //=============================================================================
 // CTileのコンストラクタ
@@ -330,14 +330,15 @@ bool CTile::CollisionObject(D3DXVECTOR3 *pos, D3DXVECTOR3 posOld,D3DXVECTOR3 *mo
 		}
 	}
 
+	// タイルの四つ角の位置
 	D3DXVECTOR3 aPos[MAAX_CORNER] = { D3DXVECTOR3(posTile.x + sizeTile.x,posTile.y + sizeTile.y,0.0f) ,
 		D3DXVECTOR3(posTile.x + sizeTile.x,posTile.y - sizeTile.y,0.0f) ,
 		D3DXVECTOR3(posTile.x - sizeTile.x,posTile.y + sizeTile.y,0.0f), 
 		D3DXVECTOR3(posTile.x - sizeTile.x,posTile.y - sizeTile.y,0.0f) };
 
-	// 中心とタイルの角との距離を測る
 	for (int nCnt = 0; nCnt < MAAX_CORNER; nCnt++)
 	{
+		// 中心とタイルの角との距離を測る
 		D3DXVECTOR3 vec = *pos - aPos[nCnt];
 		float fLength = sqrtf(vec.x * vec.x + vec.y * vec.y);
 
@@ -438,98 +439,6 @@ void CTile::FillTileforBullet(D3DXVECTOR3 pos, D3DXVECTOR2 size,D3DXVECTOR3 posO
 	{
 		// タイルを塗りつぶす
 		FillTile(tileType);
-
-		if (tileType == TILETYPE_WHITE)
-		{
-			//CollisionEnemy(pBullet);
-		}
-	}
-}
-
-//=============================================================================
-// 敵がタイルに当たったとき
-//=============================================================================
-void CTile::FillTileforEnemy(D3DXVECTOR3 pos, D3DXVECTOR2 size, D3DXVECTOR3 posOld, D3DXCOLOR colEffect, TILETYPE tileType)
-{
-	// 位置の取得
-	D3DXVECTOR3 posTile = GetPosition();
-
-	// サイズの取得
-	D3DXVECTOR2 sizeTile = D3DXVECTOR2(GetSize().x / 2.0f, GetSize().y / 2.0f);
-
-	// 当たったかどうか
-	bool bHitTile = false;
-
-	// タイルの当たり判定
-	if ((pos.x - size.x) < (posTile.x + sizeTile.x) && (pos.x + size.x) > posTile.x - sizeTile.x)
-	{// オブジェクトがタイルの中にいるとき
-		if (posOld.y + size.y <= posTile.y - sizeTile.y)
-		{// オブジェクトがタイルの上にいるとき
-			if (pos.y + size.y > (posTile.y - sizeTile.y))
-			{
-				CParticle::SetRevivalTile(posTile,
-					D3DXVECTOR3(1.0f, 0.0f, 0.0f),
-					sizeTile,
-					colEffect,
-					CParticle::BULLETMOVE_UP,
-					D3DXVECTOR2(4, 4));
-
-				bHitTile = true;
-			}
-		}
-		else if ((posOld.y - size.y) >= (posTile.y + sizeTile.y))
-		{// プレイヤーがブロックのposTile
-			if ((pos.y - size.y) < (posTile.y + sizeTile.y))
-			{
-				CParticle::SetRevivalTile(posTile,
-					D3DXVECTOR3(1.0f, 0.0f, 0.0f),
-					sizeTile,
-					colEffect,
-					CParticle::BULLETMOVE_DOWN,
-					D3DXVECTOR2(4, 4));
-
-				bHitTile = true;
-			}
-		}
-	}
-	if ((pos.y + size.y) > posTile.y - sizeTile.y && (pos.y - size.y) < (posTile.y + sizeTile.y))
-	{// プレイヤーがブロックのY幅にいるとき
-		if ((posOld.x + size.x) <= posTile.x - sizeTile.x)
-		{// プレイヤーがブロックの左側にいるとき
-			if ((pos.x + size.x) > posTile.x - sizeTile.x)
-			{
-				CParticle::SetRevivalTile(posTile,
-					D3DXVECTOR3(0.0f, 1.0f, 0.0f),
-					sizeTile,
-					colEffect,
-					CParticle::BULLETMOVE_LEFT,
-					D3DXVECTOR2(4, 4));
-
-				bHitTile = true;
-			}
-		}
-		else if ((posOld.x - size.x) >= (posTile.x + sizeTile.x))
-		{// プレイヤーがブロックの右側にいるとき
-			if ((pos.x - size.x) < (posTile.x + sizeTile.x))
-			{
-				CParticle::SetRevivalTile(posTile,
-					D3DXVECTOR3(0.0f, 1.0f, 0.0f),
-					sizeTile,
-					colEffect,
-					CParticle::BULLETMOVE_RIGHT,
-					D3DXVECTOR2(4, 4));
-
-				bHitTile = true;
-			}
-		}
-	}
-	if (bHitTile == true)
-	{
-		// タイルを塗りつぶす
-		FillTile(tileType);
-
-		// プレイヤーがいるかどうか
-		CollisionPlayer();
 	}
 }
 

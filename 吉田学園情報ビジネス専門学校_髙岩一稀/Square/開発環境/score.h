@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // スコア処理 [score.h]
-// Author : 
+// Author : itsuki takaiwa
 //
 //=============================================================================
 #ifndef _SCORE_H_
@@ -19,9 +19,9 @@
 //*****************************************************************************
 class CNumber;			// ナンバークラス
 
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 // オブジェクトクラス(基本クラス)
-//-----------------------------------------------------------------------------
+//*****************************************************************************
 class CScore : public CScene
 {
 public:
@@ -36,11 +36,13 @@ public:
 
 	CScore(int nPriority);
 	~CScore();
+
 	static CScore *Create(D3DXVECTOR3 pos, D3DXVECTOR2 size,float fSpace,SCOREPLACEMENT scorePlacement);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR2 size);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	void SetScore(int nScore);
 	void AddScore(int nValue);
 	int GetScore(void) { return m_nScore; }	
