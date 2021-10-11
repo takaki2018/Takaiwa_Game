@@ -48,6 +48,10 @@ CTutorial::CTutorial(int nPriority) :CScene(nPriority)
 	{
 		m_apCursor[nCntCursor] = NULL;
 	}
+	for (int nCntArrow = 0; nCntArrow < MAX_ARROW; nCntArrow++)
+	{
+		m_apArrow[nCntArrow] = NULL;
+	}
 	m_pLogo = NULL;
 	m_nCursor = (int)TUTORIALUI_KEYBOARD;
 }
@@ -74,6 +78,7 @@ HRESULT CTutorial::Load()
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_gamescreen.png", &m_pTexture[TEXTURE_GAMESCREEN]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/tutorial_game.png", &m_pTexture[TEXTURE_GAME]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/marker.png", &m_pTexture[TEXTURE_CURSOR]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/arrow.png", &m_pTexture[TEXTURE_ARROW]);
 
 	return S_OK;
 }
@@ -136,6 +141,7 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 		D3DXVECTOR2(960.0f,540.0f),
 		D3DXVECTOR2(960.0f,540.0f) };
 
+	// UIの初期化
 	for (int nCntTutorialUI = 0; nCntTutorialUI < TUTORIALUI_MAX; nCntTutorialUI++)
 	{
 		// メモリの確保
@@ -156,14 +162,14 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 	// 選択されているUIの保存
 	m_nCursor = (int)TUTORIALUI_KEYBOARD;
 
-	// 各UIの色を設定
+	// カーソルの初期化
 	for (int nCntCursor = 0; nCntCursor < MAX_CURSOR; nCntCursor++)
 	{
 		// メモリの確保
 		m_apCursor[nCntCursor] = new CScene2D(CScene::PRIORITY_NONE);
 
 		// カーソルの初期化処理
-		m_apCursor[nCntCursor]->Init(D3DXVECTOR3(5580.0f + 60.0f * nCntCursor, 650.0f, 0.0f), D3DXVECTOR2(20.0f, 20.0f));
+		m_apCursor[nCntCursor]->Init(D3DXVECTOR3(550.0f + 60.0f * nCntCursor, 650.0f, 0.0f), D3DXVECTOR2(20.0f, 20.0f));
 
 		// テクスチャの割り当て
 		if (m_pTexture[TEXTURE_CURSOR] != NULL)
@@ -182,6 +188,27 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 			m_apCursor[nCntCursor]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.3f));
 		}
 	}
+	// 矢印の初期化
+	for (int nCntArrow = 0; nCntArrow < MAX_ARROW; nCntArrow++)
+	{
+		// メモリの確保
+		m_apArrow[nCntArrow] = new CScene2D(CScene::PRIORITY_NONE);
+
+		// 矢印の初期化処理
+		m_apArrow[nCntArrow]->Init(D3DXVECTOR3(100.0f + 1080.0f * nCntArrow, 330.0f, 0.0f), D3DXVECTOR2(100.0f,100.0f));
+
+		// テクスチャの割り当て
+		if (m_pTexture[TEXTURE_CURSOR] != NULL)
+		{
+			m_apArrow[nCntArrow]->BindTexture(m_pTexture[TEXTURE_ARROW]);
+		}
+
+		if (nCntArrow == 0)
+		{
+			// テクスチャの向きを反対にする
+			m_apArrow[nCntArrow]->SetTex(D3DXVECTOR2(1,1), D3DXVECTOR2(-1, 1));
+		}
+	}
 	// ロゴの初期化
 	m_pLogo = CLogo::Create(D3DXVECTOR3(1100.0f,650.0f,0.0f),D3DXVECTOR2(200.0f,50.0f),CLogo::TEXTURETYPE_PRESSENTER);
 
@@ -193,14 +220,16 @@ HRESULT CTutorial::Init(D3DXVECTOR3 pos, D3DXVECTOR2 size)
 //=============================================================================
 void CTutorial::Uninit(void)
 {
+	// チュートリアルUIの終了処理
 	for (int nCntTutorialUI = 0; nCntTutorialUI < TUTORIALUI_MAX; nCntTutorialUI++)
 	{
-		// CScene2Dの終了処理
 		if (m_apTutorial[nCntTutorialUI] != NULL)
 		{
 			m_apTutorial[nCntTutorialUI]->Uninit();
 		}
 	}
+
+	// カーソルの終了処理
 	for (int nCntCursor = 0; nCntCursor < MAX_CURSOR; nCntCursor++)
 	{
 		if (m_apCursor[nCntCursor] != NULL)
@@ -208,6 +237,17 @@ void CTutorial::Uninit(void)
 			m_apCursor[nCntCursor]->Uninit();
 		}
 	}
+
+	// 矢印の終了処理
+	for (int nCntArrow = 0; nCntArrow < MAX_ARROW; nCntArrow++)
+	{
+		if (m_apArrow[nCntArrow] != NULL)
+		{
+			m_apArrow[nCntArrow]->Uninit();
+		}
+	}
+
+	// ロゴの終了処理
 	if (m_pLogo != NULL)
 	{
 		m_pLogo->Uninit();
@@ -273,6 +313,8 @@ void CTutorial::Update(void)
 			m_apCursor[nCntCursor]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.3f));
 		}
 	}
+
+	// カーソルが右端の時ロゴを点滅させる
 	if (m_nCursor == TUTORIALUI_MAX - 1)
 	{
 		if (m_pLogo != NULL)
@@ -307,10 +349,24 @@ void CTutorial::Draw(void)
 	// カーソルの描画
 	for (int nCntCursor = 0; nCntCursor < MAX_CURSOR; nCntCursor++)
 	{
-		m_apCursor[nCntCursor]->Draw();
+		if (m_apCursor[nCntCursor] != NULL)
+		{
+			m_apCursor[nCntCursor]->Draw();
+		}
 	}
+
+	// カーソルが右端にいるとき表示
 	if (m_nCursor == TUTORIALUI_MAX - 1)
 	{
 		m_pLogo->Draw();
+	}
+
+	// 矢印の描画処理
+	for (int nCntArrow = 0; nCntArrow < MAX_ARROW; nCntArrow++)
+	{
+		if (m_apArrow[nCntArrow] != NULL)
+		{
+			m_apArrow[nCntArrow]->Draw();
+		}
 	}
 }

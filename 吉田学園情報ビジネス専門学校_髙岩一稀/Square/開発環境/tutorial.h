@@ -13,6 +13,7 @@
 // マクロ定義
 //*****************************************************************************
 #define MAX_CURSOR	(TUTORIALUI_MAX - 1)		// 最大カーソル数
+#define MAX_ARROW	(2)							// ページ捲り用矢印
 
 //*****************************************************************************
 // 前方宣言
@@ -35,6 +36,7 @@ public:
 		TEXTURE_GAMESCREEN,	// ゲーム画面
 		TEXTURE_GAME,		// ゲーム内容
 		TEXTURE_CURSOR,		// カーソル
+		TEXTURE_ARROW,		// 矢印
 		TEXTURE_MAX,
 	}TutorialTexture;
 
@@ -64,6 +66,7 @@ private:
 	static LPDIRECT3DTEXTURE9 m_pTexture[TEXTURE_MAX];	// チュートリアル画面のテクスチャのポインタ
 	CScene2D *m_apTutorial[TUTORIALUI_MAX];				// チュートリアル情報のポインタ
 	CScene2D *m_apCursor[MAX_CURSOR];					// カーソル情報のポインタ
+	CScene2D *m_apArrow[MAX_ARROW];						// ページ捲り用矢印情報のポインタ
 	CLogo *m_pLogo;										// ロゴのポインタ
 	int m_nCursor;										// カーソルの位置
 };
