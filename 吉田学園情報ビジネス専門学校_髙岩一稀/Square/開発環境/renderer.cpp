@@ -415,7 +415,7 @@ HRESULT CRenderer::InitRenderTex(void)
 			SCREEN_HEIGHT,
 			1,
 			D3DUSAGE_RENDERTARGET,
-			D3DFMT_A8B8G8R8,
+			D3DFMT_A8R8G8B8,
 			D3DPOOL_DEFAULT,
 			&m_apTextureMT[nCnt],
 			NULL);
