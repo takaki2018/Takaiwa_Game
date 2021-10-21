@@ -140,7 +140,7 @@ HRESULT CInputJoypad::Init(HINSTANCE hInstance, HWND hWnd)
 		dipdw.diph.dwSize = sizeof(dipdw);
 		dipdw.diph.dwHeaderSize = sizeof(dipdw.diph);
 		dipdw.diph.dwHow = DIPH_BYOFFSET;
-		dipdw.dwData = 0;
+		dipdw.dwData = DEADZONE;
 
 		// Xé≤ÇÃîÕàÕÇê›íË
 		dipdw.diph.dwObj = DIJOFS_X;

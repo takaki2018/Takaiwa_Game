@@ -15,12 +15,14 @@
 #include "tile.h"
 #include "enemy.h"
 #include "explosion.h"
-#include "life.h"
+#include "life_ui.h"
 #include "UI.h"
 #include "stage.h"
 #include "setparticle.h"
 #include "model.h"
 #include "game.h"
+
+#include "debugproc.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -224,7 +226,10 @@ void CPlayer::Move(void)
 		m_move.x += PLAYER_MOVE * sinf(fAngle);			// X軸移動量の決定
 		m_move.y += PLAYER_MOVE * cosf(fAngle);			// Z軸移動量の決定
 	}
-
+#ifdef _DEBUG
+	CDebugProc::Print("\n--- コントローラー情報 ---\n");
+	CDebugProc::Print("入力角度 : (%f,%f)\n", (float)Controller.lX, (float)Controller.lY);
+#endif 
 	// 慣性処理
 	m_move.x += (0.0f - m_move.x) * INERTIA;
 	m_move.y += (0.0f - m_move.y) * INERTIA;

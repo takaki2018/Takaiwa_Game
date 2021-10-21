@@ -12,7 +12,7 @@
 #include "enemy.h"
 #include "score.h"
 #include "collision.h"
-#include "life.h"
+#include "life_ui.h"
 #include "setparticle.h"
 #include "game.h"
 #include "tile.h"

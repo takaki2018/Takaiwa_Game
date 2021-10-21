@@ -26,7 +26,7 @@ class CInputJoypad;			// ジョイパッドクラス
 class CSound;				// サウンドクラス
 class CPlayer;				// プレイヤークラス
 class CScore;				// スコアクラス
-class CLife;				// ライフクラス
+class CLifeUI;				// ライフクラス
 class CTitle;				// タイトルクラス
 class CTutorial;			// チュートリアルクラス
 class CGame;				// ゲームクラス

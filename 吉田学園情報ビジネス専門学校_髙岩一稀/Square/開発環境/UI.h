@@ -14,7 +14,7 @@
 //*****************************************************************************
 class CScore;				// スコアクラス
 class CHiScore;				// ハイスコアクラス
-class CLife;				// ライフクラス
+class CLifeUI;				// ライフクラス
 class CUIBg;				// UI背景クラス
 class CCountDown;			// カウントダウンクラス
 
@@ -35,14 +35,14 @@ public:
 
 	static CScore *GetScore(void) { return m_pScore; }
 	static CHiScore *GetHiScore(void) { return m_pHiScore; }
-	static CLife *GetLife(void) { return m_pLife; }
+	static CLifeUI *GetLife(void) { return m_pLife; }
 	static CUIBg *GetLogoBg(void) { return m_pLogoBg; }
 	static CCountDown *GetCountDown(void) { return m_pCountDown; }
 
 private:
 	static CScore *m_pScore;					// スコア情報のポインタ
 	static CHiScore *m_pHiScore;				// ハイスコア情報のポインタ
-	static CLife *m_pLife;						// ライフ情報のポインタ
+	static CLifeUI *m_pLife;						// ライフ情報のポインタ
 	static CUIBg *m_pLogoBg;					// ロゴ背景情報
 	static CCountDown *m_pCountDown;			// カウントダウン情報のポインタ
 };

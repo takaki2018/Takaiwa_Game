@@ -205,6 +205,9 @@ void CEnemy::Draw(void)
 //=============================================================================
 void CEnemy::HitEnemy(void)
 {
+	// レンダラー情報の取得
+	CRenderer *pRender = CManager::GetRenderer();
+
 	// 現在の位置の取得
 	D3DXVECTOR3 pos = GetPosition();
 
@@ -256,6 +259,9 @@ void CEnemy::HitEnemy(void)
 
 	// 効果音
 	CManager::GetSound()->Play(CSound::SOUND_LABEL_SE_HITENEMY);
+
+	// フェードバックエフェクトの許可
+	pRender->SetFadeBackEffect();
 
 	// 敵の破棄
 	Uninit();

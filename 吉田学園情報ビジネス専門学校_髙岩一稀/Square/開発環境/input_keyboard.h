@@ -26,6 +26,12 @@
 #define KEY_MOVE_Point_UP					(CInputKeyboard::KEYINFO_Point_UP)					// 視点上移動
 #define KEY_MOVE_Point_DOWN					(CInputKeyboard::KEYINFO_Point_DOWN)				// 視点下移動
 
+#define KEY_ADD_ALPHA						(CInputKeyboard::KEYINFO_ADD_ALPHA)					// α値増加
+#define KEY_DECREASE_ALPHA					(CInputKeyboard::KEYINFO_DECREASE_ALPHA)			// α値減少
+#define KEY_ADD_SIZE						(CInputKeyboard::KEYINFO_ADD_SIZE)					// サイズ増加
+#define KEY_DECREASE_SIZE					(CInputKeyboard::KEYINFO_DECREASE_SIZE)				// サイズ減少
+#define KEY_RESET							(CInputKeyboard::KEYINFO_LCORL)						// リセット
+
 //*****************************************************************************
 // キーボードクラス(派生クラス)
 //*****************************************************************************
@@ -56,6 +62,11 @@ public:
 		KEYINFO_LookAtPoint_DOWN,	// 注視点下移動
 		KEYINFO_Point_UP,			// 視点上移動
 		KEYINFO_Point_DOWN,			// 視点下移動
+		KEYINFO_LCORL,				// リセット
+		KEYINFO_ADD_ALPHA,			// α値増加
+		KEYINFO_DECREASE_ALPHA,		// α値減少
+		KEYINFO_ADD_SIZE,			// サイズ増加
+		KEYINFO_DECREASE_SIZE,		// サイズ減少
 		KEYINFO_MAX,
 	}KEYINFO;
 
@@ -91,6 +102,11 @@ private:
 		DIK_B,			// 注視点下移動
 		DIK_R,			// 視点上移動
 		DIK_V,			// 視点下移動
+		DIK_LCONTROL,	// 左コントロール
+		DIK_0,			// α値増加
+		DIK_9,			// α値減少
+		DIK_6,			// サイズ増加
+		DIK_5,			// サイズ減少
 	};
 };
 #endif

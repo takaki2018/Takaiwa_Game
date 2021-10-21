@@ -23,7 +23,7 @@
 #include "spawn_enemy.h"
 #include "game_clear.h"
 #include "UI_bg.h"
-#include "life.h"
+#include "life_ui.h"
 #include "sound.h"
 #include "model.h"
 #include "tile_revival.h"
@@ -178,6 +178,7 @@ void CGame::Uninit(void)
 		m_pGameClear->Uninit();
 		m_pGameClear = NULL;
 	}
+
 	// íœ
 	Release();
 }
